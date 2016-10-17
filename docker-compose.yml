@@ -1,0 +1,32 @@
+server:
+  image: node:6
+  command: npm run backend
+  working_dir: /app
+  volumes:
+    - .:/app
+  environment:
+    PORT: 3000
+    CONNECTION_STRING_DEV: postgres://user:password@db/db
+  ports:
+    - "3000:3000"
+    - "5858:5858"
+  links:
+    - db
+frontend:
+  image: node:6
+  command: npm run frontend
+  working_dir: /app/
+  volumes:
+    - .:/app/
+  environment:
+    PORT: 4000
+  ports:
+    - "4000:4000"
+db:
+  image: postgres
+  expose:
+    - 5432
+  environment:
+    POSTGRES_PASSWORD: password
+    POSTGRES_USER: user
+    POSTGRES_DB: db
