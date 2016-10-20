@@ -19,11 +19,11 @@ export default class Author extends Component {
 
   render() {
     return (
-      <article>
-        <h1>Author:</h1>
+      <section>
         <a href={this.state.author.url} rel="author">{this.state.author.username}</a>
         <p>{this.state.author.description}</p>
-      </article>
+        <img src="/assets/dependencies.jpeg" alt="dependencies" />
+      </section>
     );
   }
 }

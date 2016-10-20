@@ -3,6 +3,8 @@ Server application technology
 
 > Collaborators: Denis Olek, Patryk Wylegała, Mateusz Oracz
 
+![alt tag](http://tech.orteedev.pl/stack.jpg)
+
 ## Install:
 ```
 [Docker](https://www.docker.com/)   
@@ -85,10 +87,11 @@ Run Sequelize task
 ```
 root@[CONTAINER_ID]$ ../node_modules/.bin/sequelize [TASK]
 ```
-EXAMPLE
+EXAMPLE: Create model and migration name: Post with attributes name & content
 ```
-root@[CONTAINER_ID]$  ../node_modules/.bin/sequelize model:create --name Post --attributes name:string,content:text
+root@[CONTAINER_ID]$  ../node_modules/.bin/sequelize model:create --name Post --attributes name:string,content:text  --underscored
 ```
+Hint: Express don't like camelCase. Use always --underscored param.
 
 ```
 Available tasks
@@ -129,4 +132,3 @@ Available manuals
   help:seed:create            The documentation for "sequelize seed:create".
   help:version                The documentation for "sequelize version".
   ```
->>>>>>> e8fafccf8531931968ca82d5ded4e23a3ebbb6de

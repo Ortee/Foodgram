@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import { Router, Route, Link , browserHistory } from 'react-router';
+import { Button, Col } from 'reactstrap';
 
-export default class Post extends Component {
+class Post extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return(
-      <section>
-        <li>
-          <ul>
-            <li>ID: {this.props.id}</li>
-            <li>NAME: {this.props.name}</li>
-            <li>CONTENT: {this.props.content}</li>
-            <li>CREATEDAT: {this.props.createdAt}</li>
-            <li>UPDATEDAT: {this.props.updatedAt}</li>
-          </ul>
-        </li>
-      </section>
+      <tr>
+        <th scope="row">{this.props.i + 1}</th>
+        <td>{this.props.post.name}</td>
+        <td>{this.props.post.content}</td>
+        <td><Button
+              className="remove-button"
+              color="danger"
+              onClick={this.props.removePost.bind(null, this.props.post.name, this.props.i)}>
+              REMOVE
+            </Button>
+        </td>
+      </tr>
     );
   }
 }
+
+export default Post;
