@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Router, Route, Link , browserHistory } from 'react-router';
-import { Button, Form, FormGroup, Label, Table, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Table, Col, Alert } from 'reactstrap';
 import Post from './post';
 import './posts.scss';
 
@@ -34,7 +34,6 @@ class Posts extends Component {
             <Button type="submit" color="success" className="addPost-button">Submit</Button>
           </form>
         </Col>
-
         <Table bordered>
           <thead>
             <tr>
