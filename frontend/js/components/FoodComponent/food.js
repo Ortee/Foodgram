@@ -16,7 +16,7 @@ class Food extends Component {
           </span>
         </Col>
         <Col className="food-photo">
-          <img height="600px" width="538px" src="http://dfep0xlbws1ys.cloudfront.net/thumbs2d/dd/2ddd2a4753463c2f396777f0c85502e2.jpg"></img>
+          <img height="600px" width="538px" class="img-thumbnail" src="http://dfep0xlbws1ys.cloudfront.net/thumbs2d/dd/2ddd2a4753463c2f396777f0c85502e2.jpg"></img>
         </Col>
         <Col className="food-desciption">
           <p className="food-desciption-likes">#awesome #burger #tasty #foods</p>
