@@ -1,0 +1,30 @@
+.nav-menu{
+  padding: 1.28em;
+  background-color: #ffffff;
+  border-bottom: 1px solid black;
+}
+.footgram-logo{
+  font-size: 30px;
+  margin-left: 0.3em;
+}
+.menu-icon-left{
+  padding-top: 0.4em;
+}
+.menu-icon-right{
+  float: right;
+  padding-right: 1em;
+  padding-top: 0.4em;
+}
+@media (max-width: 450px) {
+    .footgram-logo{
+      display: none;
+    }
+    .menu-icon-left{
+      padding-top: 7px;
+    }
+    .menu-icon-right{
+      float: right;
+      padding-right: 1em;
+      padding-top: 0em;
+    }
+}
