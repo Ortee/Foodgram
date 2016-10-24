@@ -12,7 +12,7 @@ class Menu extends Component {
     return (
       <Nav className="nav-menu navbar-fixed-top" inline>
         <Col xs={{size: 6}} md={{size: 4}} lg={{size: 4, offset: 1}} xl={{size: 4, offset: 2}} className="left-nav-col">
-            <Link className="menu-icon-left" to={'/posts'}>
+            <Link className="menu-icon-left" to={'/posts'} style={{ textDecoration: 'none' }}>
                 <i class="fa fa-instagram fa-2x" aria-hidden="true" />
                 <span className="footgram-logo">Foodgram</span>
             </Link>

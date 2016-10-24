@@ -1,3 +1,5 @@
+$fontColor: #000;
+
 .nav-menu{
   padding: 1.28em;
   background-color: #ffffff;
@@ -8,12 +10,20 @@
   margin-left: 0.3em;
 }
 .menu-icon-left{
+  color: $fontColor;
   padding-top: 0.4em;
 }
+.menu-icon-left:hover{
+  color: $fontColor;
+}
 .menu-icon-right{
+  color: $fontColor;
   float: right;
   padding-right: 1em;
   padding-top: 0.4em;
+}
+.menu-icon-right:hover{
+  color: $fontColor;
 }
 @media (max-width: 450px) {
     .footgram-logo{
