@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Router, Route, Link , browserHistory } from 'react-router';
 import { Button, Form, FormGroup, Label, Table, Col, Alert } from 'reactstrap';
-import Post from './post';
-import './posts.scss';
+import Food from './food';
+import './food.scss';
 
-class Posts extends Component {
+class Foods extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +25,15 @@ class Posts extends Component {
   render() {
     return (
       <section>
-        <Col xs="4" className="addPost-form">
+      <Col xs={{size: 6, offset: 3}}>
+        {this.props.posts.map((post, i) =>
+          <Food {...this.props}
+            key={i}
+            i={i}
+            post={post}
+          />)}
+        </Col>
+        <Col xs={{size:6, offset: 3}} className="addPost-form">
           <form ref="commentForm" onSubmit={this.handleSubmit} class="form-inline">
               <Label hidden>Name</Label>
               <input type="text" ref="name" placeholder="name" className="form-control addPost-input"/>
@@ -34,27 +42,9 @@ class Posts extends Component {
             <Button type="submit" color="success" className="addPost-button">Submit</Button>
           </form>
         </Col>
-        <Table bordered>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.posts.map((post, i) =>
-              <Post {...this.props}
-                key={i}
-                i={i}
-                post={post}
-              />)}
-          </tbody>
-        </Table>
       </section>
     );
   }
 }
 
-export default Posts;
+export default Foods;
