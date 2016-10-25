@@ -20,11 +20,11 @@ export function addFood(user, description, hashtags, photo) {
      }])
       .end(function(err, res){
          if (err || !res.ok) {
-           dispatch(addAlert('Your post wasn`t added !', 'danger'));
-           dispatch({ type: 'ADD_POSTS', res: false });
+           dispatch(addAlert('Your food wasn`t added !', 'danger'));
+           dispatch({ type: 'ADD_FOODS', res: false });
          } else {
-           dispatch(addAlert('Your post was successfully added !', 'success'));
-           dispatch({ type: 'ADD_POSTS', res: true, req:{
+           dispatch(addAlert('Your food was successfully added !', 'success'));
+           dispatch({ type: 'ADD_FOODS', res: true, req:{
              'user':user, 'description': description,'hashtags':hashtags,'photo':photo
            }});
          }
@@ -40,10 +40,10 @@ export function removeFood(id, indexInState) {
       .end(function(err, res){
          if (err || !res.ok) {
            dispatch({ type: 'REMOVE_FOOD', res: false });
-           dispatch(addAlert('Your post wasn`t removed !', 'danger'));
+           dispatch(addAlert('Your food wasn`t removed !', 'danger'));
          } else {
-           dispatch(addAlert('Your post was successfully removed !', 'success'));
-           dispatch({ type: 'REMOVE_POST', res: true, req:{ 'id':id, 'indexInState': indexInState}});
+           dispatch(addAlert('Your food was successfully removed !', 'success'));
+           dispatch({ type: 'REMOVE_FOOD', res: true, req:{ 'id':id, 'indexInState': indexInState}});
          }
      });
    }
