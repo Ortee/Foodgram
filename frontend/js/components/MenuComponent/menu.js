@@ -1,34 +1,42 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { Nav, Col } from 'reactstrap';
+import { Nav, Col, Navbar, NavbarBrand, NavItem, NavLink } from 'reactstrap';
 import './menu.scss';
 
 class Menu extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
   render() {
     return (
-      <Nav className="nav-menu navbar-fixed-top" inline>
-        <Col xs={{size: 6}} md={{size: 4}} lg={{size: 4, offset: 1}} xl={{size: 4, offset: 2}} className="left-nav-col">
+      <Navbar className="navbar-custom" fixed="top">
+        <div className="container">
+          <NavbarBrand href="/">
             <Link className="menu-icon-left" to={'/posts'} style={{ textDecoration: 'none' }}>
-                <i class="fa fa-instagram fa-2x" aria-hidden="true" />
+                <i id="insta-logo" class="fa fa-instagram fa-2x" aria-hidden="true"/>
                 <span className="footgram-logo">Foodgram</span>
             </Link>
-        </Col>
-        <Col xs={{size: 6}} md={{size: 8}} lg={{size: 6}} xl={{size: 4}}>
-          <Link className="menu-icon-right" to={'/'}>
-              <i class="fa fa-user fa-2x" aria-hidden="true"></i>
-          </Link>
-          <Link className="menu-icon-right" to={'/author'}>
-              <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-          </Link>
-          <Link className="menu-icon-right" to={'/'}>
-              <i class="fa fa-compass fa-2x" aria-hidden="true"></i>
-          </Link>
-        </Col>
-      </Nav>
+          </NavbarBrand>
+          <Nav className="pull-xs-right" navbar>
+            <NavItem>
+              <Link className="menu-icon-right" to={'/'}>
+                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+              </Link>
+            </NavItem>
+            <NavItem>
+              <Link className="menu-icon-right" to={'/author'}>
+                <i class="fa fa-heart-o fa-2x" aria-hidden="true"></i>
+              </Link>
+            </NavItem>
+            <NavItem>
+              <Link className="menu-icon-right" to={'/'}>
+                <i class="fa fa-compass fa-2x" aria-hidden="true"></i>
+              </Link>
+            </NavItem>
+          </Nav>
+        </div>
+      </Navbar>
     );
   }
 }

@@ -1,40 +1,69 @@
-$fontColor: #000;
+$fontColor: #262626;
+$borderColor: #dbdbdb;
+@font-face {
+    font-family: "InstagramFont";
+    src: url(/fonts/Billabong.ttf) format("truetype");
+}
 
-.nav-menu{
-  padding: 1.28em;
+.navbar-custom{
   background-color: #ffffff;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid $borderColor;
+  max-height: 71px;
+  
+  .footgram-logo{
+    padding-left: 5px;
+    font-size: 2.1em;
+    margin-left: 0.3em;
+    font-family: "InstagramFont", Verdana, Tahoma;
+    position: relative;
+    top: -3px;
+  }
+
+  #insta-logo {
+    border-right: 1px solid $fontColor;
+    padding-right: 20px;
+  }
+
+  .menu-icon-left{
+    color: $fontColor;
+    padding-top: 0.4em;
+  }
+
+  .menu-icon-left:hover{
+    color: $fontColor;
+  }
+
+  .menu-icon-right{
+    color: $fontColor;
+    float: right;
+    padding-right: 1em;
+    padding-top: 0.8em;
+  }
+
+  .menu-icon-right:hover{
+    color: $fontColor;
+  }
 }
-.footgram-logo{
-  font-size: 30px;
-  margin-left: 0.3em;
-}
-.menu-icon-left{
-  color: $fontColor;
-  padding-top: 0.4em;
-}
-.menu-icon-left:hover{
-  color: $fontColor;
-}
-.menu-icon-right{
-  color: $fontColor;
-  float: right;
-  padding-right: 1em;
-  padding-top: 0.4em;
-}
-.menu-icon-right:hover{
-  color: $fontColor;
-}
+
+
 @media (max-width: 450px) {
+  .navbar-custom {
     .footgram-logo{
       display: none;
     }
-    .menu-icon-left{
-      padding-top: 7px;
+  
+    .navbar-brand {
+    margin-top: 0.23em;
     }
+
     .menu-icon-right{
       float: right;
       padding-right: 1em;
-      padding-top: 0em;
     }
+
+  #insta-logo {
+    border-right: 0;
+    padding-right: 0px;
+  }
+  }
 }
