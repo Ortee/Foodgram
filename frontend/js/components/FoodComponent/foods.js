@@ -12,13 +12,16 @@ class Foods extends Component {
 
   componentDidMount(){
     this.props.showPosts();
+    this.props.showFoods();
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const name = this.refs.name.value;
-    const content = this.refs.content.value;
-    this.props.addPost(name, content);
+    const user = this.refs.user.value;
+    const description = this.refs.description.value;
+    const hashtags = this.refs.hashtags.value;
+    const photo = this.refs.photo.value;
+    this.props.addFood(user, description, hashtags, photo);
     this.refs.commentForm.reset();
   }
 
@@ -26,19 +29,23 @@ class Foods extends Component {
     return (
       <section>
       <Col xs={{size: 12}} md={{size: 8, offset: 2}} lg={{size: 6, offset: 3}}>
-        {this.props.posts.map((post, i) =>
+        {this.props.foods.map((food, i) =>
           <Food {...this.props}
             key={i}
             i={i}
-            post={post}
+            food={food}
           />)}
         </Col>
         <Col xs={{size:6, offset: 3}} className="addPost-form">
           <form ref="commentForm" onSubmit={this.handleSubmit} class="form-inline">
-            <Label hidden>Name</Label>
-            <input type="text" ref="name" placeholder="name" className="form-control addPost-input"/>
-            <Label hidden>Content</Label>
-            <input type="text" ref="content" placeholder="content" className="form-control addPost-input"/>
+            <Label hidden>User</Label>
+            <input type="text" ref="user" placeholder="user" className="form-control addPost-input"/>
+            <Label hidden>Description</Label>
+            <input type="text" ref="description" placeholder="description" className="form-control addPost-input"/>
+            <Label hidden>HashTags</Label>
+            <input type="text" ref="hashtags" placeholder="hashtags" className="form-control addPost-input"/>
+            <Label hidden>URL IMG</Label>
+            <input type="text" ref="photo" placeholder="photo" className="form-control addPost-input"/>
             <Button type="submit" color="success" className="addPost-button">Submit</Button>
           </form>
         </Col>

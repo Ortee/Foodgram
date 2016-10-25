@@ -1,16 +1,20 @@
-function posts(state = [], action) {
+function foods(state = [], action) {
   switch(action.type) {
-      case 'ADD_POSTS' :
+      case 'ADD_FOOD' :
         if(action.res === true){
           return [...state,{
-            name: action.req.name,
-            content: action.req.content
+            user: action.req.user,
+            description: action.req.description,
+            hashtags: action.req.hashtags,
+            photo: action.req.photo,
+            likes: action.req.likes,
+            dislikes: action.req.dislikes
           }];
         }
         return state;
-      case 'SHOW_POSTS' :
+      case 'SHOW_FOODS' :
         return action.payload;
-      case 'REMOVE_POST' :
+      case 'REMOVE_FOOD' :
         if(action.res === true){
           return [
             ...state.slice(0,action.req.indexInState),
@@ -23,4 +27,4 @@ function posts(state = [], action) {
     }
 }
 
-export default posts;
+export default foods;

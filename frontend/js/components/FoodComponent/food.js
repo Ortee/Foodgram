@@ -47,33 +47,32 @@ class Food extends Component {
     })
   }
 
-
   render() {
     return(
       <Col className="food-container">
         <Col className="food-title">
           <i className="fa fa-cutlery" aria-hidden="true" />
           <span className="food-title-text">
-            {this.props.post.name}
+            {this.props.food.user}
           </span>
         </Col>
         <Col className="food-photo">
           <img  className="img-thumbnail"
                 height="600px"
                 width="538px"
-                src="http://dfep0xlbws1ys.cloudfront.net/thumbs2d/dd/2ddd2a4753463c2f396777f0c85502e2.jpg">
+                src={this.props.food.photo}>
           </img>
         </Col>
         <Col className="food-desciption">
-          <p className="food-desciption-likes">#awesome #burger #tasty #foods</p>
-          {this.props.post.content}
+          <p className="food-desciption-likes">{this.props.food.hashtags}</p>
+          {this.props.food.description}
         </Col>
         <Col className="food-like">
           <hr/>
           <span className="food-like-text"
                 onMouseEnter={this.heartOnEnter.bind()}
                 onMouseLeave={this.heartOnLeave.bind()}>
-                83
+                {this.props.food.likes}
           </span>
           <i  aria-hidden="true"
               className={this.state.heart}
@@ -86,13 +85,13 @@ class Food extends Component {
           <span className="food-unlike-text"
                 onMouseEnter={this.faceOnEnter.bind()}
                 onMouseLeave={this.faceOnLeave.bind()}>
-                13
+                {this.props.food.dislikes}
           </span>
           <i  className={this.state.trash}
               onMouseEnter={this.trashOnEnter.bind()}
               onMouseLeave={this.trashOnLeave.bind()}
               aria-hidden="true"
-              onClick={this.props.removePost.bind(null, this.props.post.name, this.props.i)}/>
+              onClick={this.props.removeFood.bind(null, this.props.food.id, this.props.i)}/>
         </Col>
       </Col>
     );
