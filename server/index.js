@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 const authorMock = require('./mocks/author.json')
 
 //classes
-var Post = require('./class/post');
+var Food = require('./class/food');
 
 function getTimestamp() {
   return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000*2));
@@ -30,23 +30,45 @@ app.get('/api/author', function (req, res) {
   res.send(JSON.stringify(authorMock));
 });
 
-app.get('/api/posts', function (req, res) {
-  db.any('SELECT name, content FROM "Posts"')
+app.get('/api/foods', function (req, res) {
+  db.any(
+    'SELECT user, description, hashtags, photo, likes, dislikes, created_at FROM "Food"')
     .then(function (data) {
       res.setHeader('Content-Type', 'application/json');
-      Posts = data.map((elem) => new Post(elem.name, elem.content));
-      res.send(JSON.stringify(Posts));
+      Foods = data.map((elem) => new Food(
+        elem.user,
+        elem.description,
+        elem.hashtags,
+        elem.photo,
+        elem.likes,
+        elem.dislikes));
+      res.send(JSON.stringify(Foods));
     })
     .catch(function (error) {
       res.status(404).send();
     });
 });
 
-app.post('/api/posts', function (req, res){
+app.post('/api/foods', function (req, res){
   req.accepts('application/json');
-  var NewPost = new Post(req.body[0].name, req.body[0].content);
-  db.one('INSERT INTO "Posts" (name, content, created_at, updated_at) VALUES ($1, $2, $3, $4) ON CONFLICT (content) DO NOTHING RETURNING id',
-   [NewPost.getName(), NewPost.getContent(), getTimestamp(), getTimestamp()])
+  var NewFood = new Food(
+    req.body[0].user,
+    req.body[0].description,
+    req.body[0].hashtags,
+    req.body[0].photo,
+    req.body[0].likes,
+    req.body[0].dislikes);
+  db.one('INSERT INTO "Food" (user, description, hashtags, photo, likes, dislikes, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (user) DO NOTHING RETURNING id',
+   [
+     NewFood.getUser(),
+     NewFood.getDescription(),
+     NewFood.getHashtags(),
+     NewFood.getPhoto(),
+     NewFood.getLikes(),
+     NewFood.getDislikes(),
+     getTimestamp(),
+     getTimestamp()
+   ])
     .then(function(){
       res.status(201).send();
     })
@@ -55,9 +77,9 @@ app.post('/api/posts', function (req, res){
     });
 });
 
-app.delete('/api/postremove', function (req, res){
+app.delete('/api/foods', function (req, res){
   req.accepts('application/json');
-  db.none('DELETE FROM "Posts" WHERE NAME = $1', req.body[0].name)
+  db.none('DELETE FROM "Food" WHERE ID = $1', req.body[0].id)
     .then(function(){
       res.status(204).send();
     })

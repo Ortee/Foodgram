@@ -1,9 +1,50 @@
 import React, { Component } from 'react';
-import { Button, Col, Container } from 'reactstrap';
+import { Col } from 'reactstrap';
 
 class Food extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      heart:'fa fa-heart-o fa-lg food-like-icon',
+      frown:'fa fa-meh-o fa-lg food-unlike-icon',
+      trash:'fa fa-trash-o fa-lg food-remove-icon'
+    }
+  }
+
+  heartOnEnter = () => {
+    this.setState({
+      heart:'fa fa-heart fa-lg food-like-icon color-icon',
+    })
+  }
+
+  heartOnLeave = () => {
+    this.setState({
+      heart:'fa fa-heart-o fa-lg food-like-icon',
+    })
+  }
+
+  trashOnEnter = () => {
+    this.setState({
+      trash:'fa fa-trash fa-lg food-remove-icon',
+    })
+  }
+
+  trashOnLeave = () => {
+    this.setState({
+      trash:'fa fa-trash-o fa-lg food-remove-icon',
+    })
+  }
+
+  faceOnEnter = () => {
+    this.setState({
+      frown:'fa fa-frown-o fa-lg food-unlike-icon color-icon'
+    })
+  }
+
+  faceOnLeave = () => {
+    this.setState({
+      frown:'fa fa-meh-o fa-lg food-unlike-icon'
+    })
   }
 
   render() {
@@ -12,23 +53,45 @@ class Food extends Component {
         <Col className="food-title">
           <i className="fa fa-cutlery" aria-hidden="true" />
           <span className="food-title-text">
-            {this.props.post.name}
+            {this.props.food.user}
           </span>
         </Col>
         <Col className="food-photo">
-          <img height="600px" width="538px" class="img-thumbnail" src="http://dfep0xlbws1ys.cloudfront.net/thumbs2d/dd/2ddd2a4753463c2f396777f0c85502e2.jpg"></img>
+          <img  className="img-thumbnail"
+                height="600px"
+                width="538px"
+                src={this.props.food.photo}>
+          </img>
         </Col>
         <Col className="food-desciption">
-          <p className="food-desciption-likes">#awesome #burger #tasty #foods</p>
-          {this.props.post.content}
+          <p className="food-desciption-likes">{this.props.food.hashtags}</p>
+          {this.props.food.description}
         </Col>
         <Col className="food-like">
           <hr/>
-          <span className="food-like-text">83</span>
-          <i aria-hidden="true" className="fa fa-heart-o fa-lg food-like-icon"/>
-          <i aria-hidden="true" className="fa fa-frown-o fa-lg food-unlike-icon"/>
-          <span className="food-unlike-text">13</span>
-          <i className="fa fa-trash-o fa-lg food-remove-icon" aria-hidden="true" onClick={this.props.removePost.bind(null, this.props.post.name, this.props.i)}/>
+          <span className="food-like-text"
+                onMouseEnter={this.heartOnEnter.bind()}
+                onMouseLeave={this.heartOnLeave.bind()}>
+                {this.props.food.likes}
+          </span>
+          <i  aria-hidden="true"
+              className={this.state.heart}
+              onMouseEnter={this.heartOnEnter.bind()}
+              onMouseLeave={this.heartOnLeave.bind()}/>
+          <i  aria-hidden="true"
+              className={this.state.frown}
+              onMouseEnter={this.faceOnEnter.bind()}
+              onMouseLeave={this.faceOnLeave.bind()}/>
+          <span className="food-unlike-text"
+                onMouseEnter={this.faceOnEnter.bind()}
+                onMouseLeave={this.faceOnLeave.bind()}>
+                {this.props.food.dislikes}
+          </span>
+          <i  className={this.state.trash}
+              onMouseEnter={this.trashOnEnter.bind()}
+              onMouseLeave={this.trashOnLeave.bind()}
+              aria-hidden="true"
+              onClick={this.props.removeFood.bind(null, this.props.food.id, this.props.i)}/>
         </Col>
       </Col>
     );
