@@ -25,7 +25,7 @@ class Foods extends Component {
   render() {
     return (
       <section>
-      <Col xs={{size: 6, offset: 3}}>
+      <Col xs={{size: 12}} md={{size: 8, offset: 2}} lg={{size: 6, offset: 3}}>
         {this.props.posts.map((post, i) =>
           <Food {...this.props}
             key={i}
@@ -35,10 +35,10 @@ class Foods extends Component {
         </Col>
         <Col xs={{size:6, offset: 3}} className="addPost-form">
           <form ref="commentForm" onSubmit={this.handleSubmit} class="form-inline">
-              <Label hidden>Name</Label>
-              <input type="text" ref="name" placeholder="name" className="form-control addPost-input"/>
-              <Label hidden>Content</Label>
-              <input type="text" ref="content" placeholder="content" className="form-control addPost-input"/>
+            <Label hidden>Name</Label>
+            <input type="text" ref="name" placeholder="name" className="form-control addPost-input"/>
+            <Label hidden>Content</Label>
+            <input type="text" ref="content" placeholder="content" className="form-control addPost-input"/>
             <Button type="submit" color="success" className="addPost-button">Submit</Button>
           </form>
         </Col>

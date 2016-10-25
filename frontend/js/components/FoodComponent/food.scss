@@ -13,6 +13,9 @@
 }
 
 //Food styles
+hr{
+  margin-bottom: 0.9rem;
+}
 .food-title{
   height: 60px;
   padding-top: 15px;
@@ -24,6 +27,12 @@
 }
 .food-photo{
   padding: 0;
+}
+.img-thumbnail{
+  padding: 0;
+  border-radius:0;
+  border:none;
+  margin: 0;
 }
 .food-desciption{
   height: 100px;
@@ -64,6 +73,9 @@
 .food-remove-icon{
   cursor: pointer;
   float: right;
-  padding-top: 5px;
+  padding-top: 4px;
   padding-right: 5px;
+}
+.color-icon{
+  color: darken(#ff0000,8%);
 }
