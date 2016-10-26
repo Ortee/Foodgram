@@ -53,7 +53,7 @@ class Food extends Component {
         <Col className="food-title">
           <i className="fa fa-cutlery" aria-hidden="true" />
           <span className="food-title-text">
-            {this.props.food.user}
+            {this.props.food.username}
           </span>
         </Col>
         <Col className="food-photo">

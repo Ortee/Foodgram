@@ -11,18 +11,18 @@ class Foods extends Component {
   }
 
   componentDidMount(){
-    this.props.showPosts();
     this.props.showFoods();
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const user = this.refs.user.value;
+    const username = this.refs.username.value;
     const description = this.refs.description.value;
     const hashtags = this.refs.hashtags.value;
     const photo = this.refs.photo.value;
-    this.props.addFood(user, description, hashtags, photo);
-    this.refs.commentForm.reset();
+    console.log(username, description, hashtags, photo);
+    this.props.addFood(username, description, hashtags, photo);
+    // this.refs.commentForm.reset();
   }
 
   render() {
@@ -38,8 +38,8 @@ class Foods extends Component {
         </Col>
         <Col xs={{size:6, offset: 3}} className="addPost-form">
           <form ref="commentForm" onSubmit={this.handleSubmit} class="form-inline">
-            <Label hidden>User</Label>
-            <input type="text" ref="user" placeholder="user" className="form-control addPost-input"/>
+            <Label hidden>Username</Label>
+            <input type="text" ref="username" placeholder="username" className="form-control addPost-input"/>
             <Label hidden>Description</Label>
             <input type="text" ref="description" placeholder="description" className="form-control addPost-input"/>
             <Label hidden>HashTags</Label>

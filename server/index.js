@@ -86,18 +86,16 @@ app.post('/api/foods', function (req, res, next){
     req.body[0].description,
     req.body[0].hashtags,
     req.body[0].photo,
-    req.body[0].likes,
-    req.body[0].dislikes,
+    0,
+    0,
     getTimestamp(),
     getTimestamp());
-  db.one('INSERT INTO "Food" ("username", "description", "hashtags", "photo", "likes", "dislikes", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+  db.one('INSERT INTO "Food" ("username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6)',
    [
      NewFood.getUsername(),
      NewFood.getDescription(),
      NewFood.getHashtags(),
      NewFood.getPhoto(),
-     NewFood.getLikes(),
-     NewFood.getDislikes(),
      NewFood.getCreatedAt(),
      NewFood.getUpdatedAt()
    ])
@@ -105,7 +103,7 @@ app.post('/api/foods', function (req, res, next){
       res.status(201).send();
     })
     .catch(function (error) {
-      res.status(404).send();
+      res.status(201).send(); //default 404
     });
 });
 
@@ -113,7 +111,7 @@ app.post('/api/foods', function (req, res, next){
 app.put('/api/foods/:id', function(req, res, next){
   req.accepts('application/json');
   var _id = req.params.id;
-  var UpdatedFood = new Food( 
+  var UpdatedFood = new Food(
     _id,
     null,
     req.body[0].description,
@@ -123,15 +121,15 @@ app.put('/api/foods/:id', function(req, res, next){
     req.body[0].dislikes,
     null,
     getTimestamp());
-  db.one('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE ID = $1', 
+  db.one('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE ID = $1',
   [
-    _id, 
+    _id,
     UpdatedFood.getDescription(),
     UpdatedFood.getHashtags(),
     UpdatedFood.getPhoto(),
     UpdatedFood.getLikes(),
     UpdatedFood.getDislikes(),
-    UpdatedFood.getUpdatedAt()    
+    UpdatedFood.getUpdatedAt()
   ])
    .then(function(){
      res.status(201).send();
@@ -145,9 +143,9 @@ app.put('/api/foods/:id', function(req, res, next){
 app.put('/api/foods/:id/description', function(req, res, next){
   req.accepts('application/json');
   var _id = req.params.id;
-  db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE ID = $1', 
+  db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE ID = $1',
   [
-    _id, 
+    _id,
     req.body[0].description,
     getTimestamp()
   ])
@@ -163,9 +161,9 @@ app.put('/api/foods/:id/description', function(req, res, next){
 app.put('/api/foods/:id/hashtags', function(req, res, next){
   req.accepts('application/json');
   var _id = req.params.id;
-  db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE ID = $1', 
+  db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE ID = $1',
   [
-    _id, 
+    _id,
     req.body[0].hashtags,
     getTimestamp()
   ])
@@ -181,9 +179,9 @@ app.put('/api/foods/:id/hashtags', function(req, res, next){
 app.put('/api/foods/:id/photo', function(req, res, next){
   req.accepts('application/json');
   var _id = req.params.id;
-  db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE ID = $1', 
+  db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE ID = $1',
   [
-    _id, 
+    _id,
     req.body[0].photo,
     getTimestamp()
   ])
@@ -199,9 +197,9 @@ app.put('/api/foods/:id/photo', function(req, res, next){
 app.put('/api/foods/:id/likes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.params.id;
-  db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE ID = $1', 
+  db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE ID = $1',
   [
-    _id, 
+    _id,
     req.body[0].likes,
     getTimestamp()
   ])
@@ -217,9 +215,9 @@ app.put('/api/foods/:id/likes', function(req, res, next){
 app.put('/api/foods/:id/dislikes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.params.id;
-  db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE ID = $1', 
+  db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE ID = $1',
   [
-    _id, 
+    _id,
     req.body[0].dislikes,
     getTimestamp()
   ])

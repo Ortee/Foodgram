@@ -1,14 +1,14 @@
 function foods(state = [], action) {
   switch(action.type) {
-      case 'ADD_FOOD' :
+      case 'ADD_FOODS' :
         if(action.res === true){
           return [...state,{
-            user: action.req.user,
+            username: action.req.username,
             description: action.req.description,
             hashtags: action.req.hashtags,
             photo: action.req.photo,
-            likes: action.req.likes,
-            dislikes: action.req.dislikes
+            likes: 0,
+            dislikes: 0
           }];
         }
         return state;

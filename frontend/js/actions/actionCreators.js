@@ -11,21 +11,23 @@ export function showFoods() {
   }
 };
 
-export function addFood(user, description, hashtags, photo) {
+export function addFood(username, description, hashtags, photo) {
   const request = req.post('/api/foods')
    .set('Content-type', 'application/json');
    return (dispatch) => {
      request.send([{
-       user: user, description: description, hashtags: hashtags, photo:photo
+       username: username, description: description, hashtags: hashtags, photo:photo
      }])
       .end(function(err, res){
          if (err || !res.ok) {
+           console.log('error');
            dispatch(addAlert('Your food wasn`t added !', 'danger'));
            dispatch({ type: 'ADD_FOODS', res: false });
          } else {
+           console.log('poszlo');
            dispatch(addAlert('Your food was successfully added !', 'success'));
            dispatch({ type: 'ADD_FOODS', res: true, req:{
-             'user':user, 'description': description,'hashtags':hashtags,'photo':photo
+             'username':username, 'description': description,'hashtags':hashtags,'photo':photo
            }});
          }
      });
