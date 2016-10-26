@@ -33,11 +33,12 @@ app.get('/api/author', function (req, res, next) {
 // Get all food
 app.get('/api/foods', function (req, res, next) {
   db.any(
-    'SELECT id, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food"')
+    'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food"')
     .then(function (data) {
       res.setHeader('Content-Type', 'application/json');
       Foods = data.map((elem) => new Food(
         elem.id,
+        elem.uuid,
         elem.username,
         elem.description,
         elem.hashtags,
@@ -82,6 +83,7 @@ app.get('/api/foods/:id', function (req, res, next) {
 app.post('/api/foods', function (req, res, next){
   req.accepts('application/json');
   var NewFood = new Food( 0,
+    req.body[0].uuid,
     req.body[0].username,
     req.body[0].description,
     req.body[0].hashtags,
@@ -90,8 +92,9 @@ app.post('/api/foods', function (req, res, next){
     0,
     getTimestamp(),
     getTimestamp());
-  db.one('INSERT INTO "Food" ("username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6)',
+  db.one('INSERT INTO "Food" ("uuid","username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7)',
    [
+     NewFood.getUuid(),
      NewFood.getUsername(),
      NewFood.getDescription(),
      NewFood.getHashtags(),
@@ -108,10 +111,11 @@ app.post('/api/foods', function (req, res, next){
 });
 
 // Update food
-app.put('/api/foods/:id', function(req, res, next){
+app.put('/api/foods', function(req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
+  var _id = req.body[0].uuid;
   var UpdatedFood = new Food(
+    req.body[0].id,
     _id,
     null,
     req.body[0].description,
@@ -121,7 +125,7 @@ app.put('/api/foods/:id', function(req, res, next){
     req.body[0].dislikes,
     null,
     getTimestamp());
-  db.one('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE ID = $1',
+  db.one('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE "uuid" = $1',
   [
     _id,
     UpdatedFood.getDescription(),
@@ -140,10 +144,10 @@ app.put('/api/foods/:id', function(req, res, next){
 });
 
 // Update food description
-app.put('/api/foods/:id/description', function(req, res, next){
+app.put('/api/foods/description', function(req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
-  db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE ID = $1',
+  var _id = req.body[0].uuid;
+  db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].description,
@@ -158,10 +162,10 @@ app.put('/api/foods/:id/description', function(req, res, next){
 });
 
 // Update food hashtags
-app.put('/api/foods/:id/hashtags', function(req, res, next){
+app.put('/api/foods/hashtags', function(req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
-  db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE ID = $1',
+  var _id = req.body[0].uuid;
+  db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].hashtags,
@@ -174,12 +178,11 @@ app.put('/api/foods/:id/hashtags', function(req, res, next){
      res.status(404).send();
    })
 });
-
 // Update food photo
-app.put('/api/foods/:id/photo', function(req, res, next){
+app.put('/api/foods/photo', function(req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
-  db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE ID = $1',
+  var _id = req.body[0].uuid;
+  db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].photo,
@@ -192,12 +195,11 @@ app.put('/api/foods/:id/photo', function(req, res, next){
      res.status(404).send();
    })
 });
-
 // Update food likes
-app.put('/api/foods/:id/likes', function(req, res, next){
+app.put('/api/foods/likes', function(req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
-  db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE ID = $1',
+  var _id = req.body[0].uuid;
+  db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].likes,
@@ -212,10 +214,10 @@ app.put('/api/foods/:id/likes', function(req, res, next){
 });
 
 // Update food dislikes
-app.put('/api/foods/:id/dislikes', function(req, res, next){
+app.put('/api/foods/dislikes', function(req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
-  db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE ID = $1',
+  var _id = req.body[0].uuid;
+  db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].dislikes,
