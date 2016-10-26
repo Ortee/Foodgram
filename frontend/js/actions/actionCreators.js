@@ -51,6 +51,18 @@ export function removeFood(uuid, indexInState) {
    }
 }
 
+export function incrementLike(index) {
+  return (dispatch) => {
+    dispatch({ type: 'INCREMENT_LIKE', index: index});
+  }
+};
+
+export function incrementDislike(index) {
+  return (dispatch) => {
+    dispatch({ type: 'INCREMENT_DISLIKE', index: index});
+  }
+};
+
 export function addAlert(text, style) {
   return (dispatch) => {
     dispatch({ type: 'ADD_ALERT', text: text, style: style });
