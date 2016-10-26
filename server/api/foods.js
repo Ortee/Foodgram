@@ -1,40 +1,28 @@
-const app = require('express')();
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const fallback = require('express-history-api-fallback');
+var express = require('express');
+var router = express.Router();
 const pgp = require('pg-promise')();
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/config/config.json')[env];
+const config = require(__dirname + '/../config/config.json')[env];
 const db = pgp(process.env[config.use_env_variable]);
 
-const root = path.join(__dirname,'/../public/');
-
-var foodApi = require('./api/foods');
-
-app.use('/', foodApi);
-app.use(express.static(root));
-app.use(fallback('index.html', {root: root}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
 //Mocks
-const authorMock = require('./mocks/author.json')
+const authorMock = require('../mocks/author.json')
 
 //classes
-var Food = require('./class/food');
+var Food = require('../class/food');
+
 
 function getTimestamp() {
   return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000*2));
 }
 
-app.get('/api/author', function (req, res, next) {
+router.get('/api/author', function (req, res, next) {
   res.setHeader('Content-Type', 'application/json');
   res.json(authorMock);
 });
 
 // Get all food
-app.get('/api/foods', function (req, res, next) {
+router.get('/api/foods', function (req, res, next) {
   db.any(
     'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food"')
     .then(function (data) {
@@ -58,7 +46,7 @@ app.get('/api/foods', function (req, res, next) {
 });
 
 // Get single food
-app.get('/api/foods/:id', function (req, res, next) {
+router.get('/api/foods/:id', function (req, res, next) {
   var _id = req.params.id;
   db.any(
     'SELECT username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" WHERE ID = $1',_id)
@@ -83,7 +71,7 @@ app.get('/api/foods/:id', function (req, res, next) {
 
 
 // Save food
-app.post('/api/foods', function (req, res, next){
+router.post('/api/foods', function (req, res, next){
   req.accepts('application/json');
   var NewFood = new Food( 0,
     req.body[0].uuid,
@@ -114,7 +102,7 @@ app.post('/api/foods', function (req, res, next){
 });
 
 // Update food
-app.put('/api/foods', function(req, res, next){
+router.put('/api/foods', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   var UpdatedFood = new Food(
@@ -147,7 +135,7 @@ app.put('/api/foods', function(req, res, next){
 });
 
 // Update food description
-app.put('/api/foods/description', function(req, res, next){
+router.put('/api/foods/description', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -165,7 +153,7 @@ app.put('/api/foods/description', function(req, res, next){
 });
 
 // Update food hashtags
-app.put('/api/foods/hashtags', function(req, res, next){
+router.put('/api/foods/hashtags', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -182,7 +170,7 @@ app.put('/api/foods/hashtags', function(req, res, next){
    })
 });
 // Update food photo
-app.put('/api/foods/photo', function(req, res, next){
+router.put('/api/foods/photo', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -199,7 +187,7 @@ app.put('/api/foods/photo', function(req, res, next){
    })
 });
 // Update food likes
-app.put('/api/foods/likes', function(req, res, next){
+router.put('/api/foods/likes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -217,7 +205,7 @@ app.put('/api/foods/likes', function(req, res, next){
 });
 
 // Update food dislikes
-app.put('/api/foods/dislikes', function(req, res, next){
+router.put('/api/foods/dislikes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -235,7 +223,7 @@ app.put('/api/foods/dislikes', function(req, res, next){
 });
 
 // Delete food
-app.delete('/api/foods', function (req, res, next){
+router.delete('/api/foods', function (req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.none('DELETE FROM "Food" WHERE "uuid" = $1', _id)
@@ -247,4 +235,4 @@ app.delete('/api/foods', function (req, res, next){
     });
 });
 
-module.exports = app;
+module.exports = router;
