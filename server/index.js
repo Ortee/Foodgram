@@ -25,49 +25,81 @@ function getTimestamp() {
   return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000*2));
 }
 
-app.get('/api/author', function (req, res) {
+app.get('/api/author', function (req, res, next) {
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(authorMock));
+  res.json(authorMock);
 });
 
-app.get('/api/foods', function (req, res) {
+// Get all food
+app.get('/api/foods', function (req, res, next) {
   db.any(
-    'SELECT user, description, hashtags, photo, likes, dislikes, created_at FROM "Food"')
+    'SELECT id, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food"')
     .then(function (data) {
       res.setHeader('Content-Type', 'application/json');
       Foods = data.map((elem) => new Food(
-        elem.user,
+        elem.id,
+        elem.username,
         elem.description,
         elem.hashtags,
         elem.photo,
         elem.likes,
-        elem.dislikes));
-      res.send(JSON.stringify(Foods));
+        elem.dislikes,
+        elem.created_at,
+        elem.updated_at));
+        res.json(Foods);
     })
     .catch(function (error) {
       res.status(404).send();
     });
 });
 
-app.post('/api/foods', function (req, res){
+// Get single food
+app.get('/api/foods/:id', function (req, res, next) {
+  var _id = req.params.id;
+  db.any(
+    'SELECT username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" WHERE ID = $1',_id)
+    .then(function (data) {
+      res.setHeader('Content-Type', 'application/json');
+      Foods = data.map((elem) => new Food(
+        elem.id,
+        elem.username,
+        elem.description,
+        elem.hashtags,
+        elem.photo,
+        elem.likes,
+        elem.dislikes,
+        elem.created_at,
+        elem.updated_at));
+        res.json(Foods);
+    })
+    .catch(function (error) {
+      res.status(404).send();
+    });
+});
+
+
+// Save food
+app.post('/api/foods', function (req, res, next){
   req.accepts('application/json');
-  var NewFood = new Food(
-    req.body[0].user,
+  var NewFood = new Food( 0,
+    req.body[0].username,
     req.body[0].description,
     req.body[0].hashtags,
     req.body[0].photo,
     req.body[0].likes,
-    req.body[0].dislikes);
-  db.one('INSERT INTO "Food" (user, description, hashtags, photo, likes, dislikes, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (user) DO NOTHING RETURNING id',
+    req.body[0].dislikes,
+    getTimestamp(),
+    getTimestamp());
+  db.one('INSERT INTO "Food" ("username", "description", "hashtags", "photo", "likes", "dislikes", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
    [
-     NewFood.getUser(),
+     NewFood.getUsername(),
      NewFood.getDescription(),
      NewFood.getHashtags(),
      NewFood.getPhoto(),
      NewFood.getLikes(),
      NewFood.getDislikes(),
-     getTimestamp(),
-     getTimestamp()
+     NewFood.getCreatedAt(),
+     NewFood.getUpdatedAt()
    ])
     .then(function(){
       res.status(201).send();
@@ -77,9 +109,133 @@ app.post('/api/foods', function (req, res){
     });
 });
 
-app.delete('/api/foods', function (req, res){
+// Update food
+app.put('/api/foods/:id', function(req, res, next){
   req.accepts('application/json');
-  db.none('DELETE FROM "Food" WHERE ID = $1', req.body[0].id)
+  var _id = req.params.id;
+  var UpdatedFood = new Food( 
+    _id,
+    null,
+    req.body[0].description,
+    req.body[0].hashtags,
+    req.body[0].photo,
+    req.body[0].likes,
+    req.body[0].dislikes,
+    null,
+    getTimestamp());
+  db.one('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE ID = $1', 
+  [
+    _id, 
+    UpdatedFood.getDescription(),
+    UpdatedFood.getHashtags(),
+    UpdatedFood.getPhoto(),
+    UpdatedFood.getLikes(),
+    UpdatedFood.getDislikes(),
+    UpdatedFood.getUpdatedAt()    
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
+// Update food description
+app.put('/api/foods/:id/description', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.params.id;
+  db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE ID = $1', 
+  [
+    _id, 
+    req.body[0].description,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
+// Update food hashtags
+app.put('/api/foods/:id/hashtags', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.params.id;
+  db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE ID = $1', 
+  [
+    _id, 
+    req.body[0].hashtags,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
+// Update food photo
+app.put('/api/foods/:id/photo', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.params.id;
+  db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE ID = $1', 
+  [
+    _id, 
+    req.body[0].photo,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
+// Update food likes
+app.put('/api/foods/:id/likes', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.params.id;
+  db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE ID = $1', 
+  [
+    _id, 
+    req.body[0].likes,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
+// Update food dislikes
+app.put('/api/foods/:id/dislikes', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.params.id;
+  db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE ID = $1', 
+  [
+    _id, 
+    req.body[0].dislikes,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
+// Delete food
+app.delete('/api/foods/:id', function (req, res, next){
+  req.accepts('application/json');
+  var _id = req.params.id;
+  db.none('DELETE FROM "Food" WHERE ID = $1', _id)
     .then(function(){
       res.status(204).send();
     })
