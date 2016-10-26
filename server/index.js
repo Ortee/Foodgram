@@ -232,10 +232,10 @@ app.put('/api/foods/dislikes', function(req, res, next){
 });
 
 // Delete food
-app.delete('/api/foods/:id', function (req, res, next){
+app.delete('/api/foods', function (req, res, next){
   req.accepts('application/json');
-  var _id = req.params.id;
-  db.none('DELETE FROM "Food" WHERE ID = $1', _id)
+  var _id = req.body[0].uuid;
+  db.none('DELETE FROM "Food" WHERE "uuid" = $1', _id)
     .then(function(){
       res.status(204).send();
     })
