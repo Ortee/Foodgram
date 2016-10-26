@@ -66,7 +66,7 @@ export function incrementLike(_uuid, index) {
    };
 };
 
-export function incrementDislike(index) {
+export function incrementDislike(_uuid, index) {
   const request = req.put('/api/foods/dislikes')
    .set('Content-type', 'application/json');
    return (dispatch) => {
