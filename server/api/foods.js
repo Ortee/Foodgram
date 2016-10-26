@@ -97,7 +97,7 @@ router.post('/api/foods', function (req, res, next){
       res.status(201).send();
     })
     .catch(function (error) {
-      res.status(201).send(); //default 404
+      res.status(404).send();
     });
 });
 
