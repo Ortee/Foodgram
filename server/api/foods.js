@@ -83,7 +83,7 @@ router.post('/api/foods', function (req, res, next){
     0,
     getTimestamp(),
     getTimestamp());
-  db.one('INSERT INTO "Food" ("uuid","username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7)',
+  db.query('INSERT INTO "Food" ("uuid","username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7)',
    [
      NewFood.getUuid(),
      NewFood.getUsername(),
@@ -97,7 +97,7 @@ router.post('/api/foods', function (req, res, next){
       res.status(201).send();
     })
     .catch(function (error) {
-      res.status(201).send(); //default 404
+      res.status(404).send();
     });
 });
 
@@ -116,7 +116,7 @@ router.put('/api/foods', function(req, res, next){
     req.body[0].dislikes,
     null,
     getTimestamp());
-  db.one('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE "uuid" = $1',
+  db.query('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE "uuid" = $1',
   [
     _id,
     UpdatedFood.getDescription(),
@@ -138,7 +138,7 @@ router.put('/api/foods', function(req, res, next){
 router.put('/api/foods/description', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE "uuid" = $1',
+  db.query('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].description,
@@ -156,7 +156,7 @@ router.put('/api/foods/description', function(req, res, next){
 router.put('/api/foods/hashtags', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE "uuid" = $1',
+  db.query('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].hashtags,
@@ -174,7 +174,7 @@ router.put('/api/foods/hashtags', function(req, res, next){
 router.put('/api/foods/photo', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE "uuid" = $1',
+  db.query('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE "uuid" = $1',
   [
     _id,
     req.body[0].photo,
@@ -192,7 +192,7 @@ router.put('/api/foods/photo', function(req, res, next){
 router.put('/api/foods/likes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "likes" = "likes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
+  db.query('UPDATE "Food" SET "likes" = "likes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
   [
     _id,
     getTimestamp()
@@ -201,7 +201,7 @@ router.put('/api/foods/likes', function(req, res, next){
      res.status(201).send();
    })
    .catch(function (error) {
-     res.status(201).send(); //default 404
+     res.status(404).send();
    })
 });
 
@@ -209,7 +209,7 @@ router.put('/api/foods/likes', function(req, res, next){
 router.put('/api/foods/dislikes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "dislikes" = "dislikes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
+  db.query('UPDATE "Food" SET "dislikes" = "dislikes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
   [
     _id,
     getTimestamp()
@@ -218,7 +218,8 @@ router.put('/api/foods/dislikes', function(req, res, next){
      res.status(201).send();
    })
    .catch(function (error) {
-     res.status(201).send(); //default 404
+     res.send(error);
+     res.status(404).send();
    })
 });
 
