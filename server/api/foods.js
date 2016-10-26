@@ -169,6 +169,7 @@ router.put('/api/foods/hashtags', function(req, res, next){
      res.status(404).send();
    })
 });
+
 // Update food photo
 router.put('/api/foods/photo', function(req, res, next){
   req.accepts('application/json');
@@ -186,14 +187,14 @@ router.put('/api/foods/photo', function(req, res, next){
      res.status(404).send();
    })
 });
+
 // Update food likes
 router.put('/api/foods/likes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "likes" = $2, "updated_at" = $3 WHERE "uuid" = $1',
+  db.one('UPDATE "Food" SET "likes" = "likes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
   [
     _id,
-    req.body[0].likes,
     getTimestamp()
   ])
    .then(function(){
@@ -208,10 +209,9 @@ router.put('/api/foods/likes', function(req, res, next){
 router.put('/api/foods/dislikes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.one('UPDATE "Food" SET "dislikes" = $2, "updated_at" = $3 WHERE "uuid" = $1',
+  db.one('UPDATE "Food" SET "dislikes" = "dislikes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
   [
     _id,
-    req.body[0].dislikes,
     getTimestamp()
   ])
    .then(function(){
