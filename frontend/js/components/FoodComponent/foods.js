@@ -20,9 +20,8 @@ class Foods extends Component {
     const description = this.refs.description.value;
     const hashtags = this.refs.hashtags.value;
     const photo = this.refs.photo.value;
-    console.log(username, description, hashtags, photo);
     this.props.addFood(username, description, hashtags, photo);
-    // this.refs.commentForm.reset();
+    this.refs.commentForm.reset();
   }
 
   render() {

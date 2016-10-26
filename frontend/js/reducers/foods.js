@@ -8,13 +8,14 @@ function foods(state = [], action) {
             hashtags: action.req.hashtags,
             photo: action.req.photo,
             likes: 0,
-            dislikes: 0
+            dislikes: 0,
+            uuid: action.req.uuid
           }];
         }
         return state;
       case 'SHOW_FOODS' :
         return action.payload;
-      case 'REMOVE_FOOD' :
+      case 'REMOVE_FOODS' :
         if(action.res === true){
           return [
             ...state.slice(0,action.req.indexInState),
