@@ -5,45 +5,45 @@ class Food extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      heart:'fa fa-heart-o fa-lg food-like-icon',
-      frown:'fa fa-meh-o fa-lg food-unlike-icon',
-      trash:'fa fa-trash-o fa-lg food-remove-icon'
+      heart:'fa-heart-o',
+      frown:'',
+      trash:'fa-trash-o'
     }
   }
 
   heartOnEnter = () => {
     this.setState({
-      heart:'fa fa-heart fa-lg food-like-icon color-icon',
+      heart:'fa-heart color-icon',
     })
   }
 
   heartOnLeave = () => {
     this.setState({
-      heart:'fa fa-heart-o fa-lg food-like-icon',
+      heart:'fa-heart-o',
     })
   }
 
   trashOnEnter = () => {
     this.setState({
-      trash:'fa fa-trash fa-lg food-remove-icon',
+      trash:'fa-trash',
     })
   }
 
   trashOnLeave = () => {
     this.setState({
-      trash:'fa fa-trash-o fa-lg food-remove-icon',
+      trash:'fa-trash-o',
     })
   }
 
   faceOnEnter = () => {
     this.setState({
-      frown:'fa fa-frown-o fa-lg food-unlike-icon color-icon'
+      frown:'color-icon'
     })
   }
 
   faceOnLeave = () => {
     this.setState({
-      frown:'fa fa-meh-o fa-lg food-unlike-icon'
+      frown:''
     })
   }
 
@@ -71,25 +71,27 @@ class Food extends Component {
           <hr/>
           <span className="food-like-text"
                 onMouseEnter={this.heartOnEnter.bind()}
-                onMouseLeave={this.heartOnLeave.bind()}>
+                onMouseLeave={this.heartOnLeave.bind()}
+                onClick={this.props.incrementLike.bind(null, this.props.food.uuid, this.props.i)}>
                 {this.props.food.likes}
           </span>
           <i  aria-hidden="true"
-              className={this.state.heart}
+              className={'fa-lg food-like-icon fa ' + this.state.heart}
               onMouseEnter={this.heartOnEnter.bind()}
               onMouseLeave={this.heartOnLeave.bind()}
               onClick={this.props.incrementLike.bind(null, this.props.food.uuid, this.props.i)}/>
           <i  aria-hidden="true"
-              className={this.state.frown}
+              className={'fa fa-meh-o fa-lg food-unlike-icon '+this.state.frown}
               onMouseEnter={this.faceOnEnter.bind()}
               onMouseLeave={this.faceOnLeave.bind()}
               onClick={this.props.incrementDislike.bind(null, this.props.food.uuid, this.props.i)}/>
           <span className="food-unlike-text"
                 onMouseEnter={this.faceOnEnter.bind()}
-                onMouseLeave={this.faceOnLeave.bind()}>
+                onMouseLeave={this.faceOnLeave.bind()}
+                onClick={this.props.incrementDislike.bind(null, this.props.food.uuid, this.props.i)}>
                 {this.props.food.dislikes}
           </span>
-          <i  className={this.state.trash}
+          <i  className={'fa-lg food-remove-icon fa ' + this.state.trash}
               onMouseEnter={this.trashOnEnter.bind()}
               onMouseLeave={this.trashOnLeave.bind()}
               aria-hidden="true"
