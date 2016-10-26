@@ -11,7 +11,8 @@
     "build:frontend:tests": "webpack --config webpack.test.config.js",
     "run:frontend:tests": "mocha --require tests/scripts/mocha_runner ./tests/tests-bundle.js",
     "db:migrate": "./node_modules/.bin/sequelize --migrations-path=server/migrations --models-path=server/models --config=server/config/config.json db:migrate",
-    "db:seed": "./node_modules/.bin/sequelize --migrations-path=server/migrations --models-path=server/models --seeders-path=server/seeders --config=server/config/config.json db:seed:all"
+    "db:seed": "./node_modules/.bin/sequelize --migrations-path=server/migrations --models-path=server/models --seeders-path=server/seeders --config=server/config/config.json db:seed:all",
+    "db:seed:undo:all": "./node_modules/.bin/sequelize --migrations-path=server/migrations --models-path=server/models --seeders-path=server/seeders --config=server/config/config.json db:seed:undo:all"
   },
   "repository": {
     "type": "git",
