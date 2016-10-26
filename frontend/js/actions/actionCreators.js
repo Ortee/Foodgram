@@ -51,16 +51,34 @@ export function removeFood(uuid, indexInState) {
    }
 }
 
-export function incrementLike(index) {
-  return (dispatch) => {
-    dispatch({ type: 'INCREMENT_LIKE', index: index});
-  }
+export function incrementLike(_uuid, index) {
+  const request = req.put('/api/foods/likes')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: _uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+            dispatch({ type: 'INCREMENT_LIKE', res: false});
+         } else {
+            dispatch({ type: 'INCREMENT_LIKE', res: true, index: index});
+         }
+     });
+   };
 };
 
 export function incrementDislike(index) {
-  return (dispatch) => {
-    dispatch({ type: 'INCREMENT_DISLIKE', index: index});
-  }
+  const request = req.put('/api/foods/dislikes')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: _uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+            dispatch({ type: 'INCREMENT_DISLIKE', res: false});
+         } else {
+            dispatch({ type: 'INCREMENT_DISLIKE', res: true, index: index});
+         }
+     });
+   };
 };
 
 export function addAlert(text, style) {

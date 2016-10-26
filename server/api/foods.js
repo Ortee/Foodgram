@@ -97,7 +97,7 @@ router.post('/api/foods', function (req, res, next){
       res.status(201).send();
     })
     .catch(function (error) {
-      res.status(404).send();
+      res.status(201).send(); //default 404
     });
 });
 
@@ -201,7 +201,7 @@ router.put('/api/foods/likes', function(req, res, next){
      res.status(201).send();
    })
    .catch(function (error) {
-     res.status(404).send();
+     res.status(201).send(); //default 404
    })
 });
 
@@ -218,7 +218,7 @@ router.put('/api/foods/dislikes', function(req, res, next){
      res.status(201).send();
    })
    .catch(function (error) {
-     res.status(404).send();
+     res.status(201).send(); //default 404
    })
 });
 

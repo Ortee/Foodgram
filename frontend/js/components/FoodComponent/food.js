@@ -78,12 +78,12 @@ class Food extends Component {
               className={this.state.heart}
               onMouseEnter={this.heartOnEnter.bind()}
               onMouseLeave={this.heartOnLeave.bind()}
-              onClick={this.props.incrementLike.bind(null, this.props.i)}/>
+              onClick={this.props.incrementLike.bind(null, this.props.food.uuid, this.props.i)}/>
           <i  aria-hidden="true"
               className={this.state.frown}
               onMouseEnter={this.faceOnEnter.bind()}
               onMouseLeave={this.faceOnLeave.bind()}
-              onClick={this.props.incrementDislike.bind(null, this.props.i)}/>
+              onClick={this.props.incrementDislike.bind(null, this.props.food.uuid, this.props.i)}/>
           <span className="food-unlike-text"
                 onMouseEnter={this.faceOnEnter.bind()}
                 onMouseLeave={this.faceOnLeave.bind()}>
