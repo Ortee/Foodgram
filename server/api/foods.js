@@ -24,7 +24,7 @@ router.get('/api/author', function (req, res, next) {
 // Get all food
 router.get('/api/foods', function (req, res, next) {
   db.any(
-    'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food"')
+    'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" ORDER BY created_at DESC')
     .then(function (data) {
       res.setHeader('Content-Type', 'application/json');
       Foods = data.map((elem) => new Food(

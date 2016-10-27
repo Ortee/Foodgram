@@ -19,7 +19,6 @@ class Food extends Component {
   }
 
   componentDidMount = () => {
-    console.log('componentDidMount');
     if(cookie.load(this.props.food.uuid)=='like'){
       this.setState({
         isLiked:true,
