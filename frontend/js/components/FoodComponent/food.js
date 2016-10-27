@@ -8,7 +8,7 @@ class Food extends Component {
     this.state = {
       styles:{
         heart:'fa-heart-o',
-        frown:'',
+        frown:'fa-meh-o',
         trash:'fa-trash-o'
       },
       isLiked:false,
@@ -29,7 +29,7 @@ class Food extends Component {
       this.setState({
         isLiked:false,
         isDisliked:true,
-        styles: Object.assign(this.state.styles,{frown:'color-icon'}),
+        styles: Object.assign(this.state.styles,{frown:'fa-frown-o color-icon'}),
       });
     }
   }
@@ -53,7 +53,7 @@ class Food extends Component {
   faceOnEnter = () => {
     if(!this.state.isDisliked){
       this.setState({
-        styles: Object.assign(this.state.styles,{frown:'color-icon'}),
+        styles: Object.assign(this.state.styles,{frown:'fa-frown-o color-icon'}),
       })
     }
   }
@@ -61,7 +61,7 @@ class Food extends Component {
   faceOnLeave = () => {
     if(!this.state.isDisliked){
       this.setState({
-        styles: Object.assign(this.state.styles,{frown:''}),
+        styles: Object.assign(this.state.styles,{frown:'fa-meh-o'}),
       })
     }
   }
@@ -84,7 +84,7 @@ class Food extends Component {
       isDisliked:false,
       styles: Object.assign(this.state.styles,{
         heart:'fa-heart color-icon',
-        frown:''
+        frown:'fa-meh-o'
       }),
     });
     if(!this.state.isLiked && this.state.isDisliked){
@@ -100,7 +100,7 @@ class Food extends Component {
       isLiked:false,
       isDisliked:true,
       styles: Object.assign(this.state.styles,{
-        frown:'color-icon',
+        frown:'fa-frown-o color-icon',
         heart:'fa-heart-o'
       }),
     });
@@ -146,7 +146,7 @@ class Food extends Component {
               onMouseLeave={this.heartOnLeave.bind()}
               onClick={this.incrementLike}/>
           <i  aria-hidden="true"
-              className={'fa fa-meh-o fa-lg food-unlike-icon '+this.state.styles.frown}
+              className={'fa-lg food-unlike-icon fa '+this.state.styles.frown}
               onMouseEnter={this.faceOnEnter.bind()}
               onMouseLeave={this.faceOnLeave.bind()}
               onClick={this.incrementDislike}/>
