@@ -29,10 +29,22 @@ function foods(state = [], action) {
           {...state[action.index], likes: state[action.index].likes + 1},
           ...state.slice(action.index + 1),
         ];
+      case 'DECREMENT_LIKE' :
+        return [
+          ...state.slice(0,action.index),
+          {...state[action.index], likes: state[action.index].likes - 1},
+          ...state.slice(action.index + 1),
+        ];
       case 'INCREMENT_DISLIKE' :
         return [
           ...state.slice(0,action.index),
           {...state[action.index], dislikes: state[action.index].dislikes + 1},
+          ...state.slice(action.index + 1),
+        ];
+      case 'DECREMENT_DISLIKE' :
+        return [
+          ...state.slice(0,action.index),
+          {...state[action.index], dislikes: state[action.index].dislikes - 1},
           ...state.slice(action.index + 1),
         ];
       default:

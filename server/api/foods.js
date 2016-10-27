@@ -205,11 +205,44 @@ router.put('/api/foods/likes', function(req, res, next){
    })
 });
 
+router.put('/api/foods/likes/decrement', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.body[0].uuid;
+  db.query('UPDATE "Food" SET "likes" = "likes" - 1, "updated_at" = $2 WHERE "uuid" = $1',
+  [
+    _id,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.status(404).send();
+   })
+});
+
 // Update food dislikes
 router.put('/api/foods/dislikes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "dislikes" = "dislikes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
+  [
+    _id,
+    getTimestamp()
+  ])
+   .then(function(){
+     res.status(201).send();
+   })
+   .catch(function (error) {
+     res.send(error);
+     res.status(404).send();
+   })
+});
+
+router.put('/api/foods/dislikes/decrement', function(req, res, next){
+  req.accepts('application/json');
+  var _id = req.body[0].uuid;
+  db.query('UPDATE "Food" SET "dislikes" = "dislikes" - 1, "updated_at" = $2 WHERE "uuid" = $1',
   [
     _id,
     getTimestamp()
