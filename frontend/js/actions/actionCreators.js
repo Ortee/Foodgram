@@ -1,48 +1,117 @@
 import req from 'superagent';
+import uuid from 'node-uuid';
+import cookie from 'react-cookie';
 
-export function addPost(name, content) {
-  const request = req.post('/api/posts')
-   .set('Content-type', 'application/json');
-   return (dispatch) => {
-     request.send([{ name: name, content: content }])
-      .end(function(err, res){
-         if (err || !res.ok) {
-           dispatch(addAlert('Your post wasn`t added !', 'danger'));
-           dispatch({ type: 'ADD_POSTS', res: false });
-         } else {
-           dispatch(addAlert('Your post was successfully added !', 'success'));
-           dispatch({ type: 'ADD_POSTS', res: true, req:{'name':name, 'content': content}});
-         }
-     });
-   }
-}
-
-export function removePost(name, indexInState) {
-  const request = req.del('/api/postremove')
-   .set('Content-type', 'application/json');
-   return (dispatch) => {
-     request.send([{ name: name }])
-      .end(function(err, res){
-         if (err || !res.ok) {
-           dispatch({ type: 'REMOVE_POST', res: false });
-           dispatch(addAlert('Your post wasn`t removed !', 'danger'));
-         } else {
-           dispatch(addAlert('Your post was successfully removed !', 'success'));
-           dispatch({ type: 'REMOVE_POST', res: true, req:{ 'name':name, 'indexInState': indexInState}});
-         }
-     });
-   }
-}
-
-export function showPosts() {
+export function showFoods() {
   const request = req
-  .get('/api/posts')
+  .get('/api/foods')
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
-      dispatch({ type: 'SHOW_POSTS', payload: response.body });
+      dispatch({ type: 'SHOW_FOODS', payload: response.body });
     });
   }
+};
+
+export function addFood(username, description, hashtags, photo) {
+  const request = req.post('/api/foods')
+   .set('Content-type', 'application/json');
+   let _uuid = uuid.v1();
+   return (dispatch) => {
+     request.send([{
+       username: username, description: description, hashtags: hashtags, photo:photo, uuid:_uuid
+     }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+           dispatch(addAlert('Your food wasn`t added !', 'danger'));
+           dispatch({ type: 'ADD_FOODS', res: false });
+         } else {
+           dispatch(addAlert('Your food was successfully added !', 'success'));
+           dispatch({ type: 'ADD_FOODS', res: true, req:{
+             'username':username, 'description': description,'hashtags':hashtags,'photo':photo, 'uuid':_uuid
+           }});
+         }
+     });
+  }
+}
+
+export function removeFood(uuid, indexInState) {
+  const request = req.del('/api/foods')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+           dispatch({ type: 'REMOVE_FOODS', res: false });
+           dispatch(addAlert('Your food wasn`t removed !', 'danger'));
+         } else {
+           dispatch(addAlert('Your food was successfully removed !', 'success'));
+           dispatch({ type: 'REMOVE_FOODS', res: true, req:{ 'uuid':uuid, 'indexInState': indexInState}});
+         }
+     });
+   }
+}
+
+export function incrementLike(_uuid, index) {
+  const request = req.put('/api/foods/likes')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: _uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+           dispatch({ type: 'INCREMENT_LIKE', res: false});
+         } else {
+           cookie.save(_uuid,'like');
+           dispatch({ type: 'INCREMENT_LIKE', res: true, index: index});
+         }
+     });
+   };
+};
+
+export function decrementLike(_uuid, index) {
+  const request = req.put('/api/foods/likes/decrement')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: _uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+           dispatch({ type: 'DECREMENT_LIKE', res: false});
+         } else {
+           dispatch({ type: 'DECREMENT_LIKE', res: true, index: index});
+         }
+     });
+   };
+};
+
+export function incrementDislike(_uuid, index) {
+  const request = req.put('/api/foods/dislikes')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: _uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+           dispatch({ type: 'INCREMENT_DISLIKE', res: false});
+         } else {
+           cookie.save(_uuid,'dislike');
+           dispatch({ type: 'INCREMENT_DISLIKE', res: true, index: index});
+         }
+     });
+   };
+};
+
+export function decrementDislike(_uuid, index) {
+  const request = req.put('/api/foods/dislikes/decrement')
+   .set('Content-type', 'application/json');
+   return (dispatch) => {
+     request.send([{ uuid: _uuid }])
+      .end(function(err, res){
+         if (err || !res.ok) {
+           dispatch({ type: 'DECREMENT_DISLIKE', res: false});
+         } else {
+           dispatch({ type: 'DECREMENT_DISLIKE', res: true, index: index});
+         }
+     });
+   };
 };
 
 export function addAlert(text, style) {

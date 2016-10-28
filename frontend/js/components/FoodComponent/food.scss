@@ -1,0 +1,82 @@
+//Add form styles
+.addPost-form{
+  border: 1px solid #eceeef;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.form-inline .form-control {
+  width: 100%;
+  margin-bottom: 8px;
+}
+.form-inline .addPost-button{
+  width: 100%;
+}
+
+//Food styles
+hr{
+  margin-bottom: 0.9rem;
+}
+.food-title{
+  height: 60px;
+  padding-top: 15px;
+  border-bottom: 1px solid #efefef;
+}
+.food-title-text{
+  font-weight: 700;
+  margin-left: 5px;
+}
+.food-photo{
+  padding: 0;
+}
+.img-thumbnail{
+  padding: 0;
+  border-radius:0;
+  border:none;
+  margin: 0;
+}
+.food-desciption{
+  height: 100px;
+  border-top: 1px solid #efefef;
+}
+.food-desciption-likes{
+  padding-top: 15px;
+  padding-left: 2px;
+  font-weight: 500;
+}
+.food-container{
+  font-size: 18px;
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  padding: 0;
+  margin-top: 20px;
+  margin-bottom: 45px;
+  background-color: #fff;
+}
+.food-like{
+  height: 73px;
+}
+.food-like-icon{
+  cursor: pointer;
+  padding-left: 5px;
+}
+.food-like-text{
+  margin-left: 5px;
+  cursor: pointer;
+}
+.food-unlike-icon{
+  cursor: pointer;
+  padding-right: 5px;
+  padding-left: 15px;
+}
+.food-unlike-text{
+  cursor: pointer;
+}
+.food-remove-icon{
+  cursor: pointer;
+  float: right;
+  padding-top: 4px;
+  padding-right: 5px;
+}
+.color-icon{
+  color: darken(#ff0000,8%);
+}

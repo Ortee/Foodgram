@@ -14,10 +14,10 @@ class Main extends Component {
   render() {
     return (
       <section className="main-container">
+        <Menu />
         <Container>
-          <Row style={{maxWidth:'100%'}}>
+          <Row>
             <Alerts {...this.props} />
-            <Menu />
             <section className="content">
               {React.cloneElement(this.props.children, this.props)}
             </section>

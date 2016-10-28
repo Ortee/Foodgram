@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import alerts from './alerts';
-import posts from './posts';
+import foods from './foods';
 
-const rootReducer = combineReducers({alerts, posts, routing: routerReducer });
+const rootReducer = combineReducers({alerts, foods, routing: routerReducer });
 
 export default rootReducer;

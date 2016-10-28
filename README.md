@@ -134,3 +134,12 @@ Available manuals
   help:seed:create            The documentation for "sequelize seed:create".
   help:version                The documentation for "sequelize version".
   ```
+## Fixes
+SASS-LOADER FIX
+
+Enter frontend container
+
+```
+npm rebuild node-sass
+```
+Restart docker containers
