@@ -13,7 +13,7 @@ class Main extends Component {
 
   render() {
     return (
-      <section className="main-container">
+      <section>
         <Menu />
         <Container>
           <Row>
