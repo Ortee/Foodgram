@@ -13,7 +13,7 @@ class Menu extends Component {
       <Navbar className="navbar-custom" fixed="top">
         <div className="container">
           <NavbarBrand href="/">
-            <Link className="menu-icon-left" to={'/posts'} style={{ textDecoration: 'none' }}>
+            <Link className="menu-icon-left" to={'/'} style={{ textDecoration: 'none' }}>
                 <i id="insta-logo" class="fa fa-instagram fa-2x" aria-hidden="true"/>
                 <span className="footgram-logo">Foodgram</span>
             </Link>
@@ -21,7 +21,7 @@ class Menu extends Component {
           <Nav className="pull-xs-right" navbar>
             <NavItem>
               <Link className="menu-icon-right" to={'/'}>
-                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                <i class="fa fa-compass fa-2x" aria-hidden="true"></i>
               </Link>
             </NavItem>
             <NavItem>
@@ -30,8 +30,8 @@ class Menu extends Component {
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="menu-icon-right" to={'/'}>
-                <i class="fa fa-compass fa-2x" aria-hidden="true"></i>
+              <Link className="menu-icon-right" to={'/register'}>
+                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
               </Link>
             </NavItem>
           </Nav>

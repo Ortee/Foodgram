@@ -1,0 +1,16 @@
+.right-panel{
+  border: 1px solid #efefef;
+  background-color: #fff;
+  margin-top: 20px;
+}
+.left-panel{
+  margin-top: 80px;
+}
+.img-thumbnail{
+  background-color: transparent;
+}
+@media (max-width: 767px) {
+  .left-panel{
+    display: none;
+  }
+}

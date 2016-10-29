@@ -6,9 +6,12 @@ import store, { history } from './store/store';
 
 import App from './components/app';
 import Main from './components/MainComponent/main';
-import Author from './components/AuthorComponent/author';
+import Auth from './components/AuthComponent/auth';
 import Foods from './components/FoodComponent/foods';
+import Register from './components/RegisterComponent/register';
+import Login from './components/LoginComponent/login';
 import NotFound from './components/NotFoundComponent/notfound';
+
 
 const app = document.getElementById('app');
 
@@ -16,9 +19,10 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
-        <IndexRoute component={Foods}></IndexRoute>
-        <Route path="/author" name="author" component={Author}/>
-        <Route path="/foods" name="foods" component={Foods}/>
+        <IndexRoute component={Foods} />
+        <Route component={Auth}>
+          <Route path="/register" name="register" component={Register}/>
+        </Route>
         <Route path='*' component={NotFound} />
       </Route>
     </Router>
