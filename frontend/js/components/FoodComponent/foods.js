@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { Router, Route, Link , browserHistory } from 'react-router';
-import { Button, Form, FormGroup, Label, Table, Col, Alert } from 'reactstrap';
+import React, { Component } from 'react';
+import { Button, Label, Col } from 'reactstrap';
 import Food from './food';
 import './food.scss';
 
@@ -10,18 +9,8 @@ class Foods extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.showFoods();
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const username = this.refs.username.value;
-    const description = this.refs.description.value;
-    const hashtags = this.refs.hashtags.value;
-    const photo = this.refs.photo.value;
-    this.props.addFood(username, description, hashtags, photo);
-    this.refs.commentForm.reset();
   }
 
   render() {
@@ -35,8 +24,8 @@ class Foods extends Component {
             food={food}
           />)}
         </Col>
-        <Col xs={{size:6, offset: 3}} className="addPost-form">
-          <form ref="commentForm" onSubmit={this.handleSubmit} class="form-inline">
+        <Col xs={{size: 6, offset: 3}} className="addPost-form">
+          <form ref="commentForm" onSubmit={this.handleSubmit} className="form-inline">
             <Label hidden>Username</Label>
             <input type="text" ref="username" placeholder="username" className="form-control addPost-input"/>
             <Label hidden>Description</Label>
@@ -51,6 +40,22 @@ class Foods extends Component {
       </section>
     );
   }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const username = this.refs.username.value;
+    const description = this.refs.description.value;
+    const hashtags = this.refs.hashtags.value;
+    const photo = this.refs.photo.value;
+    this.props.addFood(username, description, hashtags, photo);
+    this.refs.commentForm.reset();
+  }
 }
+
+Foods.propTypes =  {
+  addFood: React.PropTypes.func,
+  showFoods: React.PropTypes.func,
+  foods: React.PropTypes.array,
+};
 
 export default Foods;

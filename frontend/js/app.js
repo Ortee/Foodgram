@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
-import store, { history } from './store/store';
+import store from './store/store';
 
 import App from './components/app';
-import Main from './components/MainComponent/main';
 import Auth from './components/AuthComponent/auth';
 import Foods from './components/FoodComponent/foods';
 import Register from './components/RegisterComponent/register';
@@ -22,8 +21,9 @@ ReactDOM.render(
         <IndexRoute component={Foods} />
         <Route component={Auth}>
           <Route path="/register" name="register" component={Register}/>
+          <Route path="/login" name="login" component={Login}/>
         </Route>
-        <Route path='*' component={NotFound} />
+        <Route path="*" component={NotFound} />
       </Route>
     </Router>
   </Provider>,

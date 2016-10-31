@@ -5,21 +5,14 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = pgp(process.env[config.use_env_variable]);
 
-//Mocks
-const authorMock = require('../mocks/author.json')
-
 //classes
 var Food = require('../class/food');
 
 
 function getTimestamp() {
-  return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000*2));
+  return new Date(new Date().getTime() + (new Date().getTimezoneOffset()
+    * 60000) + (3600000 * 2));
 }
-
-router.get('/api/author', function (req, res, next) {
-  res.setHeader('Content-Type', 'application/json');
-  res.json(authorMock);
-});
 
 // Get all food
 router.get('/api/foods', function (req, res, next) {

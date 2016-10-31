@@ -6,114 +6,35 @@ class Food extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      styles:{
-        heart:'fa-heart-o',
-        frown:'fa-meh-o',
-        trash:'fa-trash-o'
+      styles: {
+        heart: 'fa-heart-o',
+        frown: 'fa-meh-o',
+        trash: 'fa-trash-o',
       },
-      isLiked:false,
-      isDisliked:false
-    }
+      isLiked: false,
+      isDisliked: false,
+    };
     this.incrementLike = this.incrementLike.bind();
     this.incrementDislike = this.incrementDislike.bind();
   }
 
   componentDidMount = () => {
-    if(cookie.load(this.props.food.uuid)=='like'){
+    if (cookie.load(this.props.food.uuid) === 'like') {
       this.setState({
-        isLiked:true,
-        isDisliked:false,
-        styles: Object.assign(this.state.styles,{heart:'fa-heart color-icon'}),
+        isLiked: true,
+        isDisliked: false,
+        styles: Object.assign(this.state.styles, {heart: 'fa-heart color-icon'}),
       });
-    } else if(cookie.load(this.props.food.uuid)=='dislike'){
+    } else if (cookie.load(this.props.food.uuid) === 'dislike') {
       this.setState({
-        isLiked:false,
-        isDisliked:true,
-        styles: Object.assign(this.state.styles,{frown:'fa-frown-o color-icon'}),
+        isLiked: false,
+        isDisliked: true,
+        styles: Object.assign(this.state.styles, {frown: 'fa-frown-o color-icon'}),
       });
     }
   }
-
-  heartOnEnter = () => {
-    if(!this.state.isLiked){
-      this.setState({
-        styles: Object.assign(this.state.styles,{heart:'fa-heart color-icon'}),
-      })
-    }
-  }
-
-  heartOnLeave = () => {
-    if(!this.state.isLiked){
-      this.setState({
-        styles: Object.assign(this.state.styles,{heart:'fa-heart-o'}),
-      })
-    }
-  }
-
-  faceOnEnter = () => {
-    if(!this.state.isDisliked){
-      this.setState({
-        styles: Object.assign(this.state.styles,{frown:'fa-frown-o color-icon'}),
-      })
-    }
-  }
-
-  faceOnLeave = () => {
-    if(!this.state.isDisliked){
-      this.setState({
-        styles: Object.assign(this.state.styles,{frown:'fa-meh-o'}),
-      })
-    }
-  }
-
-  trashOnEnter = () => {
-    this.setState({
-      styles: Object.assign(this.state.styles,{trash:'fa-trash'}),
-    })
-  }
-
-  trashOnLeave = () => {
-    this.setState({
-      styles: Object.assign(this.state.styles,{trash:'fa-trash-o'}),
-    })
-  }
-
-  incrementLike = () => {
-    this.setState({
-      isLiked:true,
-      isDisliked:false,
-      styles: Object.assign(this.state.styles,{
-        heart:'fa-heart color-icon',
-        frown:'fa-meh-o'
-      }),
-    });
-    if(!this.state.isLiked && this.state.isDisliked){
-      this.props.incrementLike(this.props.food.uuid, this.props.i);
-      this.props.decrementDislike(this.props.food.uuid, this.props.i);
-    } else if(!this.state.isLiked){
-      this.props.incrementLike(this.props.food.uuid, this.props.i);
-    }
-  }
-
-  incrementDislike = () => {
-    this.setState({
-      isLiked:false,
-      isDisliked:true,
-      styles: Object.assign(this.state.styles,{
-        frown:'fa-frown-o color-icon',
-        heart:'fa-heart-o'
-      }),
-    });
-    if(!this.state.isDisliked && this.state.isLiked){
-      this.props.incrementDislike(this.props.food.uuid, this.props.i);
-      this.props.decrementLike(this.props.food.uuid, this.props.i);
-    } else if(!this.state.isDisliked) {
-      this.props.incrementDislike(this.props.food.uuid, this.props.i);
-    }
-  }
-
   render() {
-    return(
+    return (
       <Col className="food-container">
         <Col className="food-title">
           <i className="fa fa-cutlery" aria-hidden="true" />
@@ -125,8 +46,7 @@ class Food extends Component {
           <img  className="img-thumbnail"
                 height="600px"
                 width="538px"
-                src={this.props.food.photo}>
-          </img>
+                src={this.props.food.photo} />
         </Col>
         <Col className="food-desciption">
           <p className="food-desciption-likes">{this.props.food.hashtags}</p>
@@ -146,7 +66,7 @@ class Food extends Component {
               onMouseLeave={this.heartOnLeave.bind()}
               onClick={this.incrementLike}/>
           <i  aria-hidden="true"
-              className={'fa-lg food-unlike-icon fa '+this.state.styles.frown}
+              className={'fa-lg food-unlike-icon fa ' + this.state.styles.frown}
               onMouseEnter={this.faceOnEnter.bind()}
               onMouseLeave={this.faceOnLeave.bind()}
               onClick={this.incrementDislike}/>
@@ -165,6 +85,94 @@ class Food extends Component {
       </Col>
     );
   }
+
+  heartOnEnter = () => {
+    if (!this.state.isLiked) {
+      this.setState({
+        styles: Object.assign(this.state.styles, {heart: 'fa-heart color-icon'}),
+      });
+    }
+  }
+
+  heartOnLeave = () => {
+    if (!this.state.isLiked) {
+      this.setState({
+        styles: Object.assign(this.state.styles, {heart: 'fa-heart-o'}),
+      });
+    }
+  }
+
+  faceOnEnter = () => {
+    if (!this.state.isDisliked) {
+      this.setState({
+        styles: Object.assign(this.state.styles, {frown: 'fa-frown-o color-icon'}),
+      });
+    }
+  }
+
+  faceOnLeave = () => {
+    if (!this.state.isDisliked) {
+      this.setState({
+        styles: Object.assign(this.state.styles, {frown: 'fa-meh-o'}),
+      });
+    }
+  }
+
+  trashOnEnter = () => {
+    this.setState({
+      styles: Object.assign(this.state.styles, {trash: 'fa-trash'}),
+    });
+  }
+
+  trashOnLeave = () => {
+    this.setState({
+      styles: Object.assign(this.state.styles, {trash: 'fa-trash-o'}),
+    });
+  }
+
+  incrementLike = () => {
+    this.setState({
+      isLiked: true,
+      isDisliked: false,
+      styles: Object.assign(this.state.styles, {
+        heart: 'fa-heart color-icon',
+        frown: 'fa-meh-o',
+      }),
+    });
+    if (!this.state.isLiked && this.state.isDisliked) {
+      this.props.incrementLike(this.props.food.uuid, this.props.i);
+      this.props.decrementDislike(this.props.food.uuid, this.props.i);
+    } else if (!this.state.isLiked) {
+      this.props.incrementLike(this.props.food.uuid, this.props.i);
+    }
+  }
+
+  incrementDislike = () => {
+    this.setState({
+      isLiked: false,
+      isDisliked: true,
+      styles: Object.assign(this.state.styles, {
+        frown: 'fa-frown-o color-icon',
+        heart: 'fa-heart-o',
+      }),
+    });
+    if (!this.state.isDisliked && this.state.isLiked) {
+      this.props.incrementDislike(this.props.food.uuid, this.props.i);
+      this.props.decrementLike(this.props.food.uuid, this.props.i);
+    } else if (!this.state.isDisliked) {
+      this.props.incrementDislike(this.props.food.uuid, this.props.i);
+    }
+  }
 }
+
+Food.propTypes =  {
+  incrementLike: React.PropTypes.func,
+  decrementLike: React.PropTypes.func,
+  incrementDislike: React.PropTypes.func,
+  decrementDislike: React.PropTypes.func,
+  food: React.PropTypes.object,
+  i: React.PropTypes.number,
+  removeFood: React.PropTypes.func,
+};
 
 export default Food;
