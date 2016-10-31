@@ -29,13 +29,13 @@ class Auth extends Component {
     if ( childrenName === 'Register') {
       return (
         <Col xs={{ size: 12}} md={{ size: 7, offset: 5}} lg={{ size: 6, offset: 6}} className="auth-footer">
-          {'Have an account?'}<Link className="footer-text" to={'/login'}>{'Log in'}</Link>
+          {'Have an account?'}<Link className="footer-text" style={{ textDecoration: 'none' }} to={'/login'}>{' Log in'}</Link>
         </Col>
       );
     }
     return (
       <Col xs={{ size: 12}} md={{ size: 7, offset: 5}} lg={{ size: 6, offset: 6}} className="auth-footer">
-        {'Have an account?'}<Link className="footer-text" to={'/register'}>{'Register'}</Link>
+        {'Have an account?'}<Link className="footer-text" style={{ textDecoration: 'none' }} to={'/register'}>{' Register'}</Link>
       </Col>
     );
   }
