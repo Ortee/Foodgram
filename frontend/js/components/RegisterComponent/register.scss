@@ -5,10 +5,6 @@ $buttonColor: #3897f0;
 
 .register{
 
-  #logo-container{
-    text-align: center;
-  }
-
   #rules{
     font-size: $authFontSize;
     font-weight: 400;
@@ -16,23 +12,7 @@ $buttonColor: #3897f0;
     padding-right: $rulesPadding;
     padding-left: $rulesPadding;
   }
-
-  #button{
-    height: 37px;
-    width: 100%;
-    color: #fff;
-    margin-top: 8px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    padding-right: 20px;
-    background-color: $buttonColor;
-  }
-
-  #button:hover{
-    color: #fff;
-    background-color: $buttonColor;
-  }
-
+  
   #form{
     color: #999;
     font-size: 15px;
@@ -40,18 +20,4 @@ $buttonColor: #3897f0;
     line-height: 20px;
     text-align: center;
   }
-
-  .input{
-    color: #000;
-    height: 33px;
-    font-weight: 200;
-    font-size: $authFontSize;
-    margin-bottom: 5px;
-  }
-
-}
-
-.auth-logo{
-  font-size: 3.5em;
-  font-family: "InstagramFont", Verdana, Tahoma;
 }

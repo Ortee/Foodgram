@@ -9,7 +9,7 @@ class Register extends Component {
   render = () => {
     return (
       <section className="register">
-        <Col id="logo-container">
+        <Col className="logo-container">
           <span className="auth-logo">Foodgram</span>
         </Col>
         <Col xs={{ size: 10, offset: 1}} id="form">
@@ -17,14 +17,14 @@ class Register extends Component {
           <hr />
           <form ref="registerForm" className="form-inline">
             <Label hidden>Email</Label>
-            <input type="email" ref="email" placeholder="Email" className="form-control input"/>
+            <input type="email" ref="email" placeholder="Email" className="form-control auth-input"/>
             <Label hidden>Restaurant Name</Label>
-            <input type="text" ref="Username" placeholder="Username" className="form-control input"/>
+            <input type="text" ref="Username" placeholder="Username" className="form-control auth-input"/>
             <Label hidden>Login</Label>
-            <input type="text" ref="login" placeholder="Login" className="form-control input"/>
+            <input type="text" ref="login" placeholder="Login" className="form-control auth-input"/>
             <Label hidden>Password</Label>
-            <input type="password" ref="password" placeholder="Password" className="form-control input"/>
-            <Button type="submit" id="button">Sign up</Button>
+            <input type="password" ref="password" placeholder="Password" className="form-control auth-input"/>
+            <Button type="submit" className="auth-button">Sign up</Button>
           </form>
           <Col id="rules">
             By signing up, you agree to our Terms & Privacy Policy.

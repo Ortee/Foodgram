@@ -35,7 +35,7 @@ class Auth extends Component {
     }
     return (
       <Col xs={{ size: 12}} md={{ size: 7, offset: 5}} lg={{ size: 6, offset: 6}} className="auth-footer">
-        {'Have an account?'}<Link className="footer-text" style={{ textDecoration: 'none' }} to={'/register'}>{' Register'}</Link>
+        {'Don`t have an account?'}<Link className="footer-text" style={{ textDecoration: 'none' }} to={'/register'}>{' Sign up'}</Link>
       </Col>
     );
   }

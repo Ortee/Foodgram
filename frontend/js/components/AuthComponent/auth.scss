@@ -1,4 +1,6 @@
 $authTextColor: #3897f0;
+$authFontSize: 14px;
+$buttonColor: #3897f0;
 
 .auth{
 
@@ -17,6 +19,30 @@ $authTextColor: #3897f0;
   }
 }
 
+.auth-button{
+  height: 37px;
+  width: 100%;
+  color: #fff;
+  margin-top: 8px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  padding-right: 20px;
+  background-color: $buttonColor;
+}
+
+.auth-button:hover{
+  color: #fff;
+  background-color: $buttonColor;
+}
+
+.auth-input{
+  color: #000;
+  height: 33px;
+  font-weight: 200;
+  font-size: $authFontSize;
+  margin-bottom: 5px;
+}
+
 .auth-footer{
   font-size: 14px;
   border: 1px solid #efefef;
@@ -25,6 +51,15 @@ $authTextColor: #3897f0;
   height: 66px;
   padding-top: 22px;
   background-color: #fff;
+}
+
+.logo-container{
+  text-align: center;
+}
+
+.auth-logo{
+  font-size: 3.5em;
+  font-family: "InstagramFont", Verdana, Tahoma;
 }
 
 .footer-text{
