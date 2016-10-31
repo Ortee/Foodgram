@@ -16,14 +16,20 @@ class Alerts extends Component {
       }, 2500);
     }
     return (
-      <Col xs={{ size: 6, offset: 2 }} className="post-alert-box">
+      <Col xs={{ size: 6, offset: 3 }} className="post-alert-box">
         {this.props.alerts.map((alert, i) => {
+          if (alert.style === 'danger') {
+            return (<Alert key={i}
+              className="post-alert"
+              onClick={this.props.removeAlert.bind(null, alert.id)}>
+              <i className="fa fa-times" aria-hidden="true"/> { alert.text }
+            </Alert>);
+          }
           return (<Alert key={i}
-                        className="post-alert"
-                        color={ alert.style }
-                        onClick={this.props.removeAlert.bind(null, alert.id)}>
-                        { alert.text }
-                  </Alert>);
+            className="post-alert"
+            onClick={this.props.removeAlert.bind(null, alert.id)}>
+            <i className="fa fa-check" aria-hidden="true"/> { alert.text }
+          </Alert>);
         })}
       </Col>
     );
