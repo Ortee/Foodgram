@@ -22,13 +22,13 @@ class Alerts extends Component {
             return (<Alert key={i}
               className="post-alert"
               onClick={this.props.removeAlert.bind(null, alert.id)}>
-              <i className="fa fa-times" aria-hidden="true"/> { alert.text }
+              <i className="fa fa-times" aria-hidden="true"/> <span className="alert-text">{ alert.text }</span>
             </Alert>);
           }
           return (<Alert key={i}
             className="post-alert"
             onClick={this.props.removeAlert.bind(null, alert.id)}>
-            <i className="fa fa-check" aria-hidden="true"/> { alert.text }
+            <i className="fa fa-check" aria-hidden="true"/> <span className="alert-text">{ alert.text }</span>
           </Alert>);
         })}
       </Col>
