@@ -23,7 +23,7 @@ class Login extends Component {
         </Col>
       </section>
     );
-  }
-};
+  };
+}
 
 export default Login;

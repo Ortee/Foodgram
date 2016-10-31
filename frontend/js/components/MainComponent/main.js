@@ -7,7 +7,7 @@ import Alerts from '../AlertsComponent/alerts';
 import './main.scss';
 
 class Main extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
@@ -27,5 +27,9 @@ class Main extends Component {
     );
   }
 }
+
+Main.propTypes =  {
+  children: React.PropTypes.element,
+};
 
 export default Main;

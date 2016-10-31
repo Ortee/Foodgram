@@ -6,8 +6,8 @@ import Main from './MainComponent/main';
 function mapStateToProps(state) {
   return {
     alerts: state.alerts,
-    foods: state.foods
-  }
+    foods: state.foods,
+  };
 }
 
 function mapDispachToProps(dispatch) {
