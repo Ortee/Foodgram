@@ -1,52 +1,57 @@
-.register-logo{
-  padding-left: 5px;
+$authFontSize: 14px;
+$rulesPadding: 15px;
+$buttonTextColor: #fff;
+$buttonColor: #3897f0;
+
+.register{
+
+  #logo-container{
+    text-align: center;
+  }
+
+  #rules{
+    font-size: $authFontSize;
+    font-weight: 400;
+    margin-bottom: 40px;
+    padding-right: $rulesPadding;
+    padding-left: $rulesPadding;
+  }
+
+  #button{
+    height: 37px;
+    width: 100%;
+    color: #fff;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    padding-right: 20px;
+    background-color: $buttonColor;
+  }
+
+  #button:hover{
+    color: #fff;
+    background-color: $buttonColor;
+  }
+
+  #form{
+    color: #999;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .input{
+    color: #000;
+    height: 33px;
+    font-weight: 200;
+    font-size: $authFontSize;
+    margin-bottom: 5px;
+  }
+
+}
+
+.auth-logo{
   font-size: 3.5em;
   font-family: "InstagramFont", Verdana, Tahoma;
-}
-.register{
-  line-height: 20px;
-  font-size: 15px;
-  color: #999;
-  font-weight: 600;
-  text-align: center;
-}
-.register-input{
-  font-weight: 200;
-  font-size: 14px;
-  color: #000;
-  height: 33px;
-  margin-bottom: 5px;
-}
-.register-button{
-  height: 37px;
-  padding-right: 20px;
-  background-color: #3897f0;
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  color: #fff;
-}
-.register-button:hover{
-  background-color: #3897f0;
-  color: #fff;
-}
-.register-footer{
-  font-size: 14px;
-  border: 1px solid #efefef;
-  margin-top: 10px;
-  text-align: center;
-  height: 66px;
-  padding-top: 22px;
-  background-color: #fff;
-}
-.register-login-text{
-  color: #3897f0;
-}
-.register-rules-text{
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 40px;
-  padding-right: 15px;
-  padding-left: 15px;
 }

@@ -2,34 +2,34 @@ import React, { Component } from 'react';
 import { Col, Label, Button } from 'reactstrap';
 import './register.scss';
 
-class Register extends Component{
-  constructor(props) {
+class Register extends Component {
+  constructor() {
     super();
   }
   render = () => {
-    return(
-      <section>
-        <Col xs={{size:8, offset: 2}}>
-          <span className="register-logo">Foodgram</span>
+    return (
+      <section className="register">
+        <Col id="logo-container">
+          <span className="auth-logo">Foodgram</span>
         </Col>
-        <Col xs={{size:10, offset: 1}} className="register">
-          <span>Zarejestruj się, aby przeglądać zdjęcia i filmy znajomych.</span>
+        <Col xs={{ size: 10, offset: 1}} id="form">
+          <span>Sign up to add photos and comment from your favourite restaurant.</span>
           <hr />
           <Label hidden>Email</Label>
-          <input type="email" ref="email" placeholder="Email" className="form-control register-input"/>
-          <Label hidden>Username</Label>
-          <input type="text" ref="Username" placeholder="Username" className="form-control register-input"/>
+          <input type="email" ref="email" placeholder="Email" className="form-control input"/>
+          <Label hidden>Restaurant Name</Label>
+          <input type="text" ref="Username" placeholder="Username" className="form-control input"/>
           <Label hidden>Login</Label>
-          <input type="text" ref="login" placeholder="Login" className="form-control register-input"/>
+          <input type="text" ref="login" placeholder="Login" className="form-control input"/>
           <Label hidden>Password</Label>
-          <input type="password" ref="password" placeholder="Password" className="form-control register-input"/>
-          <Button type="submit" className="register-button">Dalej</Button>
-          <Col className="register-rules-text">
-            Rejestracja oznacza zgodę na nasze Regulamin i Zasady ochrony prywatności.
+          <input type="password" ref="password" placeholder="Password" className="form-control input"/>
+          <Button type="submit" id="button">Sign up</Button>
+          <Col id="rules">
+            By signing up, you agree to our Terms & Privacy Policy.
           </Col>
         </Col>
       </section>
-    )
+    );
   }
 }
 
