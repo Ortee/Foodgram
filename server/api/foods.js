@@ -13,7 +13,8 @@ var Food = require('../class/food');
 
 
 function getTimestamp() {
-  return new Date(new Date().getTime() + (new Date().getTimezoneOffset() * 60000) + (3600000*2));
+  return new Date(new Date().getTime() + (new Date().getTimezoneOffset()
+    * 60000) + (3600000 * 2));
 }
 
 router.get('/api/author', function (req, res, next) {
