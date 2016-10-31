@@ -114,6 +114,40 @@ export function decrementDislike(_uuid, index) {
   };
 }
 
+export function register(_email, _username, _login, _password) {
+  const request = req.post('/api/register')
+  .set('Content-type', 'application/json');
+  return (dispatch) => {
+    request.send([{
+      email: _email, username: _username, login: _login, password: _password,
+    }])
+    .end((err, res) => {
+      if (err || !res.ok) {
+        dispatch(addAlert('User wasn`t added !', 'danger'));
+      } else {
+        dispatch(addAlert('User was successfully added !', 'success'));
+      }
+    });
+  };
+}
+
+export function login(_login, _password) {
+  const request = req.post('/api/login')
+  .set('Content-type', 'application/json');
+  return (dispatch) => {
+    request.send([{
+      login: _login, password: _password,
+    }])
+    .end((err, res) => {
+      if (err || !res.ok) {
+        dispatch(addAlert('Incorrect login or password !', 'danger'));
+      } else {
+        dispatch(addAlert('You are logged in !', 'success'));
+      }
+    });
+  };
+}
+
 export function addAlert(text, style) {
   return (dispatch) => {
     dispatch({ type: 'ADD_ALERT', text: text, style: style });
