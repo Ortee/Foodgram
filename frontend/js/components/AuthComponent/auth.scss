@@ -1,16 +1,38 @@
-.right-panel{
+$authTextColor: #3897f0;
+
+.auth{
+
+  #right-panel{
+    border: 1px solid #efefef;
+    background-color: #fff;
+    margin-top: 20px;
+  }
+
+  #left-panel{
+    margin-top: 80px;
+  }
+
+  .img-thumbnail{
+    background-color: transparent;
+  }
+}
+
+.auth-footer{
+  font-size: 14px;
   border: 1px solid #efefef;
+  margin-top: 10px;
+  text-align: center;
+  height: 66px;
+  padding-top: 22px;
   background-color: #fff;
-  margin-top: 20px;
 }
-.left-panel{
-  margin-top: 80px;
+
+.footer-text{
+  color: $authTextColor;
 }
-.img-thumbnail{
-  background-color: transparent;
-}
+
 @media (max-width: 767px) {
-  .left-panel{
+  #left-panel{
     display: none;
   }
 }
