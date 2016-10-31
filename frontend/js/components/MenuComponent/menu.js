@@ -22,7 +22,7 @@ class Menu extends Component {
           <Nav className="pull-xs-right" navbar>
             <NavItem>
               <Link className="menu-icon-right" to={'/'}>
-                <i className="fa fa-compass fa-lg" aria-hidden="true"/>
+                <i className="fa fa-compass fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
             <NavItem>

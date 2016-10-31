@@ -19,3 +19,13 @@
   border-bottom: none;
   border-radius: 0px;
 }
+@media (max-width: 767px) {
+  .post-alert{
+    font-size: 50px;
+    padding-top: 10px;
+  }
+
+  .alert-text{
+    display: none;
+  }
+}
