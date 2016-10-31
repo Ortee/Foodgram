@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Nav, Navbar, NavbarBrand, NavItem } from 'reactstrap';
+import Alerts from '../AlertsComponent/alerts';
 import './menu.scss';
 
 class Menu extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
-
   render() {
     return (
       <Navbar className="navbar-custom" fixed="top">
+        <Alerts {...this.props} />
         <div className="container">
           <NavbarBrand href="/">
             <Link className="menu-icon-left" to={'/'} style={{ textDecoration: 'none' }}>
@@ -21,7 +22,7 @@ class Menu extends Component {
           <Nav className="pull-xs-right" navbar>
             <NavItem>
               <Link className="menu-icon-right" to={'/'}>
-                <i className="fa fa-compass fa-2x" aria-hidden="true"/>
+                <i className="fa fa-compass fa-lg" aria-hidden="true"/>
               </Link>
             </NavItem>
             <NavItem>
