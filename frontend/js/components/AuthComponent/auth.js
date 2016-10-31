@@ -1,4 +1,4 @@
-import React, { Component, propTypes } from 'react';
+import React, { Component } from 'react';
 import { Col } from 'reactstrap';
 import { Link } from 'react-router';
 import './auth.scss';
