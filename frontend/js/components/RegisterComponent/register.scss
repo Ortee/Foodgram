@@ -1,0 +1,23 @@
+$authFontSize: 14px;
+$rulesPadding: 15px;
+$buttonTextColor: #fff;
+$buttonColor: #3897f0;
+
+.register{
+
+  #rules{
+    font-size: $authFontSize;
+    font-weight: 400;
+    margin-bottom: 40px;
+    padding-right: $rulesPadding;
+    padding-left: $rulesPadding;
+  }
+  
+  #form{
+    color: #999;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+  }
+}

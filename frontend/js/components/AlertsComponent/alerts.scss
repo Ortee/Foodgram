@@ -4,4 +4,28 @@
 }
 .post-alert{
   cursor: pointer;
+  text-align: center;
+  color: #999;
+  background-color: #fafafa;
+  font-weight: 500;
+  font-size: 22px;
+  height: 70px;
+  line-height: 20px;
+  margin-top: -18px;
+  padding-top: 22px;
+  border-left: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-top: none;
+  border-bottom: none;
+  border-radius: 0px;
+}
+@media (max-width: 767px) {
+  .post-alert{
+    font-size: 50px;
+    padding-top: 10px;
+  }
+
+  .alert-text{
+    display: none;
+  }
 }
