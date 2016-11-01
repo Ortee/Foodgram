@@ -22,7 +22,7 @@ router.get('/api/author', function (req, res, next) {
 });
 
 // Get all food
-router.get('/api/foods', function (req, res, next) {
+router.get('/', function (req, res, next) {
   db.any(
     'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" ORDER BY created_at DESC')
     .then(function (data) {
@@ -46,7 +46,7 @@ router.get('/api/foods', function (req, res, next) {
 });
 
 // Get single food
-router.get('/api/foods/:id', function (req, res, next) {
+router.get('/:id', function (req, res, next) {
   var _id = req.params.id;
   db.any(
     'SELECT username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" WHERE ID = $1',_id)
@@ -71,7 +71,7 @@ router.get('/api/foods/:id', function (req, res, next) {
 
 
 // Save food
-router.post('/api/foods', function (req, res, next){
+router.post('/', function (req, res, next){
   req.accepts('application/json');
   var NewFood = new Food( 0,
     req.body[0].uuid,
@@ -102,7 +102,7 @@ router.post('/api/foods', function (req, res, next){
 });
 
 // Update food
-router.put('/api/foods', function(req, res, next){
+router.put('/', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   var UpdatedFood = new Food(
@@ -135,7 +135,7 @@ router.put('/api/foods', function(req, res, next){
 });
 
 // Update food description
-router.put('/api/foods/description', function(req, res, next){
+router.put('/description', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -153,7 +153,7 @@ router.put('/api/foods/description', function(req, res, next){
 });
 
 // Update food hashtags
-router.put('/api/foods/hashtags', function(req, res, next){
+router.put('/hashtags', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -171,7 +171,7 @@ router.put('/api/foods/hashtags', function(req, res, next){
 });
 
 // Update food photo
-router.put('/api/foods/photo', function(req, res, next){
+router.put('/photo', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE "uuid" = $1',
@@ -189,7 +189,7 @@ router.put('/api/foods/photo', function(req, res, next){
 });
 
 // Update food likes
-router.put('/api/foods/likes', function(req, res, next){
+router.put('/likes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "likes" = "likes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
@@ -205,7 +205,7 @@ router.put('/api/foods/likes', function(req, res, next){
    })
 });
 
-router.put('/api/foods/likes/decrement', function(req, res, next){
+router.put('/likes/decrement', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "likes" = "likes" - 1, "updated_at" = $2 WHERE "uuid" = $1',
@@ -222,7 +222,7 @@ router.put('/api/foods/likes/decrement', function(req, res, next){
 });
 
 // Update food dislikes
-router.put('/api/foods/dislikes', function(req, res, next){
+router.put('/dislikes', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "dislikes" = "dislikes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
@@ -239,7 +239,7 @@ router.put('/api/foods/dislikes', function(req, res, next){
    })
 });
 
-router.put('/api/foods/dislikes/decrement', function(req, res, next){
+router.put('/dislikes/decrement', function(req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.query('UPDATE "Food" SET "dislikes" = "dislikes" - 1, "updated_at" = $2 WHERE "uuid" = $1',
@@ -257,7 +257,7 @@ router.put('/api/foods/dislikes/decrement', function(req, res, next){
 });
 
 // Delete food
-router.delete('/api/foods', function (req, res, next){
+router.delete('/', function (req, res, next){
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   db.none('DELETE FROM "Food" WHERE "uuid" = $1', _id)
