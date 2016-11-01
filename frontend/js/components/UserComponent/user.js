@@ -9,7 +9,6 @@ class User extends Component {
   componentDidMount() {
   }
   render = () => {
-    console.log(this.props.params.name);
     return (
       <section className="user">
         <Col xs={{ size: 10, offset: 1}} id="information">
@@ -21,7 +20,7 @@ class User extends Component {
           </Col>
           <Col xs={{ size: 8}}>
             <Col>
-              <span className="username">AwesomeBurgers</span>
+              <span className="username">{this.props.params.name}</span>
             </Col>
             <Col>
             <i className="fa fa-heart-o fa-lg" aria-hidden="true"/><span className="info">50</span>
