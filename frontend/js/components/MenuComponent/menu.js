@@ -21,12 +21,12 @@ class Menu extends Component {
           </NavbarBrand>
           <Nav className="pull-xs-right" navbar>
             <NavItem>
-              <Link className="menu-icon-right" to={'/'}>
+              <Link className="menu-icon-right" to={'/login'}>
                 <i className="fa fa-compass fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="menu-icon-right" to={'/author'}>
+              <Link className="menu-icon-right" to={'/user/myusername'}>
                 <i className="fa fa-heart-o fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
