@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fallback = require('express-history-api-fallback');
 
-const root = path.join(__dirname,'/../public/');
+const root = path.join(__dirname, '/../public/');
 
 var foods = require('./routes/foods');
 var restaurants = require('./routes/restaurants');

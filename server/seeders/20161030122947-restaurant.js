@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  up: function (queryInterface, Sequelize) {
+  up: function(queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Restaurant', [
       {
         rest_name: 'Pastwisko',
@@ -10,8 +10,8 @@ module.exports = {
         password: 'pastwisko',
         avatar: 'pastwisko.jpg',
         description: 'super opis pastwiska',
-        created_at:'2016-10-14T20:31:40.000Z',
-        updated_at:'2016-10-14T20:31:40.000Z'
+        created_at: '2016-10-14T20:31:40.000Z',
+        updated_at: '2016-10-14T20:31:40.000Z'
       },
       {
         rest_name: 'Fat Bob Burger',
@@ -20,14 +20,15 @@ module.exports = {
         password: 'fatbob',
         avatar: 'fatbob.jpg',
         description: 'super opis fat boba',
-        created_at:'2016-10-14T20:31:40.000Z',
-        updated_at:'2016-10-14T20:31:40.000Z'
+        created_at: '2016-10-14T20:31:40.000Z',
+        updated_at: '2016-10-14T20:31:40.000Z'
       }
     ], {});
   },
 
-  down: function (queryInterface, Sequelize) {
+  down: function(queryInterface, Sequelize) {
     return queryInterface.bulkDelete('Restaurants', null, {});
   }
 };
+
 
