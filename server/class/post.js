@@ -4,10 +4,10 @@ module.exports =
       this.name = name;
       this.content = content;
     }
-    getName(){
+    getName() {
       return this.name;
     }
-    getContent(){
+    getContent() {
       return this.content;
     }
-  }
+  };
