@@ -26,10 +26,11 @@
   a{
     color: #262626;
   }
-  li:hover{
-    border-left: 1px solid #dbdbdb;
-  }
   li:active{
+    border-left: 1px solid #262626;
+    font-weight: 600;
+  }
+  .active{
     border-left: 1px solid #262626;
     font-weight: 600;
   }
