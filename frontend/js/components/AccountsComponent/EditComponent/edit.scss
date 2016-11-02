@@ -1,0 +1,32 @@
+.edit{
+  #information{
+    margin-top: 20px;
+  }
+  .img-thumbnail{
+    border-radius: 50%;
+  }
+  #username{
+    font-size: 24px;
+    font-weight: 400px;
+    line-height: 38px;
+    padding-top: 10px;
+  }
+  #edit-section{
+    margin-top: 40px;
+    padding-left: 0;
+    text-align: center;
+  }
+  .input-text{
+    text-align: right;
+    font-size: 16px;
+    color: #262626;
+    font-weight: 500;
+    padding-top: 3px;
+  }
+  .editInput{
+    padding-bottom: 50px;
+  }
+  .auth-button{
+    width: 75%;
+  }
+}

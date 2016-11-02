@@ -10,6 +10,7 @@ class Accounts extends Component {
   componentDidMount() {
   }
   render = () => {
+    console.log(this.props);
     return (
       <section className="accounts">
         <Col xs={{size: 10, offset: 1}} id="main">

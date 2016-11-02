@@ -11,8 +11,8 @@ import Register from './components/RegisterComponent/register';
 import Login from './components/LoginComponent/login';
 import User from './components/UserComponent/user';
 import Accounts from './components/AccountsComponent/accounts';
-import Photo from './components/AccountsComponent/photo';
-import Edit from './components/AccountsComponent/edit';
+import Photo from './components/AccountsComponent/PhotoComponent/photo';
+import Edit from './components/AccountsComponent/EditComponent/edit';
 import NotFound from './components/NotFoundComponent/notfound';
 
 
