@@ -10,19 +10,20 @@ class Accounts extends Component {
   componentDidMount() {
   }
   render = () => {
-    console.log(this.props);
     return (
       <section className="accounts">
-        <Col xs={{size: 10, offset: 1}} id="main">
-          <Col xs={{size: 3}} id="menu">
-            <ul>
-              <li><Link style={{ textDecoration: 'none' }} to={'/accounts/photo'}>Add photo</Link></li>
-              <li><Link style={{ textDecoration: 'none' }} to={'/accounts/edit'}>Edit profile</Link></li>
-              <li><Link style={{ textDecoration: 'none' }} to={'/accounts/password'}>Change password</Link></li>
-            </ul>
-          </Col>
-          <Col xs={{size: 9}} id="content">
-            { React.cloneElement(this.props.children.props.children, this.props) }
+        <Col>
+          <Col xs={{size: 12}} lg={{size: 10, offset: 1}} id="main">
+            <Col xs={{size: 3}} id="menu">
+              <ul>
+                <Link style={{ textDecoration: 'none' }} to={'/accounts/photo'}><li>Add photo</li></Link>
+                <Link style={{ textDecoration: 'none' }} to={'/accounts/edit'}><li>Edit profile</li></Link>
+                <Link style={{ textDecoration: 'none' }} to={'/accounts/password'}><li>Change password</li></Link>
+              </ul>
+            </Col>
+            <Col xs={{size: 9}} id="content">
+              { React.cloneElement(this.props.children.props.children, this.props) }
+            </Col>
           </Col>
         </Col>
       </section>

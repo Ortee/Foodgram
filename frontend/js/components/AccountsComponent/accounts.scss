@@ -2,8 +2,8 @@
   #main{
     margin-top: 60px;
     border: 1px solid #dbdbdb;
-    border-radius: 3px;
     padding-left: 0;
+    padding-right: 0;
   }
   #menu{
     border-right: 1px solid #dbdbdb;
@@ -32,5 +32,18 @@
   li:active{
     border-left: 1px solid #262626;
     font-weight: 600;
+  }
+  @media(max-width: 991px){
+    #main{
+      margin-top: 20px;
+    }
+    li{
+      font-size: 10px;
+      border-bottom: 1px solid #dbdbdb;
+      height: 75px;
+      padding-right: 0;
+      padding-left: 0;
+      text-align: center;
+    }
   }
 }
