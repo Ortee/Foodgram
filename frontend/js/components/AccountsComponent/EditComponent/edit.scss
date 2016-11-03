@@ -1,0 +1,19 @@
+.edit{
+  #edit-section{
+    margin-top: 40px;
+    text-align: center;
+  }
+  .auth-button{
+    width: 40%;
+  }
+  @media(max-width: 991px){
+    #edit-section{
+      margin-top: 20px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .auth-button{
+      width: 100%;
+    }
+  }
+}

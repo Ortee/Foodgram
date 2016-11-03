@@ -10,6 +10,10 @@ import Foods from './components/FoodComponent/foods';
 import Register from './components/RegisterComponent/register';
 import Login from './components/LoginComponent/login';
 import User from './components/UserComponent/user';
+import Accounts from './components/AccountsComponent/accounts';
+import Photo from './components/AccountsComponent/PhotoComponent/photo';
+import Edit from './components/AccountsComponent/EditComponent/edit';
+import Password from './components/AccountsComponent/PasswordComponent/password';
 import NotFound from './components/NotFoundComponent/notfound';
 
 
@@ -25,6 +29,11 @@ ReactDOM.render(
           <Route path="/login" name="login" component={Login}/>
         </Route>
         <Route path="/user/:name" name="user" component={User}/>
+        <Route component={Accounts}>
+          <Route path="/accounts/photo" name="photo" component={Photo}/>
+          <Route path="/accounts/edit" name="edit" component={Edit}/>
+          <Route path="/accounts/password" name="password" component={Password}/>
+        </Route>
         <Route path="*" component={NotFound} />
       </Route>
     </Router>
