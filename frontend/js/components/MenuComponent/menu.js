@@ -21,7 +21,7 @@ class Menu extends Component {
           </NavbarBrand>
           <Nav className="pull-xs-right" navbar>
             <NavItem>
-              <Link className="menu-icon-right" to={'/login'}>
+              <Link className="menu-icon-right" to={'/accounts/photo'}>
                 <i className="fa fa-compass fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
