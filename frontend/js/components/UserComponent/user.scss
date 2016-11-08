@@ -1,0 +1,62 @@
+.user{
+  #information{
+    padding-top: 60px;
+  }
+  #logo{
+    text-align: center;
+    height: 150px;
+  }
+  .img-logo{
+    border-radius: 50%;
+  }
+  #images{
+    padding-top: 40px;
+    text-align: center;
+  }
+  .image{
+    padding-bottom: 30px;
+  }
+  .username{
+    font-size: 30px;
+    font-weight: 600;
+  }
+  .info{
+    font-size: 18px;
+    margin-left: 5px;
+    margin-right: 10px;
+  }
+  #line{
+    display: none;
+  }
+  @media(max-width: 450px){
+    #information{
+      padding-top: 15px;
+      margin-bottom: 20px;
+    }
+    .info{
+      font-size: 15px;
+    }
+    .username{
+      font-size: 18px;
+    }
+    .description{
+      display: none;
+    }
+    .image{
+      padding-bottom: 5px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+    #images{
+      padding-top: 0px;
+    }
+    #logo{
+      height: 0px;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    #line{
+      display: block;
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { Col } from 'reactstrap';
 import cookie from 'react-cookie';
 
@@ -39,7 +40,10 @@ class Food extends Component {
         <Col className="food-title">
           <i className="fa fa-cutlery" aria-hidden="true" />
           <span className="food-title-text">
-            {this.props.food.username}
+            <Link style={{ textDecoration: 'none', color: '#373a3c' }}
+                  to={`/user/${this.props.food.username.toLowerCase()}`}>
+                    {this.props.food.username}
+            </Link>
           </span>
         </Col>
         <Col className="food-photo">

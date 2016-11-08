@@ -1,0 +1,21 @@
+#information-account{
+  margin-top: 20px;
+  .img-thumbnail{
+    border-radius: 50%;
+  }
+  #username{
+    font-size: 24px;
+    font-weight: 400px;
+    line-height: 38px;
+    padding-top: 10px;
+  }
+}
+@media(max-width: 991px){
+  #information-account{
+    padding: 0;
+    display: none;
+    .avatar{
+      display: none;
+    }
+  }
+}
