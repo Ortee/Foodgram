@@ -21,6 +21,12 @@ $ cd docker-express-postgresql-react-starter
 $ npm install
 ```
 ## Usage
+FIRST RUN
+```
+$ npm install
+$ docker-compose up
+$ ./setup.sh      <-in another console
+```
 START
 ```
 $ docker-compose up
