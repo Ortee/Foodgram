@@ -5,17 +5,15 @@ export default (Component) => {
   class Authenticate extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-        isAuthenticated: true,
-      };
     }
     componentWillMount = () => {
-      this.checkAuth(this.state.isAuthenticated);
+      this.checkAuth(this.props.auth.isAuthenticated);
+      console.log('this.props.auth',this.props.auth);
     }
     render = () => {
       return (
         <div>
-          {this.state.isAuthenticated === true
+          {this.props.auth.isAuthenticated === true
               ? <Component {...this.props}/>
               : null
           }
@@ -30,8 +28,7 @@ export default (Component) => {
   }
 
   Authenticate.propTypes =  {
+    auth: React.PropTypes.object,
   };
   return Authenticate;
 };
-
-// export default requireAuthentication;

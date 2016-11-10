@@ -1,6 +1,8 @@
 import req from 'superagent';
 import uuid from 'node-uuid';
 import cookie from 'react-cookie';
+import { browserHistory } from 'react-router';
+import jwtDecode from 'jwt-decode';
 
 export function showFoods() {
   const request = req
@@ -135,13 +137,17 @@ export function login(_login, _password) {
   const request = req.post('/api/login')
   .set('Content-type', 'application/json');
   return (dispatch) => {
+    dispatch(loginUserRequest());
     request.send([{
       login: _login, password: _password,
     }])
     .end((err, res) => {
       if (err || !res.ok) {
+        dispatch(loginUserFailure(err));
         dispatch(addAlert('Incorrect login or password !', 'danger'));
       } else {
+        console.log(res);
+        dispatch(loginUserSuccess(res.token));
         dispatch(addAlert('You are logged in !', 'success'));
       }
     });
@@ -158,5 +164,35 @@ export function removeAlert(id) {
   return {
     type: 'REMOVE_ALERT',
     id,
+  };
+}
+
+export function loginUserRequest() {
+  return (dispatch) => {
+    dispatch({ type: 'LOGIN_USER_REQUEST' });
+  };
+}
+
+export function loginUserSuccess(token) {
+  browserHistory.pushState(`/profile/${jwtDecode(token).name.toLowerCase()}`);
+  return (dispatch) => {
+    dispatch({ type: 'LOGIN_USER_SUCCESS', payload: { token: token }});
+  };
+}
+
+export function logout() {
+  browserHistory.push('/');
+  return (dispatch) => {
+    dispatch({ type: 'LOGOUT_USER' });
+  };
+}
+
+export function loginUserFailure(error) {
+  return (dispatch) => {
+    dispatch({ type: 'LOGIN_USER_FAILURE', payload: {
+      status: error.response.status,
+      statusText: error.response.statusText,
+    },
+    });
   };
 }

@@ -28,7 +28,8 @@ ReactDOM.render(
           <Route path="/register" name="register" component={Register}/>
           <Route path="/login" name="login" component={Login}/>
         </Route>
-        <Route path="/user/:name" name="user" component={requireAuthentication(User)}/>
+        <Route path="/profile/:name" name="user" component={requireAuthentication(User)}/>
+        <Route path="/user/:name" name="user" component={User}/>
         <Route component={requireAuthentication(Accounts)}>
           <Route path="/accounts/photo" name="photo" component={Photo}/>
           <Route path="/accounts/edit" name="edit" component={Edit}/>
