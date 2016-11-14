@@ -18,7 +18,7 @@ class UserInformations extends Component {
                 src="https://static1.squarespace.com/static/55355f2fe4b0bb1e28857a4c/56991220fb36b1a2d2c69b9a/56991220a976afc919db1f65/1452872520958/MealPlans.png?format=300w"/>
         </Col>
         <Col xs={{size: 12}} md={{size: 8}} id="username">
-          <span>Username</span>
+          <span>{this.props.auth.rest_name}</span>
         </Col>
       </Col>
     );
@@ -26,6 +26,7 @@ class UserInformations extends Component {
 }
 
 UserInformations.propTypes = {
+  auth: React.PropTypes.object,
 };
 
 export default UserInformations;

@@ -13,7 +13,7 @@ class Edit extends Component {
   render = () => {
     return (
       <article className="edit">
-        <UserInformations/>
+        <UserInformations {...this.props}/>
         <Col id="edit-section">
           <form ref="editForm" className="form-inline">
             <AccountsInput text="Restaurant Name" type="text" refer="username" placeholder="AwesomeBugers"/>

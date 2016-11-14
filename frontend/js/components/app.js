@@ -8,6 +8,7 @@ function mapStateToProps(state) {
     alerts: state.alerts,
     foods: state.foods,
     auth: state.auth,
+    user: state.user,
   };
 }
 
