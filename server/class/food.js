@@ -1,6 +1,6 @@
 module.exports =
   class Food {
-    constructor (id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at) {
+    constructor(id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at) {
       this.id = id;
       this.uuid = uuid;
       this.username = username;
@@ -12,34 +12,34 @@ module.exports =
       this.created_at = created_at;
       this.updated_at = updated_at;
     }
-    getId(){
+    getId() {
       return this.id;
     }
-    getUuid(){
+    getUuid() {
       return this.uuid;
     }
-    getUsername(){
+    getUsername() {
       return this.username;
     }
-    getDescription(){
+    getDescription() {
       return this.description;
     }
-    getHashtags(){
+    getHashtags() {
       return this.hashtags;
     }
-    getPhoto(){
+    getPhoto() {
       return this.photo;
     }
-    getLikes(){
+    getLikes() {
       return this.likes;
     }
-    getDislikes(){
+    getDislikes() {
       return this.dislikes;
     }
-    getCreatedAt(){
+    getCreatedAt() {
       return this.created_at;
     }
-    getUpdatedAt(){
+    getUpdatedAt() {
       return this.updated_at;
     }
-  }
+  };
