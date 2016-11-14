@@ -17,18 +17,21 @@ class User extends Component {
           <img  className="img-thumbnail img-logo"
                 height="150px"
                 width="150px"
-                src="http://prezibase.com/wp-content/uploads/2016/02/food-clock-time-diet-meal-eating-health-fitness-prezi-templates.jpg"/>
+                src={this.props.user.avatar}/>
           </Col>
           <Col xs={{ size: 8}}>
             <Col>
-              {/* <span className="username">{this.props.user.rest_name}</span> */}
+              <span className="username">{this.props.user.rest_name}</span>
             </Col>
             <Col>
             <i className="fa fa-heart-o fa-lg" aria-hidden="true"/><span className="info">50</span>
             <i className="fa fa-frown-o fa-lg" aria-hidden="true"/><span className="info">20</span>
             </Col>
             <Col className="description">
-              {/* {this.props.user.description} */}
+              {this.props.user.address}
+            </Col>
+            <Col className="description">
+              {this.props.user.description}
             </Col>
           </Col>
         </Col>

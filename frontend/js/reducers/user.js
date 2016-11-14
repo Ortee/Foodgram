@@ -7,16 +7,13 @@ function user(state = {
 }, action) {
   switch (action.type) {
   case 'GET_USER' :
-    if (action.res === true) {
-      return Object.assign({}, state, {
-        'login': action.payload.login,
-        'rest_name': action.payload.rest_name,
-        'description': action.payload.description,
-        'avatar': action.payload.avatar,
-        'address': action.payload.address,
-      });
-    }
-    return state;
+    return Object.assign({}, state, {
+      'login': action.payload.login,
+      'rest_name': action.payload.rest_name,
+      'description': action.payload.description,
+      'avatar': action.payload.avatar,
+      'address': action.payload.address,
+    });
   default:
     return state;
   }

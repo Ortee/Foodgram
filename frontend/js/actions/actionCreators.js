@@ -204,7 +204,7 @@ export function getUser(_login) {
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
-      dispatch({ type: 'GET_USER', payload: response.body });
+      dispatch({ type: 'GET_USER', payload: response.body[0] });
     });
   };
 }
