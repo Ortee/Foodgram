@@ -19,7 +19,7 @@ function auth(
       'isAuthenticating': false,
       'isAuthenticated': true,
       'token': action.payload.token,
-      'login': jwtDecode(action.payload.token).name,
+      'rest_name': jwtDecode(action.payload.token).rest_name,
       'statusText': 'You have been successfully logged in.',
     });
   case 'LOGIN_USER_FAILURE':

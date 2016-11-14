@@ -174,7 +174,7 @@ export function loginUserRequest() {
 }
 
 export function loginUserSuccess(token) {
-  browserHistory.pushState(`/profile/${jwtDecode(token).name.toLowerCase()}`);
+  browserHistory.pushState(`/profile/${jwtDecode(token).rest_name.replace(' ', '').toLowerCase()}`);
   return (dispatch) => {
     dispatch({ type: 'LOGIN_USER_SUCCESS', payload: { token: token }});
   };
