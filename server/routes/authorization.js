@@ -8,13 +8,20 @@ const db = pgp(process.env[config.use_env_variable]);
 var passport = require('passport');
 var jwt = require('jwt-simple');
 
-var tokenSecret = 'topsecret';
+
 
 router.post('/login',
   passport.authenticate('local', { failureRedirect: '/login', session: false }),
   function(req, res) {
-    var token = jwt.encode(req.user, tokenSecret);
+    var token = jwt.encode(req.user, config.tokenSecret);
     res.json({ token: token });
+  });
+
+// tmp route for bearer strategy test
+router.get('/profile', passport.authenticate('bearer', {session: false}),
+  function(req, res) {
+    var user = req.user;
+    res.send(user);
   });
 
 module.exports = router;

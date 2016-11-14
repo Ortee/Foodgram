@@ -1,11 +1,14 @@
 {
   "development": {
-    "use_env_variable": "CONNECTION_STRING_DEV"
+    "use_env_variable": "CONNECTION_STRING_DEV",
+    "tokenSecret": "topsecret"
   },
   "test": {
-    "use_env_variable": "CONNECTION_STRING_TEST"
+    "use_env_variable": "CONNECTION_STRING_TEST",
+    "tokenSecret": "topsecret"
   },
   "production": {
-    "use_env_variable": "CONNECTION_STRING_PROD"
+    "use_env_variable": "CONNECTION_STRING_PROD",
+    "tokenSecret": "topsecret"
   }
 }
