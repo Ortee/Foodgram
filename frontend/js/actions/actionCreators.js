@@ -138,7 +138,7 @@ export function login(_login, _password) {
   .set('Accept', 'application/json');
   return (dispatch) => {
     dispatch(loginUserRequest());
-    request.type('from')
+    request.type('form')
     .send({
       username: _login,
       password: _password,
@@ -148,7 +148,7 @@ export function login(_login, _password) {
         dispatch(loginUserFailure(err));
         dispatch(addAlert('Incorrect login or password !', 'danger'));
       } else {
-        dispatch(loginUserSuccess(res.token));
+        dispatch(loginUserSuccess(JSON.parse(res.text).token));
         dispatch(addAlert('You are logged in !', 'success'));
       }
     });

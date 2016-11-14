@@ -15,7 +15,7 @@ import Photo from './components/AccountsComponent/PhotoComponent/photo';
 import Edit from './components/AccountsComponent/EditComponent/edit';
 import Password from './components/AccountsComponent/PasswordComponent/password';
 import NotFound from './components/NotFoundComponent/notfound';
-import requireAuthentication from './components/AuthenticateComponent/Authenticate';
+import requireAuthentication from './components/AuthenticateComponent/authenticate';
 
 const app = document.getElementById('app');
 
