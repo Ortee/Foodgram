@@ -5,3 +5,4 @@ npm-debug.log
 tmp/
 bundle.js
 /tests/tests-bundle.js
+.vscode/
