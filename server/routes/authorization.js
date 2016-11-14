@@ -8,12 +8,22 @@ const db = pgp(process.env[config.use_env_variable]);
 var passport = require('passport');
 var jwt = require('jwt-simple');
 
+//classes
+var Restaurant = require('../class/restaurant');
 
 
 router.post('/login',
   passport.authenticate('local', { failureRedirect: '/login', session: false }),
   function(req, res) {
-    var token = jwt.encode(req.user, config.tokenSecret);
+    var user = new Restaurant(
+    req.user.id,
+    req.user.rest_name,
+    req.user.address,
+    0,
+    0,
+    req.user.avatar,
+    req.user.description, 0, 0);
+    var token = jwt.encode(user, config.tokenSecret);
     res.json({ token: token });
   });
 
