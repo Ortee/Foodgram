@@ -20,14 +20,14 @@ class User extends Component {
           </Col>
           <Col xs={{ size: 8}}>
             <Col>
-              <span className="username">{this.props.params.name}</span>
+              <span className="username">{this.props.auth.rest_name}</span>
             </Col>
             <Col>
             <i className="fa fa-heart-o fa-lg" aria-hidden="true"/><span className="info">50</span>
             <i className="fa fa-frown-o fa-lg" aria-hidden="true"/><span className="info">20</span>
             </Col>
             <Col className="description">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+              {this.props.auth.description}
             </Col>
           </Col>
         </Col>
@@ -53,6 +53,7 @@ class User extends Component {
 
 User.propTypes = {
   params: React.PropTypes.object,
+  auth: React.PropTypes.object,
 };
 
 export default User;
