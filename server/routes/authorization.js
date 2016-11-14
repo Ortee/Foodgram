@@ -19,7 +19,7 @@ router.post('/login',
     req.user.id,
     req.user.rest_name,
     req.user.address,
-    0,
+    req.user.login,
     0,
     req.user.avatar,
     req.user.description, 0, 0);
