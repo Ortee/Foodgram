@@ -9,6 +9,7 @@ class Menu extends Component {
     super(props);
   }
   render() {
+    const username = this.props.auth.login === null ? ' ' : this.props.auth.login.toLowerCase();
     return (
       <Navbar className="navbar-custom" fixed="top">
         <Alerts {...this.props} />
@@ -26,12 +27,12 @@ class Menu extends Component {
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="menu-icon-right" to={'/user/myusername'}>
+              <Link className="menu-icon-right" to={`/profile/${username}`}>
                 <i className="fa fa-heart-o fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="menu-icon-right" to={'/register'}>
+              <Link className="menu-icon-right" to={`/profile/${username}`}>
                 <i className="fa fa-user fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
@@ -41,5 +42,9 @@ class Menu extends Component {
     );
   }
 }
+
+Menu.propTypes = {
+  auth: React.PropTypes.object,
+};
 
 export default Menu;
