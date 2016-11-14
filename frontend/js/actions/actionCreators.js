@@ -134,19 +134,20 @@ export function register(_email, _username, _login, _password) {
 }
 
 export function login(_login, _password) {
-  const request = req.post('/api/login')
-  .set('Content-type', 'application/json');
+  const request = req.post('/login')
+  .set('Accept', 'application/json');
   return (dispatch) => {
     dispatch(loginUserRequest());
-    request.send([{
-      login: _login, password: _password,
-    }])
+    request.type('from')
+    .send({
+      username: _login,
+      password: _password,
+    })
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch(loginUserFailure(err));
         dispatch(addAlert('Incorrect login or password !', 'danger'));
       } else {
-        console.log(res);
         dispatch(loginUserSuccess(res.token));
         dispatch(addAlert('You are logged in !', 'success'));
       }
