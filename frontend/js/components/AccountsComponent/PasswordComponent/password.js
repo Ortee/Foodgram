@@ -13,7 +13,7 @@ class Password extends Component {
   render = () => {
     return (
       <article className="password">
-        <UserInformations/>
+        <UserInformations {...this.props}/>
         <Col id="password-section">
           <form ref="passwordForm" className="form-inline">
             <AccountsInput text="Old password" type="password" refer="username"/>

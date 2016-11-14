@@ -13,7 +13,7 @@ class Photo extends Component {
   render = () => {
     return (
       <article className="photo">
-        <UserInformations/>
+        <UserInformations {...this.props}/>
         <Col id="photo-section">
           <form ref="photoForm" className="form-inline">
             <AccountsInput text="Upload picture" type="file" refer="image" accept="image/*"/>
