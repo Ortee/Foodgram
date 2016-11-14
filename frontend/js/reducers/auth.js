@@ -4,6 +4,10 @@ function auth(
   state = {
     token: null,
     login: null,
+    rest_name: null,
+    description: null,
+    avatar: null,
+    address: null,
     isAuthenticated: false,
     isAuthenticating: false,
     statusText: null,
@@ -15,11 +19,16 @@ function auth(
       'statusText': null,
     });
   case 'LOGIN_USER_SUCCESS':
+    const token = jwtDecode(action.payload.token);
     return Object.assign({}, state, {
       'isAuthenticating': false,
       'isAuthenticated': true,
       'token': action.payload.token,
-      'rest_name': jwtDecode(action.payload.token).rest_name,
+      'login': token.login,
+      'rest_name': token.rest_name,
+      'description': token.description,
+      'avatar': token.avatar,
+      'address': token.address,
       'statusText': 'You have been successfully logged in.',
     });
   case 'LOGIN_USER_FAILURE':
@@ -28,6 +37,10 @@ function auth(
       'isAuthenticated': false,
       'token': null,
       'login': null,
+      'rest_name': null,
+      'description': null,
+      'avatar': null,
+      'address': null,
       'statusText': `Authentication Error: ${action.payload.status} ${action.payload.statusText}`,
     });
   case 'LOGOUT_USER':
@@ -35,6 +48,10 @@ function auth(
       'isAuthenticated': false,
       'token': null,
       'login': null,
+      'rest_name': null,
+      'description': null,
+      'avatar': null,
+      'address': null,
       'statusText': 'You have been successfully logged out.',
     });
   default:
