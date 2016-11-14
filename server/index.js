@@ -6,8 +6,11 @@ const fallback = require('express-history-api-fallback');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
 var logger = require('morgan');
+var jwt = require('jwt-simple');
 
+var tokenSecret = 'topsecret';
 var Restaurant = require('./models').Restaurant;
 
 passport.use(new Strategy(
@@ -23,68 +26,65 @@ passport.use(new Strategy(
     });
   }
 ));
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
 
-passport.deserializeUser(function(id, done) {
-  Restaurant.find({where: {id: id}}).then(function(user) {
-    done(null, user);
-  }).error(function(err) {
-    done(err, null);
-  });
-});
+passport.use(new BearerStrategy(
+    function(token, done) {
+      try {
+        var decoded = jwt.decode(token, tokenSecret);
 
-// Configure view engine to render EJS templates.
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+        Restaurant.find({ where: { login: decoded.login } }).then(function(user) {
+          if (!user) {
+            return done(null, false);
+          } else {
+            return done(null, user);
+          }
+        });
+      } catch (err) {
+        return done(null, false);
+      }
+    }
+));
+
 app.use(logger('dev'));
-app.use(require('cookie-parser')());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(require('express-session')({ secret: 'supersecret', resave: false, saveUninitialized: false }));
 
-// const root = path.join(__dirname, '/../public/');
+const root = path.join(__dirname, '/../public/');
 
 var foods = require('./routes/foods');
 var restaurants = require('./routes/restaurants');
+var authorization = require('./routes/authorization');
 
-// app.use(express.static(root));
-// app.use(fallback('index.html', {root: root}));
+app.use(express.static(root));
+app.use(fallback('index.html', {root: root}));
 
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Define routes.
-app.get('/',
-  function(req, res) {
-    console.log('IFAUTH: ', req.isAuthenticated());
-    res.render('home', { user: req.user });
-  });
+// app.get('/',
+//   function(req, res) {
+//     res.render('home', { user: req.user });
+//   });
 
-app.get('/login',
-  function(req, res) {
-    res.render('login');
-  });
+// app.get('/login',
+//   function(req, res) {
+//     res.render('login');
+//   });
 
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
+// app.post('/login',
+//   passport.authenticate('local', { failureRedirect: '/login', session: false }),
+//   function(req, res) {
+//     var token = jwt.encode(req.user, tokenSecret);
+//     res.json({ token: token });
+//   });
 
-app.get('/logout',
-  function(req, res) {
-    req.logout();
-    res.redirect('/');
-  });
+// app.get('/profile', passport.authenticate('bearer', {session: false}),
+//   function(req, res) {
+//     var user = req.user;
+//     res.send(user);
+//   });
 
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res) {
-    res.render('profile', { user: req.user });
-  });
-
+app.use('/', authorization);
 app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
 
