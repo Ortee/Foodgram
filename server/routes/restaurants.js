@@ -9,6 +9,10 @@ const db = pgp(process.env[config.use_env_variable]);
 //classes
 var Restaurant = require('../class/restaurant');
 
+function getTimestamp() {
+  return new Date(new Date().getTime() + (new Date().getTimezoneOffset()
+    * 60000) + (3600000 * 2));
+}
 
 // Get all restaurants
 router.get('/', function(req, res, next) {
@@ -59,5 +63,76 @@ router.get('/:login', function(req, res, next) {
     });
 });
 
+// Update restaurant rest_name
+router.put('/rest_name', function(req, res, next) {
+  req.accepts('application/json');
+  var _id = req.body[0].login;
+  db.query('UPDATE "Restaurant" SET "rest_name" = $2, "updated_at" = $3 WHERE "login" = $1',
+    [
+      _id,
+      req.body[0].rest_name,
+      getTimestamp()
+    ])
+    .then(function() {
+      res.status(201).send();
+    })
+    .catch(function(error) {
+      res.status(404).send();
+    });
+});
+
+// Update restaurant address
+router.put('/address', function(req, res, next) {
+  req.accepts('application/json');
+  var _id = req.body[0].login;
+  db.query('UPDATE "Restaurant" SET "address" = $2, "updated_at" = $3 WHERE "login" = $1',
+    [
+      _id,
+      req.body[0].address,
+      getTimestamp()
+    ])
+    .then(function() {
+      res.status(201).send();
+    })
+    .catch(function(error) {
+      res.status(404).send();
+    });
+});
+
+// Update restaurant avatar
+router.put('/avatar', function(req, res, next) {
+  req.accepts('application/json');
+  var _id = req.body[0].login;
+  db.query('UPDATE "Restaurant" SET "avatar" = $2, "updated_at" = $3 WHERE "login" = $1',
+    [
+      _id,
+      req.body[0].avatar,
+      getTimestamp()
+    ])
+    .then(function() {
+      res.status(201).send();
+    })
+    .catch(function(error) {
+      res.status(404).send();
+    });
+});
+
+// Update restaurant description
+router.put('/description', function(req, res, next) {
+  req.accepts('application/json');
+  var _id = req.body[0].login;
+  db.query('UPDATE "Restaurant" SET "description" = $2, "updated_at" = $3 WHERE "login" = $1',
+    [
+      _id,
+      req.body[0].description,
+      getTimestamp()
+    ])
+    .then(function() {
+      res.status(201).send();
+    })
+    .catch(function(error) {
+      res.status(404).send();
+    });
+});
 
 module.exports = router;
