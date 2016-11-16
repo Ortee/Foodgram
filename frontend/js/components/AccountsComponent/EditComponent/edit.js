@@ -16,9 +16,9 @@ class Edit extends Component {
         <UserInformations {...this.props}/>
         <Col id="edit-section">
           <form ref="editForm" className="form-inline">
-            <AccountsInput text="Restaurant Name" type="text" refer="username" placeholder="AwesomeBugers"/>
-            <AccountsInput text="Description" type="text" refer="description" placeholder="Lorem ipsum"/>
-            <AccountsInput text="Restaurant Smth" type="text" refer="smth" placeholder="Smth text from db"/>
+            <AccountsInput text="Restaurant Name" type="text" refer="username" placeholder={this.props.auth.rest_name}/>
+            <AccountsInput text="Description" type="text" refer="description" placeholder={this.props.auth.description}/>
+            <AccountsInput text="Address" type="text" refer="smth" placeholder={this.props.auth.address}/>
             <Button type="submit" className="auth-button">Save</Button>
           </form>
         </Col>
@@ -27,9 +27,8 @@ class Edit extends Component {
   }
 }
 
-
-
 Edit.propTypes = {
+  auth: React.PropTypes.object,
 };
 
 export default Edit;

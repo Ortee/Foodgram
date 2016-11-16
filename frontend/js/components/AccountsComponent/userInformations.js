@@ -15,7 +15,7 @@ class UserInformations extends Component {
           <img  className="img-thumbnail"
                 height="75px"
                 width="75px"
-                src="https://static1.squarespace.com/static/55355f2fe4b0bb1e28857a4c/56991220fb36b1a2d2c69b9a/56991220a976afc919db1f65/1452872520958/MealPlans.png?format=300w"/>
+                src={this.props.auth.avatar}/>
         </Col>
         <Col xs={{size: 12}} md={{size: 8}} id="username">
           <span>{this.props.auth.rest_name}</span>
