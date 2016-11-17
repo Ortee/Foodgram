@@ -16,7 +16,8 @@ class Photo extends Component {
         <UserInformations {...this.props}/>
         <Col id="photo-section">
           <form ref="photoForm" className="form-inline">
-            <AccountsInput text="Upload picture" type="file" refer="image" accept="image/*"/>
+            {/* <AccountsInput text="Upload picture" type="file" refer="image" accept="image/*"/> */}
+            <AccountsInput text="Upload picture" type="text" refer="image" placeholder="Url to image"/>
             <AccountsInput text="Description" type="text" refer="description" placeholder="Picture description"/>
             <AccountsInput text="Hashtags" type="text" refer="hashtags" placeholder="#food"/>
             <Button type="submit" className="auth-button">Add</Button>

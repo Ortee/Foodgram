@@ -24,6 +24,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Foods} />
+        <Route path="/photo/:uuid" component={Foods} />
         <Route component={Auth}>
           <Route path="/register" name="register" component={Register}/>
           <Route path="/login" name="login" component={Login}/>

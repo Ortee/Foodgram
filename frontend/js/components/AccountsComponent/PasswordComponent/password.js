@@ -16,9 +16,9 @@ class Password extends Component {
         <UserInformations {...this.props}/>
         <Col id="password-section">
           <form ref="passwordForm" className="form-inline">
-            <AccountsInput text="Old password" type="password" refer="username"/>
-            <AccountsInput text="New password" type="password" refer="description"/>
-            <AccountsInput text="New password" type="password" refer="smth"/>
+            <AccountsInput text="Old password" type="password" refer="username" placeholder="Old password"/>
+            <AccountsInput text="New password" type="password" refer="description" placeholder="New password"/>
+            <AccountsInput text="New password" type="password" refer="smth" placeholder="New password"/>
             <Button type="submit" className="auth-button">Change password</Button>
           </form>
         </Col>

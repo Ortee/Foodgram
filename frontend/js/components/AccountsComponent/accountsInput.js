@@ -18,11 +18,15 @@ class AccountsInput extends Component {
                   placeholder={this.props.placeholder === undefined ? '' : this.props.placeholder}
                   accept={this.props.accept === undefined ? '' : this.props.accept}
                   className="form-control auth-input"
+                  onChange={this.handleChange}
           />
         </Col>
       </section>
     );
   };
+  handleChange = (evt) => {
+    this.props.onChange(evt.target.value);
+  }
 }
 
 AccountsInput.propTypes = {
@@ -31,6 +35,7 @@ AccountsInput.propTypes = {
   refer: React.PropTypes.string,
   text: React.PropTypes.string,
   accept: React.PropTypes.string,
+  onChange: React.PropTypes.func,
 };
 
 export default AccountsInput;

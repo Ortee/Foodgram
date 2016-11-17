@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router'
 import { Col } from 'reactstrap';
 import './user.scss';
 
@@ -41,7 +42,7 @@ class User extends Component {
         <Col xs={{ size: 10, offset: 1}} id="images">
           { [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map( (number, index) => {
             return (
-              <Col xs={{ size: 4}} key={index} className="image">
+              <Col xs={{ size: 4}} key={index} className="image" onClick={()=>{browserHistory.push(`/photo/${'cfa3fa30-9b83-11e6-84da-212055eb89db'}`);}}>
                 <img  className="img-thumbnail"
                       height="100%"
                       width="100%"
@@ -57,7 +58,8 @@ class User extends Component {
 
 User.propTypes = {
   params: React.PropTypes.object,
-  auth: React.PropTypes.object,
+  user: React.PropTypes.object,
+  getUser: React.PropTypes.func,
 };
 
 export default User;

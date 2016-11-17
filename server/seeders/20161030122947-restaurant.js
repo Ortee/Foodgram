@@ -8,7 +8,7 @@ module.exports = {
         address: 'Jaroczyńskiego 22, Poznan',
         login: 'pastwisko',
         password: 'pastwisko',
-        avatar: 'pastwisko.jpg',
+        avatar: 'http://images.franchising.pl/5de/48d/bb-logo.png',
         description: 'super opis pastwiska',
         created_at: '2016-10-14T20:31:40.000Z',
         updated_at: '2016-10-14T20:31:40.000Z'
@@ -18,7 +18,7 @@ module.exports = {
         address: 'Kramarska 21, Poznan',
         login: 'fatbob',
         password: 'fatbob',
-        avatar: 'fatbob.jpg',
+        avatar: 'https://s-media-cache-ak0.pinimg.com/736x/0c/a1/a9/0ca1a9e8436a2d50f669825487217b40.jpg',
         description: 'super opis fat boba',
         created_at: '2016-10-14T20:31:40.000Z',
         updated_at: '2016-10-14T20:31:40.000Z'
@@ -30,5 +30,3 @@ module.exports = {
     return queryInterface.bulkDelete('Restaurant', null, {});
   }
 };
-
-

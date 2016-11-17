@@ -54,6 +54,18 @@ function auth(
       'address': null,
       'statusText': 'You have been successfully logged out.',
     });
+  case 'EDIT_RESTNAME':
+    return Object.assign(state, {
+      'rest_name': action.payload.rest_name,
+    });
+  case 'EDIT_DESCRIPTION':
+    return Object.assign(state, {
+      'description': action.payload.description,
+    });
+  case 'EDIT_ADDRESS':
+    return Object.assign(state, {
+      'address': action.payload.address,
+    });
   default:
     return state;
   }
