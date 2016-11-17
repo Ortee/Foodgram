@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = function(sequelize, DataTypes) {
   var Food = sequelize.define('Food', {
     uuid: DataTypes.STRING,
@@ -11,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        this.belongsTo(models.Restaurant, {foreignKey: "restaurant_id"})
       }
     }
   });

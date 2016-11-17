@@ -11,6 +11,12 @@ module.exports = function (sequelize, DataTypes) {
     avatar: DataTypes.STRING,
     description: DataTypes.TEXT
   }, {
+    classMethods: {
+      associate: function(models) {
+        this.hasMany(models.Food, {foreignKey: "restaurant_id"})
+      }
+    },
+
     hooks: {
       beforeCreate: function (user, options, next) {
         bcrypt.genSalt(10, function (err, salt) {

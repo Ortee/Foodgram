@@ -3,10 +3,10 @@ module.exports = {
   up: function(queryInterface, Sequelize) {
     return queryInterface.createTable('Food', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        allowNull: false,
+        autoIncrement: true
       },
       uuid: {
         type: Sequelize.STRING,

@@ -3,10 +3,10 @@ module.exports = {
   up: function(queryInterface, Sequelize) {
     return queryInterface.createTable('Restaurant', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        allowNull: false,
+        autoIncrement: true
       },
       rest_name: {
         type: Sequelize.STRING,
@@ -45,7 +45,6 @@ module.exports = {
     });
   },
   down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Restaurants');
+    return queryInterface.dropTable('Restaurant');
   }
 };
-
