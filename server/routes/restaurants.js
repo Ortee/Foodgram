@@ -40,7 +40,15 @@ router.get('/:login', function(req, res, next) {
     where: {
       login: _login
     },
-    include: [{ model: models.Food }]
+    include: [
+      {
+        model: models.Food,
+        attributes: ['uuid', 'photo', 'updated_at']
+      }
+    ],
+    order: [
+      [ { model: models.Food }, 'updated_at', 'DESC' ]
+    ]
   })
     .then(function(data) {
       res.setHeader('Content-Type', 'application/json');
