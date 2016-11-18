@@ -10,11 +10,13 @@ module.exports = function(sequelize, DataTypes) {
     likes: DataTypes.INTEGER,
     dislikes: DataTypes.INTEGER
   }, {
+    underscored: true,
     classMethods: {
       associate: function(models) {
-        this.belongsTo(models.Restaurant, {foreignKey: "restaurant_id"})
+        this.belongsTo(models.Restaurant, { foreignKey: "restaurant_id" })
       }
     }
   });
+
   return Food;
 };

@@ -21,7 +21,8 @@ if (config.use_env_variable) {
 }
 
 sequelize.sync({
-  'force': true
+  force: true,
+  logging: console.log,
 })
 
 fs

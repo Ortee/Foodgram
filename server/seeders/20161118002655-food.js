@@ -1,9 +1,10 @@
 'use strict';
 
 module.exports = {
-  up: function(queryInterface, Sequelize) {
+  up: function (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Food', [
       {
+        restaurant_id: 1,
         uuid: 'cfa3fa30-9b83-11e6-84da-212055eb89db',
         username: 'AwesomeBurgers',
         description: 'Very tasty',
@@ -15,6 +16,7 @@ module.exports = {
         updated_at: '2016-10-14T20:31:40.000Z'
       },
       {
+        restaurant_id: 2,
         uuid: 'x7dafa30-9b83-11e6-84da-212055eb89db',
         username: 'NiceBurgers',
         description: 'Very tasty',
@@ -27,7 +29,7 @@ module.exports = {
       }
     ], {});
   },
-  down: function(queryInterface, Sequelize) {
+  down: function (queryInterface, Sequelize) {
     return queryInterface.bulkDelete('Food', null, {});
   }
 };
