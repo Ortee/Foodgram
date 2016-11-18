@@ -20,10 +20,12 @@ if (config.use_env_variable) {
     });
 }
 
-sequelize.sync({
-  force: true,
-  logging: console.log,
-})
+// Uncomment it only when you edit a migration or your seeder doesn't work 
+
+// sequelize.sync({
+//   force: true,
+//   logging: console.log,
+// })
 
 fs
   .readdirSync(__dirname)

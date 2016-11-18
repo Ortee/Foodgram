@@ -24,8 +24,8 @@ module.exports = {
         photo: 'http://dfep0xlbws1ys.cloudfront.net/thumbs2d/dd/2ddd2a4753463c2f396777f0c85502e2.jpg',
         likes: 53,
         dislikes: 23,
-        created_at: '2016-10-14T20:31:40.000Z',
-        updated_at: '2016-10-14T20:31:40.000Z'
+        created_at: '2010-10-14T20:31:40.000Z',
+        updated_at: '2010-10-14T20:31:40.000Z'
       }
     ], {});
   },

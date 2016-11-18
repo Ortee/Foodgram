@@ -5,7 +5,7 @@ const pgp = require('pg-promise')();
 const env = process.env.NODE_ENV || 'development';
 const config = require(path.join(__dirname, '/../config/config.json'))[env];
 const db = pgp(process.env[config.use_env_variable]);
-
+const models = require('../models');
 //classes
 var Food = require('../class/food');
 
@@ -16,26 +16,27 @@ function getTimestamp() {
 
 // Get all food
 router.get('/', function(req, res, next) {
-  db.any(
-    'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" ORDER BY created_at DESC')
-    .then(function(data) {
-      res.setHeader('Content-Type', 'application/json');
-      var Foods = data.map((elem) => new Food(
-        elem.id,
-        elem.uuid,
-        elem.username,
-        elem.description,
-        elem.hashtags,
-        elem.photo,
-        elem.likes,
-        elem.dislikes,
-        elem.created_at,
-        elem.updated_at));
-      res.json(Foods);
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+  models.Food.findAll({
+    order: [
+      ['created_at', 'DESC'],
+    ]
+  }).then(function(list) {
+    res.setHeader('Content-Type', 'application/json');
+    var Foods = list.map((elem) => new Food(
+      elem.id,
+      elem.uuid,
+      elem.username,
+      elem.description,
+      elem.hashtags,
+      elem.photo,
+      elem.likes,
+      elem.dislikes,
+      elem.created_at,
+      elem.updated_at));
+    res.json(Foods);
+  }).catch(function(error) {
+    res.status(404).send();
+  });
 });
 
 // Get single food
