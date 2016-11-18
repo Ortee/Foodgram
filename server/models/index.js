@@ -20,7 +20,7 @@ if (config.use_env_variable) {
     });
 }
 
-// Uncomment it only when you edit a migration or your seeder doesn't work 
+// Uncomment it only when you edit a migration or your seeder doesn't work
 
 // sequelize.sync({
 //   force: true,

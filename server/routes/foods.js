@@ -19,13 +19,14 @@ router.get('/', function(req, res, next) {
   models.Food.findAll({
     order: [
       ['created_at', 'DESC'],
-    ]
+    ],
+    include: [models.Restaurant]
   }).then(function(list) {
     res.setHeader('Content-Type', 'application/json');
     var Foods = list.map((elem) => new Food(
       elem.id,
       elem.uuid,
-      elem.username,
+      elem.Restaurant.rest_name,
       elem.description,
       elem.hashtags,
       elem.photo,
@@ -69,7 +70,6 @@ router.post('/', function(req, res, next) {
   req.accepts('application/json');
   var NewFood = new Food(0,
     req.body[0].uuid,
-    req.body[0].username,
     req.body[0].description,
     req.body[0].hashtags,
     req.body[0].photo,
@@ -77,16 +77,14 @@ router.post('/', function(req, res, next) {
     0,
     getTimestamp(),
     getTimestamp());
-  db.query('INSERT INTO "Food" ("uuid","username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7)',
-    [
-      NewFood.getUuid(),
-      NewFood.getUsername(),
-      NewFood.getDescription(),
-      NewFood.getHashtags(),
-      NewFood.getPhoto(),
-      NewFood.getCreatedAt(),
-      NewFood.getUpdatedAt()
-    ])
+  models.Food.create({
+    uuid: NewFood.getUuid(),
+    description: NewFood.getDescription(),
+    hashtags: NewFood.getHashtags(),
+    photo: NewFood.getPhoto(),
+    created_at: NewFood.getCreatedAt(),
+    updated_at: NewFood.getUpdatedAt()
+  }, {})
     .then(function() {
       res.status(201).send();
     })
