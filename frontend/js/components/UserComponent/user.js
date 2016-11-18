@@ -7,7 +7,7 @@ class User extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
+  componentWillMount() {
     this.props.getUser(this.props.params.name);
   }
   render = () => {
@@ -40,9 +40,9 @@ class User extends Component {
           <hr/>
         </Col>
         <Col xs={{ size: 10, offset: 1}} id="images">
-          { [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map( (number, index) => {
+          { this.props.user.foods.map((elem, index) => {
             return (
-              <Col xs={{ size: 4}} key={index} className="image" onClick={()=>{browserHistory.push(`/photo/${'cfa3fa30-9b83-11e6-84da-212055eb89db'}`);}}>
+              <Col xs={{ size: 4}} key={index} className="image" onClick={()=>{browserHistory.push(`/photo/${elem.uuid}`);}}>
                 <img  className="img-thumbnail"
                       height="100%"
                       width="100%"

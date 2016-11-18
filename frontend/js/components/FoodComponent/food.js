@@ -41,7 +41,7 @@ class Food extends Component {
           <i className="fa fa-cutlery" aria-hidden="true" />
           <span className="food-title-text">
             <Link style={{ textDecoration: 'none', color: '#373a3c' }}
-                  to={`/user/${this.props.food.username.toLowerCase()}`}>
+                  to={`/user/${this.props.food.login.toLowerCase()}`}>
                     {this.props.food.username}
             </Link>
           </span>
