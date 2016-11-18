@@ -9,9 +9,10 @@ class Edit extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      restName: '',
-      description: '',
-      address: '',
+      restName: null,
+      description: null,
+      address: null,
+      avatar: null,
     };
   }
   componentDidMount() {
@@ -22,6 +23,7 @@ class Edit extends Component {
         <UserInformations {...this.props}/>
         <Col id="edit-section">
           <form ref="editForm" onSubmit={this.handleSubmit} className="form-inline">
+            <AccountsInput onChange={this.updateAvatar} text="Avatar" type="text" refer="avatar" placeholder={this.props.auth.avatar}/>
             <AccountsInput onChange={this.updateRestName} text="Restaurant Name" type="text" refer="restName" placeholder={this.props.auth.rest_name}/>
             <AccountsInput onChange={this.updateDescription} text="Description" type="text" refer="description" placeholder={this.props.auth.description}/>
             <AccountsInput onChange={this.updateAddress} text="Address" type="text" refer="address" placeholder={this.props.auth.address}/>
@@ -36,6 +38,10 @@ class Edit extends Component {
     this.setState({restName: text});
   }
 
+  updateAvatar = (text) => {
+    this.setState({avatar: text});
+  }
+
   updateDescription = (text) => {
     this.setState({description: text});
   }
@@ -46,18 +52,20 @@ class Edit extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.state.restName.length !== 0 ? this.props.updateRestName(this.props.auth.login, this.state.restName) : ()=>{};
-    this.state.description.length !== 0 ? this.props.updateDescription(this.props.auth.login, this.state.description) : ()=>{};
-    this.state.address.length !== 0 ? this.props.updateAddress(this.props.auth.login, this.state.address) : ()=>{};
+    this.state.restName === null &&
+    this.state.description === null &&
+    this.state.avatar === null &&
+    this.state.address === null ?
+    this.props.addAlert('Fields are empty!', 'danger') :
+    this.props.update(this.props.auth.login, this.state);
     this.refs.editForm.reset();
   }
 }
 
 Edit.propTypes = {
   auth: React.PropTypes.object,
-  updateRestName: React.PropTypes.func,
-  updateDescription: React.PropTypes.func,
-  updateAddress: React.PropTypes.func,
+  update: React.PropTypes.func,
+  addAlert: React.PropTypes.func,
   user: React.PropTypes.object,
 };
 

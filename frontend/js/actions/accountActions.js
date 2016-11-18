@@ -1,57 +1,25 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
 
-export function updateRestName(login, restName) {
-  const request = req.put('/api/restaurants/rest_name')
+export function update(login, data) {
+  const request = req.put('/api/restaurants/update')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
       login: login,
-      rest_name: restName,
+      rest_name: data.restName,
+      address: data.address,
+      description: data.description,
+      avatar: data.avatar,
     }])
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch(addAlert('Error!', 'danger'));
       } else {
-        dispatch(editRestName(restName));
-        dispatch(addAlert('Successd !', 'success'));
-      }
-    });
-  };
-}
-
-export function updateDescription(login, description) {
-  const request = req.put('/api/restaurants/description')
-  .set('Content-type', 'application/json');
-  return (dispatch) => {
-    request.send([{
-      login: login,
-      description,
-    }])
-    .end((err, res) => {
-      if (err || !res.ok) {
-        dispatch(addAlert('Error!', 'danger'));
-      } else {
-        dispatch(editDescription(description));
-        dispatch(addAlert('Successd !', 'success'));
-      }
-    });
-  };
-}
-
-export function updateAddress(login, address) {
-  const request = req.put('/api/restaurants/address')
-  .set('Content-type', 'application/json');
-  return (dispatch) => {
-    request.send([{
-      login: login,
-      address,
-    }])
-    .end((err, res) => {
-      if (err || !res.ok) {
-        dispatch(addAlert('Error!', 'danger'));
-      } else {
-        dispatch(editAddress(address));
+        if (data.rest_name !== null) dispatch(editRestName(data.restName));
+        if (data.address !== null) dispatch(editAddress(data.address));
+        if (data.avatar !== null) dispatch(editAvatar(data.avatar));
+        if (data.description !== null) dispatch(editDescription(data.description));
         dispatch(addAlert('Successd !', 'success'));
       }
     });
@@ -78,6 +46,14 @@ function editAddress(address) {
   return (dispatch) => {
     dispatch({
       type: 'EDIT_ADDRESS', payload: { address },
+    });
+  };
+}
+
+function editAvatar(avatar) {
+  return (dispatch) => {
+    dispatch({
+      type: 'EDIT_AVATAR', payload: { avatar },
     });
   };
 }

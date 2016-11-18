@@ -2,7 +2,7 @@ import { showFoods, addFood, removeFood } from './foodActions';
 import { register, login, loginUserRequest, loginUserSuccess, logout, loginUserFailure, getUser} from './authActions';
 import { incrementLike, decrementLike, incrementDislike, decrementDislike } from './likeActions';
 import { addAlert, removeAlert } from './alertActions';
-import { updateRestName, updateDescription, updateAddress } from './accountActions';
+import { update } from './accountActions';
 
 export {
   showFoods,
@@ -21,7 +21,5 @@ export {
   decrementDislike,
   addAlert,
   removeAlert,
-  updateRestName,
-  updateDescription,
-  updateAddress,
+  update,
 };

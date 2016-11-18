@@ -66,6 +66,10 @@ function auth(
     return Object.assign(state, {
       'address': action.payload.address,
     });
+  case 'EDIT_AVATAR':
+    return Object.assign(state, {
+      'avatar': action.payload.avatar,
+    });
   default:
     return state;
   }
