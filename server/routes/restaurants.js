@@ -43,7 +43,7 @@ router.get('/:login', function(req, res, next) {
     include: [
       {
         model: models.Food,
-        attributes: ['uuid', 'photo', 'updated_at']
+        attributes: ['uuid', 'photo']
       }
     ],
     order: [
