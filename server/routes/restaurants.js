@@ -16,7 +16,6 @@ function getTimestamp() {
 
 // Get all restaurants
 router.get('/', function(req, res, next) {
-  console.log('leci');
   db.any(
     'SELECT id, rest_name, address, login, password, avatar, description, created_at, updated_at FROM "Restaurant" ORDER BY created_at DESC')
     .then(function(data) {
@@ -41,7 +40,6 @@ router.get('/', function(req, res, next) {
 // Get single restaurant
 router.get('/:login', function(req, res, next) {
   var _login = req.params.login;
-  console.log('leci2');
   db.any(
     'SELECT id, rest_name, address, login, password, avatar, description, created_at, updated_at FROM "Restaurant" WHERE login = $1', _login)
     .then(function(data) {
