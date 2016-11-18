@@ -36,21 +36,25 @@ router.get('/', function(req, res, next) {
 // Get single restaurant
 router.get('/:login', function(req, res, next) {
   var _login = req.params.login;
-  db.any(
-    'SELECT id, rest_name, address, login, password, avatar, description, created_at, updated_at FROM "Restaurant" WHERE login = $1', _login)
+  models.Restaurant.findOne({
+    where: {
+      login: _login
+    },
+    include: [{ model: models.Food }]
+  })
     .then(function(data) {
       res.setHeader('Content-Type', 'application/json');
-      var tmpRestaurant = data.map((elem) => new Restaurant(
+      var newRestaurant = new Restaurant(
         0,
-        elem.rest_name,
-        elem.address,
+        data.rest_name,
+        data.address,
         0,
         0,
-        elem.avatar,
-        elem.description,
-        0,
-        0));
-      res.json(tmpRestaurant);
+        data.avatar,
+        data.description,
+        data.Food
+      );
+      res.json(newRestaurant);
     })
     .catch(function(error) {
       res.status(404).send();

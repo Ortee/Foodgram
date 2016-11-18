@@ -1,6 +1,6 @@
 module.exports =
   class Restaurant {
-    constructor(id, rest_name, address, login, password, avatar, description, created_at, updated_at) {
+    constructor(id, rest_name, address, login, password, avatar, description, foods) {
       this.id = id;
       this.rest_name = rest_name;
       this.address = address;
@@ -8,8 +8,7 @@ module.exports =
       this.password = password;
       this.avatar = avatar;
       this.description = description;
-      this.created_at = created_at;
-      this.updated_at = updated_at;
+      this.foods = foods;
     }
     getId() {
       return this.id;
@@ -32,10 +31,7 @@ module.exports =
     getDescription() {
       return this.description;
     }
-    getCreatedAt() {
-      return this.created_at;
-    }
-    getUpdatedAt() {
-      return this.updated_at;
+    getFoods() {
+      return this.foods;
     }
   };

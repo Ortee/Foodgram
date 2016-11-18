@@ -20,20 +20,22 @@ router.get('/', function(req, res, next) {
     order: [
       ['created_at', 'DESC'],
     ],
-    include: [models.Restaurant]
-  }).then(function(list) {
+    include: [{ model: models.Restaurant, attributes: ['rest_name', 'login']}]
+  }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    var Foods = list.map((elem) => new Food(
+    var Foods = data.map((elem) => new Food(
       elem.id,
       elem.uuid,
       elem.Restaurant.rest_name,
+      elem.Restaurant.login,
       elem.description,
       elem.hashtags,
       elem.photo,
       elem.likes,
       elem.dislikes,
       elem.created_at,
-      elem.updated_at));
+      elem.updated_at
+    ));
     res.json(Foods);
   }).catch(function(error) {
     res.status(404).send();
