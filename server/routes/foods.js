@@ -43,27 +43,37 @@ router.get('/', function(req, res, next) {
 });
 
 // Get single food
-router.get('/:id', function(req, res, next) {
-  var _id = req.params.id;
-  db.any(
-    'SELECT username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" WHERE ID = $1', _id)
-    .then(function(data) {
-      res.setHeader('Content-Type', 'application/json');
-      var Foods = data.map((elem) => new Food(
-        elem.id,
-        elem.username,
-        elem.description,
-        elem.hashtags,
-        elem.photo,
-        elem.likes,
-        elem.dislikes,
-        elem.created_at,
-        elem.updated_at));
-      res.json(Foods);
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+router.get('/:uuid', function(req, res, next) {
+  var _uuid = req.params.uuid;
+  models.Food.findOne({
+    where: {
+      uuid: _uuid
+    },
+    include: [
+      {
+        model: models.Restaurant,
+        attributes: ['rest_name', 'login']
+      }
+    ]
+  }).then(function(data) {
+    res.setHeader('Content-Type', 'application/json');
+    var newFood = new Food(
+      data.id,
+      data.uuid,
+      data.Restaurant.rest_name,
+      data.Restaurant.login,
+      data.description,
+      data.hashtags,
+      data.photo,
+      data.likes,
+      data.dislikes,
+      data.created_at,
+      data.updated_at
+    );
+    res.json(newFood);
+  }).catch(function(error) {
+    res.status(404).send();
+  });
 });
 
 

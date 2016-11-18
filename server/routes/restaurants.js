@@ -10,29 +10,6 @@ const models = require('../models');
 //classes
 var Restaurant = require('../class/restaurant');
 
-// Get all restaurants
-router.get('/', function(req, res, next) {
-  db.any(
-    'SELECT id, rest_name, address, login, password, avatar, description, created_at, updated_at FROM "Restaurant" ORDER BY created_at DESC')
-    .then(function(data) {
-      res.setHeader('Content-Type', 'application/json');
-      var tmpRestaurant = data.map((elem) => new Restaurant(
-        0,
-        elem.rest_name,
-        elem.address,
-        0,
-        0,
-        elem.avatar,
-        elem.description,
-        0,
-        0));
-      res.json(tmpRestaurant);
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
-});
-
 // Get single restaurant
 router.get('/:login', function(req, res, next) {
   var _login = req.params.login;
