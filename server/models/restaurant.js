@@ -11,6 +11,13 @@ module.exports = function (sequelize, DataTypes) {
     avatar: DataTypes.STRING,
     description: DataTypes.TEXT
   }, {
+    underscored: true,
+    classMethods: {
+      associate: function(models) {
+        this.hasMany(models.Food, {foreignKey: "restaurant_id"})
+      }
+    },
+
     hooks: {
       beforeCreate: function (user, options, next) {
         bcrypt.genSalt(10, function (err, salt) {
@@ -19,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
             next(null, user);
           });
         });
-      }
+      },
     },
 
     instanceMethods: {
@@ -32,6 +39,8 @@ module.exports = function (sequelize, DataTypes) {
         }
       }
     },
+
+
     freezeTableName: true,
     timestamps: false
   });

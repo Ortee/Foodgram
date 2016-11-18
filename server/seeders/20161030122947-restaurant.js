@@ -10,8 +10,6 @@ module.exports = {
         password: 'pastwisko',
         avatar: 'http://images.franchising.pl/5de/48d/bb-logo.png',
         description: 'super opis pastwiska',
-        created_at: '2016-10-14T20:31:40.000Z',
-        updated_at: '2016-10-14T20:31:40.000Z'
       },
       {
         rest_name: 'Fat Bob Burger',
@@ -19,9 +17,7 @@ module.exports = {
         login: 'fatbob',
         password: 'fatbob',
         avatar: 'https://s-media-cache-ak0.pinimg.com/736x/0c/a1/a9/0ca1a9e8436a2d50f669825487217b40.jpg',
-        description: 'super opis fat boba',
-        created_at: '2016-10-14T20:31:40.000Z',
-        updated_at: '2016-10-14T20:31:40.000Z'
+        description: 'super opis fat boba'
       }
     ], {});
   },

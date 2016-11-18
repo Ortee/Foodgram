@@ -5,7 +5,7 @@ const pgp = require('pg-promise')();
 const env = process.env.NODE_ENV || 'development';
 const config = require(path.join(__dirname, '/../config/config.json'))[env];
 const db = pgp(process.env[config.use_env_variable]);
-
+const models = require('../models');
 //classes
 var Food = require('../class/food');
 
@@ -16,50 +16,64 @@ function getTimestamp() {
 
 // Get all food
 router.get('/', function(req, res, next) {
-  db.any(
-    'SELECT id, uuid, username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" ORDER BY created_at DESC')
-    .then(function(data) {
-      res.setHeader('Content-Type', 'application/json');
-      var Foods = data.map((elem) => new Food(
-        elem.id,
-        elem.uuid,
-        elem.username,
-        elem.description,
-        elem.hashtags,
-        elem.photo,
-        elem.likes,
-        elem.dislikes,
-        elem.created_at,
-        elem.updated_at));
-      res.json(Foods);
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+  models.Food.findAll({
+    order: [
+      ['created_at', 'DESC'],
+    ],
+    include: [{ model: models.Restaurant, attributes: ['rest_name', 'login']}]
+  }).then(function(data) {
+    res.setHeader('Content-Type', 'application/json');
+    var Foods = data.map((elem) => new Food(
+      elem.id,
+      elem.uuid,
+      elem.Restaurant.rest_name,
+      elem.Restaurant.login,
+      elem.description,
+      elem.hashtags,
+      elem.photo,
+      elem.likes,
+      elem.dislikes,
+      elem.created_at,
+      elem.updated_at
+    ));
+    res.json(Foods);
+  }).catch(function(error) {
+    res.status(404).send();
+  });
 });
 
 // Get single food
-router.get('/:id', function(req, res, next) {
-  var _id = req.params.id;
-  db.any(
-    'SELECT username, description, hashtags, photo, likes, dislikes, created_at, updated_at FROM "Food" WHERE ID = $1', _id)
-    .then(function(data) {
-      res.setHeader('Content-Type', 'application/json');
-      var Foods = data.map((elem) => new Food(
-        elem.id,
-        elem.username,
-        elem.description,
-        elem.hashtags,
-        elem.photo,
-        elem.likes,
-        elem.dislikes,
-        elem.created_at,
-        elem.updated_at));
-      res.json(Foods);
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+router.get('/:uuid', function(req, res, next) {
+  var _uuid = req.params.uuid;
+  models.Food.findOne({
+    where: {
+      uuid: _uuid
+    },
+    include: [
+      {
+        model: models.Restaurant,
+        attributes: ['rest_name', 'login']
+      }
+    ]
+  }).then(function(data) {
+    res.setHeader('Content-Type', 'application/json');
+    var newFood = new Food(
+      data.id,
+      data.uuid,
+      data.Restaurant.rest_name,
+      data.Restaurant.login,
+      data.description,
+      data.hashtags,
+      data.photo,
+      data.likes,
+      data.dislikes,
+      data.created_at,
+      data.updated_at
+    );
+    res.json(newFood);
+  }).catch(function(error) {
+    res.status(404).send();
+  });
 });
 
 
@@ -68,7 +82,6 @@ router.post('/', function(req, res, next) {
   req.accepts('application/json');
   var NewFood = new Food(0,
     req.body[0].uuid,
-    req.body[0].username,
     req.body[0].description,
     req.body[0].hashtags,
     req.body[0].photo,
@@ -76,16 +89,14 @@ router.post('/', function(req, res, next) {
     0,
     getTimestamp(),
     getTimestamp());
-  db.query('INSERT INTO "Food" ("uuid","username", "description", "hashtags", "photo", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7)',
-    [
-      NewFood.getUuid(),
-      NewFood.getUsername(),
-      NewFood.getDescription(),
-      NewFood.getHashtags(),
-      NewFood.getPhoto(),
-      NewFood.getCreatedAt(),
-      NewFood.getUpdatedAt()
-    ])
+  models.Food.create({
+    uuid: NewFood.getUuid(),
+    description: NewFood.getDescription(),
+    hashtags: NewFood.getHashtags(),
+    photo: NewFood.getPhoto(),
+    created_at: NewFood.getCreatedAt(),
+    updated_at: NewFood.getUpdatedAt()
+  }, {})
     .then(function() {
       res.status(201).send();
     })

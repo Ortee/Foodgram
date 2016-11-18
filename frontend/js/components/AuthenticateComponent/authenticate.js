@@ -8,7 +8,6 @@ export default (Component) => {
     }
     componentWillMount = () => {
       this.checkAuth(this.props.auth.isAuthenticated);
-      console.log('this.props.auth',this.props.auth);
     }
     render = () => {
       return (

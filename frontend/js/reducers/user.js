@@ -4,6 +4,7 @@ function user(state = {
   description: null,
   avatar: null,
   address: null,
+  foods: [],
 }, action) {
   switch (action.type) {
   case 'GET_USER' :
@@ -13,6 +14,7 @@ function user(state = {
       'description': action.payload.description,
       'avatar': action.payload.avatar,
       'address': action.payload.address,
+      'foods': action.payload.foods,
     });
   default:
     return state;
