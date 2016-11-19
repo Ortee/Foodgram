@@ -58,6 +58,12 @@ class Edit extends Component {
     this.state.address === null ?
     this.props.addAlert('Fields are empty!', 'danger') :
     this.props.update(this.props.auth.login, this.state);
+    this.setState({
+      restName: null,
+      description: null,
+      address: null,
+      avatar: null,
+    });
     this.refs.editForm.reset();
   }
 }

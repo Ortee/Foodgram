@@ -45,7 +45,7 @@ router.get('/', function(req, res, next) {
 // Get single food
 router.get('/:uuid', function(req, res, next) {
   var _uuid = req.params.uuid;
-  models.Food.findOne({
+  models.Food.findAll({
     where: {
       uuid: _uuid
     },
@@ -57,19 +57,19 @@ router.get('/:uuid', function(req, res, next) {
     ]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    var newFood = new Food(
-      data.id,
-      data.uuid,
-      data.Restaurant.rest_name,
-      data.Restaurant.login,
-      data.description,
-      data.hashtags,
-      data.photo,
-      data.likes,
-      data.dislikes,
-      data.created_at,
-      data.updated_at
-    );
+    var newFood = data.map((elem) => new Food(
+      elem.id,
+      elem.uuid,
+      elem.Restaurant.rest_name,
+      elem.Restaurant.login,
+      elem.description,
+      elem.hashtags,
+      elem.photo,
+      elem.likes,
+      elem.dislikes,
+      elem.created_at,
+      elem.updated_at
+    ));
     res.json(newFood);
   }).catch(function(error) {
     res.status(404).send();
@@ -80,29 +80,42 @@ router.get('/:uuid', function(req, res, next) {
 // Save food
 router.post('/', function(req, res, next) {
   req.accepts('application/json');
-  var NewFood = new Food(0,
-    req.body[0].uuid,
-    req.body[0].description,
-    req.body[0].hashtags,
-    req.body[0].photo,
-    0,
-    0,
-    getTimestamp(),
-    getTimestamp());
-  models.Food.create({
-    uuid: NewFood.getUuid(),
-    description: NewFood.getDescription(),
-    hashtags: NewFood.getHashtags(),
-    photo: NewFood.getPhoto(),
-    created_at: NewFood.getCreatedAt(),
-    updated_at: NewFood.getUpdatedAt()
-  }, {})
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+  models.Restaurant.findOne({
+    where: {
+      login: req.body[0].login
+    },
+    attributes: ['id']
+  }).then(function(user) {
+    var newFood = new Food(
+      0,
+      req.body[0].uuid,
+      user.rest_name,
+      user.login,
+      req.body[0].description,
+      req.body[0].hashtags,
+      req.body[0].photo,
+      0,
+      0,
+      getTimestamp(),
+      getTimestamp());
+    models.Food.create({
+      uuid: newFood.getUuid(),
+      description: newFood.getDescription(),
+      hashtags: newFood.getHashtags(),
+      photo: newFood.getPhoto(),
+      likes: 0,
+      dislikes: 0,
+      created_at: newFood.getCreatedAt(),
+      updated_at: newFood.getUpdatedAt(),
+      restaurant_id: user.id
+    }, {})
+      .then(function() {
+        res.status(201).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
+  });
 });
 
 // Update food
