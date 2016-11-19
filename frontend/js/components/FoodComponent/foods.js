@@ -9,7 +9,9 @@ class Foods extends Component {
   }
 
   componentDidMount() {
-    this.props.showFoods();
+    this.props.params.uuid === undefined ?
+    this.props.showFoods() :
+    this.props.getSingleFood(this.props.params.uuid);
   }
 
   render() {
@@ -31,6 +33,8 @@ class Foods extends Component {
 Foods.propTypes =  {
   showFoods: React.PropTypes.func,
   foods: React.PropTypes.array,
+  params: React.PropTypes.object,
+  getSingleFood: React.PropTypes.func,
 };
 
 export default Foods;

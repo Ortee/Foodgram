@@ -1,4 +1,4 @@
-import { showFoods, addFood, removeFood } from './foodActions';
+import { showFoods, getSingleFood, addFood, removeFood } from './foodActions';
 import { register, login, loginUserRequest, loginUserSuccess, logout, loginUserFailure, getUser} from './authActions';
 import { incrementLike, decrementLike, incrementDislike, decrementDislike } from './likeActions';
 import { addAlert, removeAlert } from './alertActions';
@@ -6,6 +6,7 @@ import { update } from './accountActions';
 
 export {
   showFoods,
+  getSingleFood,
   addFood,
   register,
   removeFood,
