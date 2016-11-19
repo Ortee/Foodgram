@@ -4,6 +4,7 @@ function foods(state = [], action) {
     if (action.res === true) {
       return [...state, {
         username: action.req.username,
+        login: action.req.login,
         description: action.req.description,
         hashtags: action.req.hashtags,
         photo: action.req.photo,

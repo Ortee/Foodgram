@@ -1,4 +1,6 @@
 import req from 'superagent';
+import uuid from 'uuid';
+import { browserHistory } from 'react-router';
 import { addAlert } from './alertActions';
 
 export function showFoods() {
@@ -23,13 +25,17 @@ export function getSingleFood(_uuid) {
   };
 }
 
-export function addFood(username, description, hashtags, photo) {
+export function addFood(_login, _username, food) {
   const request = req.post('/api/foods')
   .set('Content-type', 'application/json');
   const _uuid = uuid.v1();
   return (dispatch) => {
     request.send([{
-      username: username, description: description, hashtags: hashtags, photo: photo, uuid: _uuid,
+      login: _login,
+      description: food.description,
+      hashtags: food.hashTags,
+      photo: food.image,
+      uuid: _uuid,
     }])
     .end((err, res) => {
       if (err || !res.ok) {
@@ -38,8 +44,14 @@ export function addFood(username, description, hashtags, photo) {
       } else {
         dispatch(addAlert('Your food was successfully added !', 'success'));
         dispatch({ type: 'ADD_FOODS', res: true, req: {
-          'username': username, 'description': description, 'hashtags': hashtags, 'photo': photo, 'uuid': _uuid,
+          'description': food.description,
+          'hashtags': food.hashTags,
+          'photo': food.image,
+          'uuid': _uuid,
+          'login': _login,
+          'username': _username,
         }});
+        browserHistory.push('/profile/' + _login);
       }
     });
   };
