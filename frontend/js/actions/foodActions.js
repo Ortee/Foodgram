@@ -12,6 +12,17 @@ export function showFoods() {
   };
 }
 
+export function getSingleFood(_uuid) {
+  const request = req
+  .get('/api/foods/' + _uuid)
+  .accept('application/json');
+  return (dispatch) => {
+    request.then((response) => {
+      dispatch({ type: 'SHOW_FOODS', payload: response.body });
+    });
+  };
+}
+
 export function addFood(username, description, hashtags, photo) {
   const request = req.post('/api/foods')
   .set('Content-type', 'application/json');
