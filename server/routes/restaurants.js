@@ -20,7 +20,7 @@ router.get('/:login', function(req, res, next) {
     include: [
       {
         model: models.Food,
-        attributes: ['uuid', 'photo']
+        attributes: ['uuid', 'photo', 'likes', 'dislikes']
       }
     ],
     order: [
@@ -28,6 +28,14 @@ router.get('/:login', function(req, res, next) {
     ]
   })
     .then(function(data) {
+      var rate = {
+        likes: 0,
+        dislikes: 0
+      };
+      data.Food.map((elem) => {
+        Object.assign(rate, {likes: rate.likes + elem.likes});
+        Object.assign(rate, {dislikes: rate.dislikes + elem.dislikes});
+      });
       res.setHeader('Content-Type', 'application/json');
       var newRestaurant = new Restaurant(
         0,
@@ -39,7 +47,7 @@ router.get('/:login', function(req, res, next) {
         data.description,
         data.Food
       );
-      res.json(newRestaurant);
+      res.json(Object.assign(newRestaurant, {likes: rate.likes, dislikes: rate.dislikes}));
     })
     .catch(function(error) {
       res.status(404).send();

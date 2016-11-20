@@ -26,6 +26,26 @@ export function update(login, data) {
   };
 }
 
+export function updatePassword(login, data) {
+  const request = req.put('/api/restaurants/password')
+  .set('Content-type', 'application/json');
+  return (dispatch) => {
+    request.send([{
+      login: login,
+      newPassword: data.newPassword,
+      newPassword2: data.newPassword2,
+      oldPassword: data.oldPassword,
+    }])
+    .end((err, res) => {
+      if (err || !res.ok) {
+        dispatch(addAlert('Error!', 'danger'));
+      } else {
+        dispatch(addAlert('Successd !', 'success'));
+      }
+    });
+  };
+}
+
 function editRestName(restName) {
   return (dispatch) => {
     dispatch({
