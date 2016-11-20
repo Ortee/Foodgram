@@ -25,8 +25,8 @@ class User extends Component {
               <span className="username">{this.props.user.rest_name}</span>
             </Col>
             <Col>
-            <i className="fa fa-heart-o fa-lg" aria-hidden="true"/><span className="info">50</span>
-            <i className="fa fa-frown-o fa-lg" aria-hidden="true"/><span className="info">20</span>
+            <i className="fa fa-heart-o fa-lg" aria-hidden="true"/><span className="info">{this.props.user.likes}</span>
+            <i className="fa fa-frown-o fa-lg" aria-hidden="true"/><span className="info">{this.props.user.dislikes}</span>
             </Col>
             <Col className="description">
               {this.props.user.address}
