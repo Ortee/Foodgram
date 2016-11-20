@@ -34,6 +34,17 @@ class Food extends Component {
       });
     }
   }
+
+  renderRemoveIcon = () => {
+    if (this.props.food.login === this.props.auth.login) {
+      return (<i className={'fa-lg food-remove-icon fa ' + this.state.styles.trash}
+        onMouseEnter={this.trashOnEnter.bind()}
+        onMouseLeave={this.trashOnLeave.bind()}
+        aria-hidden="true"
+        onClick={this.props.removeFood.bind(null, this.props.food.uuid, this.props.i)}/>);
+    }
+  }
+
   render() {
     return (
       <Col className="food-container">
@@ -80,11 +91,7 @@ class Food extends Component {
                 onClick={this.incrementDislike}>
                 {this.props.food.dislikes}
           </span>
-          <i  className={'fa-lg food-remove-icon fa ' + this.state.styles.trash}
-              onMouseEnter={this.trashOnEnter.bind()}
-              onMouseLeave={this.trashOnLeave.bind()}
-              aria-hidden="true"
-              onClick={this.props.removeFood.bind(null, this.props.food.uuid, this.props.i)}/>
+          {this.renderRemoveIcon()}
         </Col>
       </Col>
     );
@@ -175,6 +182,7 @@ Food.propTypes =  {
   incrementDislike: React.PropTypes.func,
   decrementDislike: React.PropTypes.func,
   food: React.PropTypes.object,
+  auth: React.PropTypes.object,
   i: React.PropTypes.number,
   removeFood: React.PropTypes.func,
 };
