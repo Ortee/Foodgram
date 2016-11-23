@@ -37,17 +37,14 @@ router.get('/:login', function(req, res, next) {
         Object.assign(rate, {dislikes: rate.dislikes + elem.dislikes});
       });
       res.setHeader('Content-Type', 'application/json');
-      var newRestaurant = new Restaurant(
-        0,
-        data.rest_name,
-        data.address,
-        0,
-        0,
-        data.avatar,
-        data.description,
-        data.Food
-      );
-      res.json(Object.assign(newRestaurant, {likes: rate.likes, dislikes: rate.dislikes}));
+      var newRestaurant = new Restaurant(data.rest_name)
+        .address(data.address)
+        .avatar(data.avatar)
+        .description(data.description)
+        .foods(data.Food)
+        .likes(rate.likes)
+        .dislikes(rate.dislikes);
+      res.json(newRestaurant);
     })
     .catch(function(error) {
       res.status(404).send();
