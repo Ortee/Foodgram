@@ -1,46 +1,97 @@
 module.exports =
   class Food {
-    constructor(id, uuid, username, login, description, hashtags, photo, likes, dislikes, created_at, updated_at) {
-      this.id = id;
-      this.uuid = uuid;
-      this.username = username;
+    constructor(login) {
       this.login = login;
-      this.description = description;
-      this.hashtags = hashtags;
-      this.photo = photo;
-      this.likes = likes;
-      this.dislikes = dislikes;
-      this.created_at = created_at;
-      this.updated_at = updated_at;
     }
+
+    id(id) {
+      this.id = id;
+      return this;
+    }
+
+    uuid(uuid) {
+      this.uuid = uuid;
+      return this;
+    }
+
+    username(username) {
+      this.username = username;
+      return this;
+    }
+
+    description(description) {
+      this.description = description;
+      return this;
+    }
+
+    hashtags(hashtags) {
+      this.hashtags = hashtags;
+      return this;
+    }
+
+    photo(photo) {
+      this.photo = photo;
+      return this;
+    }
+
+    likes(likes) {
+      this.likes = likes;
+      return this;
+    }
+
+    dislikes(dislikes) {
+      this.dislikes = dislikes;
+      return this;
+    }
+
+    created_at(created_at) {
+      this.created_at = created_at;
+      return this;
+    }
+
+    updated_at(updated_at) {
+      this.updated_at = updated_at;
+      return this;
+    }
+
     getId() {
       return this.id;
     }
+
     getUuid() {
       return this.uuid;
     }
+
     getUsername() {
       return this.username;
     }
+
     getDescription() {
       return this.description;
     }
+
     getHashtags() {
       return this.hashtags;
     }
+
     getPhoto() {
       return this.photo;
     }
+
     getLikes() {
       return this.likes;
     }
+
     getDislikes() {
       return this.dislikes;
     }
+
     getCreatedAt() {
       return this.created_at;
     }
+
     getUpdatedAt() {
       return this.updated_at;
     }
+
   };

@@ -23,19 +23,18 @@ router.get('/', function(req, res, next) {
     include: [{ model: models.Restaurant, attributes: ['rest_name', 'login']}]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    var Foods = data.map((elem) => new Food(
-      elem.id,
-      elem.uuid,
-      elem.Restaurant.rest_name,
-      elem.Restaurant.login,
-      elem.description,
-      elem.hashtags,
-      elem.photo,
-      elem.likes,
-      elem.dislikes,
-      elem.created_at,
-      elem.updated_at
-    ));
+    var Foods = data.map((elem) => new Food(elem.Restaurant.login)
+      .id(elem.id)
+      .uuid(elem.uuid)
+      .username(elem.Restaurant.rest_name)
+      .description(elem.description)
+      .hashtags(elem.hashtags)
+      .photo(elem.photo)
+      .likes(elem.likes)
+      .dislikes(elem.dislikes)
+      .created_at(elem.created_at)
+      .updated_at(elem.updated_at)
+    );
     res.json(Foods);
   }).catch(function(error) {
     res.status(404).send();
@@ -57,19 +56,18 @@ router.get('/:uuid', function(req, res, next) {
     ]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    var newFood = data.map((elem) => new Food(
-      elem.id,
-      elem.uuid,
-      elem.Restaurant.rest_name,
-      elem.Restaurant.login,
-      elem.description,
-      elem.hashtags,
-      elem.photo,
-      elem.likes,
-      elem.dislikes,
-      elem.created_at,
-      elem.updated_at
-    ));
+    var newFood = data.map((elem) => new Food(elem.Restaurant.login)
+      .id(elem.id)
+      .uuid(elem.uuid)
+      .username(elem.Restaurant.rest_name)
+      .description(elem.description)
+      .hashtags(elem.hashtags)
+      .photo(elem.photo)
+      .likes(elem.likes)
+      .dislikes(elem.dislikes)
+      .created_at(elem.created_at)
+      .updated_at(elem.updated_at)
+    );
     res.json(newFood);
   }).catch(function(error) {
     res.status(404).send();
@@ -86,18 +84,14 @@ router.post('/', function(req, res, next) {
     },
     attributes: ['id']
   }).then(function(user) {
-    var newFood = new Food(
-      0,
-      req.body[0].uuid,
-      user.rest_name,
-      user.login,
-      req.body[0].description,
-      req.body[0].hashtags,
-      req.body[0].photo,
-      0,
-      0,
-      getTimestamp(),
-      getTimestamp());
+    var newFood = new Food(user.login)
+      .uuid(req.body[0].uuid)
+      .username(user.rest_name)
+      .description(req.body[0].description)
+      .hashtags(req.body[0].hashtags)
+      .photo(req.body[0].photo)
+      .created_at(getTimestamp())
+      .updated_at(getTimestamp());
     models.Food.create({
       uuid: newFood.getUuid(),
       description: newFood.getDescription(),
@@ -116,93 +110,6 @@ router.post('/', function(req, res, next) {
         res.status(404).send();
       });
   });
-});
-
-// Update food
-router.put('/', function(req, res, next) {
-  req.accepts('application/json');
-  var _id = req.body[0].uuid;
-  var UpdatedFood = new Food(
-    req.body[0].id,
-    _id,
-    null,
-    req.body[0].description,
-    req.body[0].hashtags,
-    req.body[0].photo,
-    req.body[0].likes,
-    req.body[0].dislikes,
-    null,
-    getTimestamp());
-  db.query('UPDATE "Food" SET "description" = $2, "hashtags" = $3, "photo" = $4, "likes" = $5, "dislikes" = $6, "updated_at" = $7 WHERE "uuid" = $1',
-    [
-      _id,
-      UpdatedFood.getDescription(),
-      UpdatedFood.getHashtags(),
-      UpdatedFood.getPhoto(),
-      UpdatedFood.getLikes(),
-      UpdatedFood.getDislikes(),
-      UpdatedFood.getUpdatedAt()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
-});
-
-// Update food description
-router.put('/description', function(req, res, next) {
-  req.accepts('application/json');
-  var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "description" = $2, "updated_at" = $3 WHERE "uuid" = $1',
-    [
-      _id,
-      req.body[0].description,
-      getTimestamp()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
-});
-
-// Update food hashtags
-router.put('/hashtags', function(req, res, next) {
-  req.accepts('application/json');
-  var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "hashtags" = $2, "updated_at" = $3 WHERE "uuid" = $1',
-    [
-      _id,
-      req.body[0].hashtags,
-      getTimestamp()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
-});
-
-// Update food photo
-router.put('/photo', function(req, res, next) {
-  req.accepts('application/json');
-  var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "photo" = $2, "updated_at" = $3 WHERE "uuid" = $1',
-    [
-      _id,
-      req.body[0].photo,
-      getTimestamp()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
 });
 
 // Update food likes
