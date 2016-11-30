@@ -14,6 +14,17 @@ export function showFoods() {
   };
 }
 
+export function updateLikes() {
+  const request = req
+  .get('/api/foods/likes/update')
+  .accept('application/json');
+  return (dispatch) => {
+    request.then((response) => {
+      dispatch({ type: 'UPDATE_LIKES', payload: response.body });
+    });
+  };
+}
+
 export function getSingleFood(_uuid) {
   const request = req
   .get('/api/foods/' + _uuid)

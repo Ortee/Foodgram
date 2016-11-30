@@ -16,6 +16,16 @@ function foods(state = [], action) {
     return state;
   case 'SHOW_FOODS' :
     return action.payload;
+  case 'UPDATE_LIKES' :
+    let newArr = [];
+    state.map( stateObject => {
+      action.payload.map( payloadObject => {
+        if (payloadObject.id === stateObject.id) {
+          newArr.push(Object.assign({}, stateObject, payloadObject));
+        }
+      });
+    });
+    return newArr;
   case 'REMOVE_FOODS' :
     if (action.res === true) {
       return [
