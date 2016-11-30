@@ -12,6 +12,9 @@ class Foods extends Component {
     this.props.params.uuid === undefined ?
     this.props.showFoods() :
     this.props.getSingleFood(this.props.params.uuid);
+    setInterval(() => {
+      this.props.updateLikes();
+    }, 20000);
   }
 
   render() {
@@ -35,6 +38,7 @@ Foods.propTypes =  {
   foods: React.PropTypes.array,
   params: React.PropTypes.object,
   getSingleFood: React.PropTypes.func,
+  updateLikes: React.PropTypes.func,
 };
 
 export default Foods;

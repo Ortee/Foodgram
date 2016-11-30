@@ -41,6 +41,22 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/likes/update', function(req, res, next) {
+  models.Food.findAll({
+    attributes: ['id', 'likes', 'dislikes'],
+  }).then(function(data) {
+    res.setHeader('Content-Type', 'application/json');
+    // var Foods = data.map((elem) => new Food(elem.Restaurant.login)
+    //   .id(elem.id)
+    //   .likes(elem.likes)
+    //   .dislikes(elem.dislikes)
+    // );
+    res.json(data);
+  }).catch(function(error) {
+    res.status(404).send();
+  });
+});
+
 // Get single food
 router.get('/:uuid', function(req, res, next) {
   var _uuid = req.params.uuid;
