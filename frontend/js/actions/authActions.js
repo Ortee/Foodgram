@@ -2,9 +2,10 @@ import jwtDecode from 'jwt-decode';
 import { browserHistory } from 'react-router';
 import req from 'superagent';
 import { addAlert } from './alertActions';
+import config from '../config';
 
 export function register(_email, _username, _login, _password) {
-  const request = req.post('/api/register')
+  const request = req.post(config.url + '/api/register')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
@@ -21,7 +22,7 @@ export function register(_email, _username, _login, _password) {
 }
 
 export function login(_login, _password) {
-  const request = req.post('/login')
+  const request = req.post(config.url + '/login')
   .set('Accept', 'application/json');
   return (dispatch) => {
     dispatch(loginUserRequest());
@@ -74,7 +75,7 @@ export function loginUserFailure(error) {
 
 export function getUser(_login) {
   const request = req
-  .get('/api/restaurants/' + _login)
+  .get(config.url + '/api/restaurants/' + _login)
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {

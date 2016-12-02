@@ -1,4 +1,4 @@
-server:
+serv1:
   image: node:7
   command: npm run backend
   working_dir: /app
@@ -12,6 +12,7 @@ server:
     - "5858:5858"
   links:
     - db
+    - store
 frontend:
   image: node:7
   command: npm run frontend
@@ -30,3 +31,30 @@ db:
     POSTGRES_PASSWORD: password
     POSTGRES_USER: user
     POSTGRES_DB: db
+
+public:
+    image: nginx
+    ports:
+        - "8080:80"
+    volumes:
+        - ./nginx/default:/etc/nginx/sites-available/default
+        - ./nginx/default:/etc/nginx/sites-enabled/default
+        - ./public:/usr/share/nginx/html
+    links:
+      - serv1
+store:
+    image: nginx
+    ports:
+        - "8081:80"
+    volumes:
+        - ./nginx/default:/etc/nginx/sites-available/default
+        - ./nginx/default:/etc/nginx/sites-enabled/default
+        - ./store:/usr/share/nginx/html
+loadbalancer:
+    image: million12/varnish
+    ports:
+        - "8000:80"
+    links:
+        - public:public
+    volumes:
+        - ./nginx/default.vcl:/etc/varnish/default.vcl

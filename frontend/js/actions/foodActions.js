@@ -1,11 +1,12 @@
 import req from 'superagent';
 import uuid from 'uuid';
+import config from '../config';
 import { browserHistory } from 'react-router';
 import { addAlert } from './alertActions';
 
 export function showFoods() {
   const request = req
-  .get('/api/foods')
+  .get(config.url + '/api/foods')
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
@@ -16,7 +17,7 @@ export function showFoods() {
 
 export function updateLikes() {
   const request = req
-  .get('/api/foods/likes/update')
+  .get(config.url + '/api/foods/likes/update')
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
@@ -27,7 +28,7 @@ export function updateLikes() {
 
 export function getSingleFood(_uuid) {
   const request = req
-  .get('/api/foods/' + _uuid)
+  .get(config.url + '/api/foods/' + _uuid)
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
@@ -37,7 +38,7 @@ export function getSingleFood(_uuid) {
 }
 
 export function addFood(_login, _username, food) {
-  const request = req.post('/api/foods')
+  const request = req.post(config.url + '/api/foods')
   .set('Content-type', 'application/json');
   const _uuid = uuid.v1();
   return (dispatch) => {
@@ -69,7 +70,7 @@ export function addFood(_login, _username, food) {
 }
 
 export function removeFood(_uuid, indexInState) {
-  const request = req.del('/api/foods')
+  const request = req.del(config.url + '/api/foods')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{ uuid: _uuid }])

@@ -1,8 +1,9 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
+import config from '../config';
 
 export function update(login, data) {
-  const request = req.put('/api/restaurants/update')
+  const request = req.put(config.url + '/api/restaurants/update')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
@@ -27,7 +28,7 @@ export function update(login, data) {
 }
 
 export function updatePassword(login, data) {
-  const request = req.put('/api/restaurants/password')
+  const request = req.put(config.url + '/api/restaurants/password')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
