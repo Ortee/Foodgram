@@ -12,6 +12,7 @@ server:
     - "5858:5858"
   links:
     - db
+    - store
 frontend:
   image: node:7
   command: npm run frontend
@@ -41,3 +42,11 @@ public:
         - ./public:/usr/share/nginx/html
     links:
       - server
+store:
+    image: nginx
+    ports:
+        - "8081:80"
+    volumes:
+        - ./nginx/default:/etc/nginx/sites-available/default
+        - ./nginx/default:/etc/nginx/sites-enabled/default
+        - ./store:/usr/share/nginx/html
