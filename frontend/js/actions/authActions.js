@@ -22,7 +22,7 @@ export function register(_email, _username, _login, _password) {
 }
 
 export function login(_login, _password) {
-  const request = req.post(config.url + '/login')
+  const request = req.post(config.url + '/api/login')
   .set('Accept', 'application/json');
   return (dispatch) => {
     dispatch(loginUserRequest());

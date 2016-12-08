@@ -28,7 +28,7 @@ app.use(fallback('index.html', {root: root}));
 require('./config/passport')(passport);
 app.use(passport.initialize());
 
-app.use('/', authorization);
+app.use('/api', authorization);
 app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
 
