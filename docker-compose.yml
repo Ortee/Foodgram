@@ -13,6 +13,7 @@ serv1:
   links:
     - db
     - store
+    - nodestore
 
 serv2:
   image: node:7
@@ -28,6 +29,7 @@ serv2:
   links:
     - db
     - store
+    - nodestore
 
 nodestore:
   image: node:7

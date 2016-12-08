@@ -1,6 +1,10 @@
 var express = require('express');
 var path = require('path');
 var router = express.Router();
+var fs = require('fs');
+var http = require('http');
+var request = require('superagent');
+
 const pgp = require('pg-promise')();
 const env = process.env.NODE_ENV || 'development';
 const config = require(path.join(__dirname, '/../config/config.json'))[env];
@@ -114,7 +118,7 @@ router.post('/', function(req, res, next) {
       uuid: newFood.getUuid(),
       description: newFood.getDescription(),
       hashtags: newFood.getHashtags(),
-      photo: newFood.getPhoto(),
+      photo: "http://localhost:3500/",
       likes: 0,
       dislikes: 0,
       created_at: newFood.getCreatedAt(),
@@ -122,6 +126,19 @@ router.post('/', function(req, res, next) {
       restaurant_id: user.id
     }, {})
       .then(function() {
+        request
+          .post('http://172.17.0.3:3500/api/upload')
+          .set('Content-Type', 'application/json')
+          .send([{
+            uuid: newFood.getUuid(),
+            photo: newFood.getPhoto()
+          }])
+          .end((err, res) => {
+              if (err) {
+                console.log(err);
+              }
+              console.log('Image sent to nodestore.');
+            })
         res.status(201).send();
       })
       .catch(function(error) {
