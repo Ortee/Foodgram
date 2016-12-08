@@ -29,6 +29,17 @@ serv2:
     - db
     - store
 
+nodestore:
+  image: node:7
+  command: npm run store
+  working_dir: /storeapp/
+  volumes:
+    - ./nodestore:/storeapp/
+  environment:
+    PORT: 3500
+  ports:
+    - "3500:3500"
+
 frontend:
   image: node:7
   command: npm run frontend
