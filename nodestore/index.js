@@ -3,6 +3,8 @@ var app = express()
 var path = require('path');
 const bodyParser = require('body-parser');
 var fs = require('fs');
+var Jimp = require('jimp');
+var async = require('async');
 const PORT = process.env.PORT || 3500;
 
 app.use(function(req, res, next) {
@@ -32,13 +34,47 @@ function decodeBase64Image(dataString) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/upload', function(req, res, next) {
+  console.log('POSZEDL POST');
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].photo);
-  fs.writeFile(req.body[0].uuid+'.jpg', imageBuffer.data, function(err) {
+  fs.writeFile('./tmp/'+req.body[0].uuid+'.jpg', imageBuffer.data, function(err) {
     if (err) {
       res.status(404).send();
     }
-    console.log('IMAGE: ', req.body[0].uuid,' - SAVED');
+    async.waterfall([
+      (callback) => {
+        Jimp.read('./tmp/'+req.body[0].uuid+'.jpg', function (err, image) {
+            if (err) throw err;
+            image.contain(276, 276)
+                 .write('./public/thumbnail/'+req.body[0].uuid+'.png');
+            console.log(req.body[0].uuid,' - THUMBNAIL SAVED');
+            var thumbnail = true;
+            callback(null, thumbnail);
+        });
+      },
+      (thumbnail, callback) => {
+        Jimp.read('./tmp/'+req.body[0].uuid+'.jpg', function (err, image) {
+            if (err) throw err;
+            image.contain(540, Jimp.AUTO)
+                 .write('./public/fullsize/'+req.body[0].uuid+'.png');
+            console.log(req.body[0].uuid,' - FULLSIZE SAVED');
+            var fullsize = true;
+            callback(null, fullsize);
+        });
+      },
+      (fullsize, callback) => {
+        if (fs.existsSync('./tmp/'+req.body[0].uuid+'.jpg')) {
+            fs.unlink('./tmp/'+req.body[0].uuid+'.jpg', (err) => {
+              if (err) throw err;
+              console.log(req.body[0].uuid + 'TMP SUCCESFULLY DELETED');
+              var done = true;
+              callback(null, done);
+            });
+        }
+      }
+    ], (err, result) => {
+      console.log(result);
+    });
     res.status(201).send();
   });
 });
