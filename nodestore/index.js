@@ -14,8 +14,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '50mb', type:'application/json'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true, type:'application/x-www-form-urlencoding'}));
 
 // BASE64 to imgage
 function decodeBase64Image(dataString) {
@@ -34,7 +34,6 @@ function decodeBase64Image(dataString) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/upload', function(req, res, next) {
-  console.log('POSZEDL POST');
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].photo);
   fs.writeFile('./tmp/'+req.body[0].uuid+'.jpg', imageBuffer.data, function(err) {
