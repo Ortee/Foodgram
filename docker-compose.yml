@@ -76,6 +76,7 @@ loadbalancer:
         - serv1
         - serv2
         - nodestore
+        - public
     volumes:
         - ./nginx/loadbalancerDefault/default.conf:/etc/nginx/conf.d/default.conf
 

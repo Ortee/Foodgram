@@ -125,7 +125,7 @@ router.post('/', function(req, res, next) {
     }, {})
       .then(function() {
         request
-          .post('http://172.17.0.3:3500/api/upload')
+          .post('http://nodestore:3500/api/upload')
           .set('Content-Type', 'application/json')
           .send([{
             uuid: newFood.getUuid(),
