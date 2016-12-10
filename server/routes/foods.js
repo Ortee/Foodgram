@@ -1,6 +1,8 @@
 var express = require('express');
 var path = require('path');
 var router = express.Router();
+var request = require('superagent');
+
 const pgp = require('pg-promise')();
 const env = process.env.NODE_ENV || 'development';
 const config = require(path.join(__dirname, '/../config/config.json'))[env];
@@ -110,22 +112,37 @@ router.post('/', function(req, res, next) {
       .photo(req.body[0].photo)
       .created_at(getTimestamp())
       .updated_at(getTimestamp());
-    models.Food.create({
-      uuid: newFood.getUuid(),
-      description: newFood.getDescription(),
-      hashtags: newFood.getHashtags(),
-      photo: newFood.getPhoto(),
-      likes: 0,
-      dislikes: 0,
-      created_at: newFood.getCreatedAt(),
-      updated_at: newFood.getUpdatedAt(),
-      restaurant_id: user.id
-    }, {})
-      .then(function() {
-        res.status(201).send();
-      })
-      .catch(function(error) {
-        res.status(404).send();
+    request
+      .post('http://nodestore:3500/api/upload')
+      .set('Content-Type', 'application/json')
+      .send([{
+        uuid: newFood.getUuid(),
+        photo: newFood.getPhoto()
+      }])
+      .end((err) => {
+        if (err) {
+          console.log(err);
+          res.status(404).send();
+        } else {
+          console.log('Image sent to nodestore.');
+          models.Food.create({
+            uuid: newFood.getUuid(),
+            description: newFood.getDescription(),
+            hashtags: newFood.getHashtags(),
+            photo: 'http://localhost:3500/',
+            likes: 0,
+            dislikes: 0,
+            created_at: newFood.getCreatedAt(),
+            updated_at: newFood.getUpdatedAt(),
+            restaurant_id: user.id
+          }, {})
+            .then(function() {
+              res.status(201).send();
+            })
+            .catch(function(error) {
+              res.status(404).send();
+            });
+        }
       });
   });
 });

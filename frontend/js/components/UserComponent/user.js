@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router'
 import { Col } from 'reactstrap';
+import config from '../../config';
 import './user.scss';
 
 class User extends Component {
@@ -46,7 +47,7 @@ class User extends Component {
                 <img  className="img-thumbnail"
                       height="100%"
                       width="100%"
-                      src="https://static1.squarespace.com/static/55355f2fe4b0bb1e28857a4c/56991220fb36b1a2d2c69b9a/56991220a976afc919db1f65/1452872520958/MealPlans.png?format=300w"/>
+                      src={config.thumbnail + elem.uuid + '.png'} />
               </Col>
             );
           })}

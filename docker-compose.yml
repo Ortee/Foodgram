@@ -12,7 +12,34 @@ serv1:
     - "5858:5858"
   links:
     - db
-    - store
+    - nodestore
+
+serv2:
+  image: node:7
+  command: npm run backend
+  working_dir: /app
+  volumes:
+    - .:/app
+  environment:
+    PORT: 3000
+    CONNECTION_STRING_DEV: postgres://user:password@db/db
+  ports:
+    - "3001:3000"
+  links:
+    - db
+    - nodestore
+
+nodestore:
+  image: node:7
+  command: npm run store
+  working_dir: /storeapp/
+  volumes:
+    - ./nodestore:/storeapp/
+  environment:
+    PORT: 3500
+  ports:
+    - "3500:3500"
+
 frontend:
   image: node:7
   command: npm run frontend
@@ -23,6 +50,7 @@ frontend:
     PORT: 4000
   ports:
     - "4000:4000"
+
 db:
   image: postgres
   expose:
@@ -35,26 +63,28 @@ db:
 public:
     image: nginx
     ports:
-        - "8080:80"
+        - "8080:8080"
     volumes:
-        - ./nginx/default:/etc/nginx/sites-available/default
-        - ./nginx/default:/etc/nginx/sites-enabled/default
+        - ./nginx/publicDefault/default.conf:/etc/nginx/conf.d/default.conf
         - ./public:/usr/share/nginx/html
-    links:
-      - serv1
-store:
+
+loadbalancer:
     image: nginx
     ports:
-        - "8081:80"
+        - "9000:80"
+    links:
+        - serv1
+        - serv2
+        - nodestore
+        - public
     volumes:
-        - ./nginx/default:/etc/nginx/sites-available/default
-        - ./nginx/default:/etc/nginx/sites-enabled/default
-        - ./store:/usr/share/nginx/html
-loadbalancer:
+        - ./nginx/loadbalancerDefault/default.conf:/etc/nginx/conf.d/default.conf
+
+varnish:
     image: million12/varnish
     ports:
         - "8000:80"
     links:
-        - public:public
+        - loadbalancer:loadbalancer
     volumes:
         - ./nginx/default.vcl:/etc/varnish/default.vcl

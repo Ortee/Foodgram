@@ -7,7 +7,6 @@ function foods(state = [], action) {
         login: action.req.login,
         description: action.req.description,
         hashtags: action.req.hashtags,
-        photo: action.req.photo,
         likes: 0,
         dislikes: 0,
         uuid: action.req.uuid,

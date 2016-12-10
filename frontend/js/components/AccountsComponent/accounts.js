@@ -30,6 +30,9 @@ class Accounts extends Component {
                 <Link style={{ textDecoration: 'none' }} to={'/accounts/password'} onClick={this.changeActive.bind(null, 'password')}>
                   <li className={this.state.password}>Change password</li>
                 </Link>
+                <Link style={{ textDecoration: 'none', cursor: 'pointer' }} onClick={this.props.logout.bind()}>
+                  <li>Logout</li>
+                </Link>
               </ul>
             </Col>
             <Col xs={{size: 9}} id="content">
@@ -58,6 +61,7 @@ class Accounts extends Component {
 
 Accounts.propTypes = {
   children: React.PropTypes.element.isRequired,
+  logout: React.PropTypes.func,
 };
 
 export default Accounts;

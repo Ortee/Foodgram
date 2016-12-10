@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode';
 import { browserHistory } from 'react-router';
 import req from 'superagent';
 import { addAlert } from './alertActions';
+import cookie from 'react-cookie';
 import config from '../config';
 
 export function register(_email, _username, _login, _password) {
@@ -22,7 +23,7 @@ export function register(_email, _username, _login, _password) {
 }
 
 export function login(_login, _password) {
-  const request = req.post(config.url + '/login')
+  const request = req.post(config.url + '/api/login')
   .set('Accept', 'application/json');
   return (dispatch) => {
     dispatch(loginUserRequest());
@@ -51,12 +52,14 @@ export function loginUserRequest() {
 
 export function loginUserSuccess(token) {
   browserHistory.pushState(`/profile/${jwtDecode(token).rest_name.replace(' ', '').toLowerCase()}`);
+  cookie.save('token', token);
   return (dispatch) => {
     dispatch({ type: 'LOGIN_USER_SUCCESS', payload: { token: token }});
   };
 }
 
 export function logout() {
+  cookie.remove('token');
   browserHistory.push('/');
   return (dispatch) => {
     dispatch({ type: 'LOGOUT_USER' });

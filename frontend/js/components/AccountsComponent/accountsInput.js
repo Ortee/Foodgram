@@ -25,7 +25,7 @@ class AccountsInput extends Component {
     );
   };
   handleChange = (evt) => {
-    this.props.onChange(evt.target.value);
+    this.props.onChange(evt.target.value, evt);
   }
 }
 
