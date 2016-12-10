@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Col } from 'reactstrap';
 import cookie from 'react-cookie';
+import config from '../../config';
 
 class Food extends Component {
   constructor(props) {
@@ -61,7 +62,7 @@ class Food extends Component {
           <img  className="img-thumbnail"
                 height="600px"
                 width="538px"
-                src={this.props.food.photo} />
+                src={config.fullsize + this.props.food.uuid} />
         </Col>
         <Col className="food-desciption">
           <p className="food-desciption-likes">{this.props.food.hashtags}</p>
