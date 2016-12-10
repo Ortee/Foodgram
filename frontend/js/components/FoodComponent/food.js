@@ -62,7 +62,7 @@ class Food extends Component {
           <img  className="img-thumbnail"
                 height="600px"
                 width="538px"
-                src={config.fullsize + this.props.food.uuid} />
+                src={config.fullsize + this.props.food.uuid + '.png'} />
         </Col>
         <Col className="food-desciption">
           <p className="food-desciption-likes">{this.props.food.hashtags}</p>

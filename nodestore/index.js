@@ -31,7 +31,7 @@ function decodeBase64Image(dataString) {
   return response;
 }
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api/images', express.static(path.join(__dirname, 'public')));
 
 app.post('/api/upload', function(req, res, next) {
   req.accepts('application/json');

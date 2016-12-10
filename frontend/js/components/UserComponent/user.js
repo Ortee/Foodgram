@@ -47,7 +47,7 @@ class User extends Component {
                 <img  className="img-thumbnail"
                       height="100%"
                       width="100%"
-                      src={config.thumbnail + elem.uuid} />
+                      src={config.thumbnail + elem.uuid + '.png'} />
               </Col>
             );
           })}

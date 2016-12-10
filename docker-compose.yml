@@ -12,7 +12,6 @@ serv1:
     - "5858:5858"
   links:
     - db
-    - store
     - nodestore
 
 serv2:
@@ -28,7 +27,6 @@ serv2:
     - "3001:3000"
   links:
     - db
-    - store
     - nodestore
 
 nodestore:
@@ -70,13 +68,6 @@ public:
         - ./nginx/publicDefault/default.conf:/etc/nginx/conf.d/default.conf
         - ./public:/usr/share/nginx/html
 
-store:
-    image: nginx
-    ports:
-        - "8081:80"
-    volumes:
-        - ./store:/usr/share/nginx/html
-
 loadbalancer:
     image: nginx
     ports:
@@ -84,6 +75,7 @@ loadbalancer:
     links:
         - serv1
         - serv2
+        - nodestore
     volumes:
         - ./nginx/loadbalancerDefault/default.conf:/etc/nginx/conf.d/default.conf
 
