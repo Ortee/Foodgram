@@ -112,35 +112,36 @@ router.post('/', function(req, res, next) {
       .photo(req.body[0].photo)
       .created_at(getTimestamp())
       .updated_at(getTimestamp());
-    models.Food.create({
-      uuid: newFood.getUuid(),
-      description: newFood.getDescription(),
-      hashtags: newFood.getHashtags(),
-      photo: "http://localhost:3500/",
-      likes: 0,
-      dislikes: 0,
-      created_at: newFood.getCreatedAt(),
-      updated_at: newFood.getUpdatedAt(),
-      restaurant_id: user.id
-    }, {})
-      .then(function() {
-        request
-          .post('http://nodestore:3500/api/upload')
-          .set('Content-Type', 'application/json')
-          .send([{
+    request
+      .post('http://nodestore:3500/api/upload')
+      .set('Content-Type', 'application/json')
+      .send([{
+        uuid: newFood.getUuid(),
+        photo: newFood.getPhoto()
+      }])
+      .end((err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('Image sent to nodestore.');
+          models.Food.create({
             uuid: newFood.getUuid(),
-            photo: newFood.getPhoto()
-          }])
-          .end((err, res) => {
-              if (err) {
-                console.log(err);
-              }
-              console.log('Image sent to nodestore.');
+            description: newFood.getDescription(),
+            hashtags: newFood.getHashtags(),
+            photo: 'http://localhost:3500/',
+            likes: 0,
+            dislikes: 0,
+            created_at: newFood.getCreatedAt(),
+            updated_at: newFood.getUpdatedAt(),
+            restaurant_id: user.id
+          }, {})
+            .then(function() {
+              res.status(201).send();
             })
-        res.status(201).send();
-      })
-      .catch(function(error) {
-        res.status(404).send();
+            .catch(function(error) {
+              res.status(404).send();
+            });
+        }
       });
   });
 });
