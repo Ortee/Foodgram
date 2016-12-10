@@ -26,7 +26,6 @@ class Photo extends Component {
             <AccountsInput onChange={this.updateHashTags} text="Hashtags" type="text" refer="hashTags" placeholder="#food"/>
             <Button type="submit" className="auth-button">Add</Button>
           </form>
-          <Button type="button" onClick={this.props.logout.bind()} className="auth-button">TEMP LOGOUT</Button>
         </Col>
       </article>
     );
