@@ -30,7 +30,7 @@ class Accounts extends Component {
                 <Link style={{ textDecoration: 'none' }} to={'/accounts/password'} onClick={this.changeActive.bind(null, 'password')}>
                   <li className={this.state.password}>Change password</li>
                 </Link>
-                <Link style={{ textDecoration: 'none' }} onClick={this.props.logout.bind()}>
+                <Link style={{ textDecoration: 'none', cursor: 'pointer' }} onClick={this.props.logout.bind()}>
                   <li>Logout</li>
                 </Link>
               </ul>
