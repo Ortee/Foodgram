@@ -122,6 +122,7 @@ router.post('/', function(req, res, next) {
       .end((err) => {
         if (err) {
           console.log(err);
+          res.status(404).send();
         } else {
           console.log('Image sent to nodestore.');
           models.Food.create({
