@@ -1,4 +1,5 @@
 import React from 'react';
+import cookie from 'react-cookie';
 import { browserHistory } from 'react-router';
 
 export default (Component) => {
@@ -20,7 +21,10 @@ export default (Component) => {
       );
     }
     checkAuth = (isAuthenticated) => {
-      if (!isAuthenticated) {
+      if (cookie.load('token') !== undefined && !isAuthenticated) {
+        this.props.loginUserSuccess(cookie.load('token'));
+      }
+      if (!isAuthenticated && cookie.load('token') === undefined) {
         browserHistory.push('/login');
       }
     }
@@ -28,6 +32,7 @@ export default (Component) => {
 
   Authenticate.propTypes =  {
     auth: React.PropTypes.object,
+    loginUserSuccess: React.PropTypes.func,
   };
   return Authenticate;
 };
