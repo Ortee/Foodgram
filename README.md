@@ -1,9 +1,10 @@
-# TAS-UAM
-Server application technology
+# Foodgram
 
-> Collaborators: Denis Olek, Patryk Wylegała, Mateusz Oracz
+Technology Stack
 
 ![alt tag](http://tech.orteedev.pl/stack.jpg)
+
+![alt tag](http://tech.orteedev.pl/diag2.png)
 
 ## Install:
 ```

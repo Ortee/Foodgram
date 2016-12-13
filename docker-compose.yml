@@ -3,7 +3,7 @@ serv1:
   command: npm run backend
   working_dir: /app
   volumes:
-    - .:/app
+    - ./server:/app
   environment:
     PORT: 3000
     CONNECTION_STRING_DEV: postgres://user:password@db/db
@@ -19,7 +19,7 @@ serv2:
   command: npm run backend
   working_dir: /app
   volumes:
-    - .:/app
+    - ./server:/app
   environment:
     PORT: 3000
     CONNECTION_STRING_DEV: postgres://user:password@db/db
