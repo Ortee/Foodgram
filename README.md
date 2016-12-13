@@ -1,6 +1,7 @@
 # Foodgram
 
 Technology Stack
+
 ![alt tag](http://tech.orteedev.pl/stack.jpg)
 
 ![alt tag](http://tech.orteedev.pl/diag2.png)
