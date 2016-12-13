@@ -16,14 +16,9 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-const root = path.join(__dirname, '/../public/');
-
 var foods = require('./routes/foods');
 var restaurants = require('./routes/restaurants');
 var authorization = require('./routes/authorization');
-
-app.use(express.static(root));
-app.use(fallback('index.html', {root: root}));
 
 require('./config/passport')(passport);
 app.use(passport.initialize());
