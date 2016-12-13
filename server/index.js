@@ -1,10 +1,8 @@
 const app = require('express')();
-const path = require('path');
-const express = require('express');
 const bodyParser = require('body-parser');
-const fallback = require('express-history-api-fallback');
 const passport = require('passport');
 const logger = require('morgan');
+const PORT = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 app.use(function(req, res, next) {
@@ -26,5 +24,9 @@ app.use(passport.initialize());
 app.use('/api', authorization);
 app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
+
+app.listen(PORT, function() {
+  logger(`SERVER Listening on ${PORT}`);
+});
 
 module.exports = app;
