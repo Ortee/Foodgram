@@ -32,7 +32,6 @@ router.get('/', function(req, res, next) {
       .username(elem.Restaurant.rest_name)
       .description(elem.description)
       .hashtags(elem.hashtags)
-      .photo(elem.photo)
       .likes(elem.likes)
       .dislikes(elem.dislikes)
       .created_at(elem.created_at)
@@ -50,11 +49,6 @@ router.get('/likes/update', function(req, res, next) {
   }).then(function(data) {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Content-Type', 'application/json');
-    // var Foods = data.map((elem) => new Food(elem.Restaurant.login)
-    //   .id(elem.id)
-    //   .likes(elem.likes)
-    //   .dislikes(elem.dislikes)
-    // );
     res.json(data);
   }).catch(function(error) {
     res.status(404).send();
@@ -82,7 +76,6 @@ router.get('/:uuid', function(req, res, next) {
       .username(elem.Restaurant.rest_name)
       .description(elem.description)
       .hashtags(elem.hashtags)
-      .photo(elem.photo)
       .likes(elem.likes)
       .dislikes(elem.dislikes)
       .created_at(elem.created_at)
@@ -129,7 +122,6 @@ router.post('/', function(req, res, next) {
             uuid: newFood.getUuid(),
             description: newFood.getDescription(),
             hashtags: newFood.getHashtags(),
-            photo: 'http://localhost:3500/',
             likes: 0,
             dislikes: 0,
             created_at: newFood.getCreatedAt(),

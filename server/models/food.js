@@ -5,7 +5,6 @@ module.exports = function(sequelize, DataTypes) {
     uuid: DataTypes.STRING,
     description: DataTypes.TEXT,
     hashtags: DataTypes.STRING,
-    photo: DataTypes.STRING,
     likes: DataTypes.INTEGER,
     dislikes: DataTypes.INTEGER
   }, {
