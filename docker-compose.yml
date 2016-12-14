@@ -42,10 +42,11 @@ nodestore:
 
 frontend:
   image: node:7
-  command: npm run frontend
-  working_dir: /app/
+  command: npm run webpack
+  working_dir: /app/frontend/
   volumes:
-    - .:/app/
+    - ./frontend:/app/frontend/
+    - ./public:/app/public
   environment:
     PORT: 4000
   ports:

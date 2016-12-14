@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     include: [{ model: models.Restaurant, attributes: ['rest_name', 'login']}]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'public, max-age=31557600');
+    // res.setHeader('Cache-Control', 'public, max-age=31557600');
     var Foods = data.map((elem) => new Food(elem.Restaurant.login)
       .id(elem.id)
       .uuid(elem.uuid)
