@@ -20,7 +20,7 @@ router.get('/:login', function(req, res, next) {
     include: [
       {
         model: models.Food,
-        attributes: ['uuid', 'photo', 'likes', 'dislikes']
+        attributes: ['uuid', 'likes', 'dislikes']
       }
     ],
     order: [
