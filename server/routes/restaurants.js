@@ -1,14 +1,9 @@
-var express = require('express');
-var path = require('path');
-var router = express.Router();
-const pgp = require('pg-promise')();
-const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, '/../config/config.json'))[env];
-const db = pgp(process.env[config.use_env_variable]);
+const express = require('express');
+const router = express.Router();
 const models = require('../models');
 
 //classes
-var Restaurant = require('../class/restaurant');
+const Restaurant = require('../class/restaurant');
 
 // Get single restaurant
 router.get('/:login', function(req, res, next) {
