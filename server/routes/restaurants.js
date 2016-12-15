@@ -57,6 +57,7 @@ function(req, res, next) {
   var update = {};
   if (req.body[0].rest_name !== null) Object.assign(update, {rest_name: req.body[0].rest_name});
   if (req.body[0].address !== null) Object.assign(update, {address: req.body[0].address});
+  if (req.body[0].description !== null) Object.assign(update, {description: req.body[0].description});
   if (req.body[0].avatar !== null) {
     request
       .post('http://nodestore:3500/api/upload-avatar')
@@ -70,23 +71,21 @@ function(req, res, next) {
           res.status(404).send();
         } else {
           console.log('Avatar sent to nodestore.');
-          Object.assign(update, {avatar: 'http://nodestore:8000/api/images/avatar/' + req.body[0].login + '.png'});
-          res.status(201).send();
+          Object.assign(update, {avatar: 'http://localhost:8000/api/images/avatar/' + req.body[0].login + '.png'});
+          models.Restaurant.update(update, {
+            where: {
+              login: _login
+            }
+          })
+            .then(function() {
+              res.status(201).send();
+            })
+            .catch(function(error) {
+              res.status(404).send();
+            });
         }
       });
   }
-  if (req.body[0].description !== null) Object.assign(update, {description: req.body[0].description});
-  models.Restaurant.update(update, {
-    where: {
-      login: _login
-    }
-  })
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
 });
 
 // Change password
