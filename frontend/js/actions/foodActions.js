@@ -37,9 +37,10 @@ export function getSingleFood(_uuid) {
   };
 }
 
-export function addFood(_login, _username, food) {
+export function addFood(_login, _username, food, token) {
   const request = req.post(config.url + '/api/foods')
-  .set('Content-type', 'application/json');
+  .set('Content-type', 'application/json')
+  .set('token', token);
   const _uuid = uuid.v1();
   return (dispatch) => {
     request.send([{

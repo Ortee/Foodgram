@@ -55,7 +55,7 @@ class Photo extends Component {
     this.state.image === null ||
     this.state.description === null ?
     this.props.addAlert('Error!', 'danger') :
-    this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state);
+    this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
     this.setState({
       image: null,
       description: null,
