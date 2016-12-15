@@ -62,7 +62,9 @@ app.post('/api/upload-avatar', function(req, res, next) {
         }
       }
     ], (err, result) => {
-      console.log(result);
+      if (err) {
+        console.log(err);
+      }
     });
     res.status(201).send();
   });
@@ -107,7 +109,9 @@ app.post('/api/upload', function(req, res, next) {
         }
       }
     ], (err, result) => {
-      console.log(result);
+      if (err) {
+        console.log(err);
+      }
     });
     res.status(201).send();
   });
