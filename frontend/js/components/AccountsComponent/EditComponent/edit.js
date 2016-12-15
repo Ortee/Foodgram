@@ -57,7 +57,7 @@ class Edit extends Component {
     this.state.avatar === null &&
     this.state.address === null ?
     this.props.addAlert('Fields are empty!', 'danger') :
-    this.props.update(this.props.auth.login, this.state);
+    this.props.update(this.props.auth.login, this.state, this.props.auth.token);
     this.setState({
       restName: null,
       description: null,
