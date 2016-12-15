@@ -42,7 +42,7 @@ class Food extends Component {
         onMouseEnter={this.trashOnEnter.bind()}
         onMouseLeave={this.trashOnLeave.bind()}
         aria-hidden="true"
-        onClick={this.props.removeFood.bind(null, this.props.food.uuid, this.props.i)}/>);
+        onClick={this.props.removeFood.bind(null, this.props.food.uuid, this.props.i, this.props.auth.token)}/>);
     }
   }
 

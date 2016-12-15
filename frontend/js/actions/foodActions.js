@@ -70,9 +70,10 @@ export function addFood(_login, _username, food, token) {
   };
 }
 
-export function removeFood(_uuid, indexInState) {
+export function removeFood(_uuid, indexInState, token) {
   const request = req.del(config.url + '/api/foods')
-  .set('Content-type', 'application/json');
+  .set('Content-type', 'application/json')
+  .set('token', token);
   return (dispatch) => {
     request.send([{ uuid: _uuid }])
     .end((err, res) => {
