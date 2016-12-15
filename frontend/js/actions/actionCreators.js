@@ -2,7 +2,7 @@ import { showFoods, updateLikes, getSingleFood, addFood, removeFood } from './fo
 import { register, login, loginUserRequest, loginUserSuccess, logout, loginUserFailure, getUser} from './authActions';
 import { incrementLike, decrementLike, incrementDislike, decrementDislike } from './likeActions';
 import { addAlert, removeAlert } from './alertActions';
-import { update } from './accountActions';
+import { update, updatePassword } from './accountActions';
 
 export {
   showFoods,
@@ -24,4 +24,5 @@ export {
   addAlert,
   removeAlert,
   update,
+  updatePassword,
 };

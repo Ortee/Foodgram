@@ -28,10 +28,10 @@ export function update(login, data, token) {
   };
 }
 
-export function updatePassword(login, data) {
+export function updatePassword(login, data, token) {
   const request = req.put(config.url + '/api/restaurants/password')
   .set('Content-type', 'application/json')
-  .set('token', token);
+  .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
     request.send([{
       login: login,
