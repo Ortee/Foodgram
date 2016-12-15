@@ -62,6 +62,7 @@ export function logout() {
   cookie.remove('token');
   browserHistory.push('/');
   return (dispatch) => {
+    dispatch(addAlert('LOGOUT !', 'success'));
     dispatch({ type: 'LOGOUT_USER' });
   };
 }
