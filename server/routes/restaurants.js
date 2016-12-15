@@ -71,4 +71,36 @@ function(req, res, next) {
     });
 });
 
+// Change password
+router.put('/password', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
+  req.accepts('application/json');
+  models.Restaurant.findOne({
+    where: {
+      login: req.body[0].login
+    }
+  }).then(function(restaurant) {
+    if (restaurant.password == req.body[0].oldPassword && req.body[0].newPassword == req.body[0].newPassword2) {
+      models.Restaurant.update(
+        {
+          password: req.body[0].newPassword
+        },
+        {
+          where: {
+            'login': req.body[0].login
+          }
+        }
+        )
+        .then(function() {
+          res.status(201).send();
+        })
+        .catch(function(error) {
+          res.status(404).send();
+        });
+    } else {
+      res.status(404).send();
+    }
+  });
+});
+
 module.exports = router;
