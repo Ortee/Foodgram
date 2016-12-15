@@ -52,6 +52,9 @@ router.get('/:login', function(req, res, next) {
 // Update restaurant
 router.put('/update', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
   req.accepts('application/json');
   var _login = req.body[0].login;
   var update = {};
