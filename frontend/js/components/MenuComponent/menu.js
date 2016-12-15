@@ -10,7 +10,6 @@ class Menu extends Component {
   }
   render() {
     const username = this.props.auth.login === null ? ' ' : this.props.auth.login.toLowerCase();
-    console.log("username", username);
     return (
       <Navbar className="navbar-custom" fixed="top">
         <Alerts {...this.props} />
