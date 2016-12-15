@@ -65,7 +65,7 @@ class Password extends Component {
 Password.propTypes = {
   addAlert: React.PropTypes.func,
   auth: React.PropTypes.object,
-  updatePassword: React.PropTypes.function,
+  updatePassword: React.PropTypes.func,
 };
 
 export default Password;
