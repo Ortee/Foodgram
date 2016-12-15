@@ -1,13 +1,8 @@
-var express = require('express');
-var path = require('path');
-var router = express.Router();
-var request = require('superagent');
-
-const pgp = require('pg-promise')();
-const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, '/../config/config.json'))[env];
-const db = pgp(process.env[config.use_env_variable]);
+const express = require('express');
+const router = express.Router();
+const request = require('superagent');
 const models = require('../models');
+
 //classes
 var Food = require('../class/food');
 
@@ -25,7 +20,7 @@ router.get('/', function(req, res, next) {
     include: [{ model: models.Restaurant, attributes: ['rest_name', 'login']}]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'public, max-age=31557600');
+    // res.setHeader('Cache-Control', 'public, max-age=31557600');
     var Foods = data.map((elem) => new Food(elem.Restaurant.login)
       .id(elem.id)
       .uuid(elem.uuid)
@@ -143,44 +138,79 @@ router.post('/', function(req, res, next) {
 router.put('/likes', function(req, res, next) {
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "likes" = "likes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
-    [
-      _id,
-      getTimestamp()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+  models.Food.findOne({
+    where: {
+      uuid: _id
+    },
+    attributes: ['likes']
+  }).then(function(food) {
+    models.Food.update(
+      {
+        likes: food.likes + 1
+      },
+      {
+        where: {
+          'uuid': _id
+        }
+      }
+    )
+      .then(function() {
+        res.status(201).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
+  });
 });
 
 router.put('/likes/decrement', function(req, res, next) {
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "likes" = "likes" - 1, "updated_at" = $2 WHERE "uuid" = $1',
-    [
-      _id,
-      getTimestamp()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+  models.Food.findOne({
+    where: {
+      uuid: _id
+    },
+    attributes: ['likes']
+  }).then(function(food) {
+    models.Food.update(
+      {
+        likes: food.likes - 1
+      },
+      {
+        where: {
+          'uuid': _id
+        }
+      }
+    )
+      .then(function() {
+        res.status(201).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
+  });
 });
 
 // Update food dislikes
 router.put('/dislikes', function(req, res, next) {
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "dislikes" = "dislikes" + 1, "updated_at" = $2 WHERE "uuid" = $1',
-    [
-      _id,
-      getTimestamp()
-    ])
+  models.Food.findOne({
+    where: {
+      uuid: _id
+    },
+    attributes: ['dislikes']
+  }).then(function(food) {
+    models.Food.update(
+      {
+        dislikes: food.dislikes + 1
+      },
+      {
+        where: {
+          'uuid': _id
+        }
+      }
+  )
     .then(function() {
       res.status(201).send();
     })
@@ -188,30 +218,47 @@ router.put('/dislikes', function(req, res, next) {
       res.send(error);
       res.status(404).send();
     });
+  });
 });
 
 router.put('/dislikes/decrement', function(req, res, next) {
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.query('UPDATE "Food" SET "dislikes" = "dislikes" - 1, "updated_at" = $2 WHERE "uuid" = $1',
-    [
-      _id,
-      getTimestamp()
-    ])
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.send(error);
-      res.status(404).send();
-    });
+  models.Food.findOne({
+    where: {
+      uuid: _id
+    },
+    attributes: ['dislikes']
+  }).then(function(food) {
+    models.Food.update(
+      {
+        dislikes: food.dislikes - 1
+      },
+      {
+        where: {
+          'uuid': _id
+        }
+      }
+    )
+      .then(function() {
+        res.status(201).send();
+      })
+      .catch(function(error) {
+        res.send(error);
+        res.status(404).send();
+      });
+  });
 });
 
 // Delete food
 router.delete('/', function(req, res, next) {
   req.accepts('application/json');
   var _id = req.body[0].uuid;
-  db.none('DELETE FROM "Food" WHERE "uuid" = $1', _id)
+  models.Food.destroy({
+    where: {
+      uuid: _id
+    }
+  })
     .then(function() {
       res.status(204).send();
     })

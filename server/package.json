@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "backend": "nodemon -L --debug=5858 index.js"
+    "backend": "nodemon -L --debug=5858 index.js",
+    "db:migrate": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --config=config/config.json db:migrate",
+    "db:seed": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --seeders-path=seeders --config=config/config.json db:seed:all",
+    "db:seed:undo:all": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --seeders-path=seeders --config=config/config.json db:seed:undo:all"
+
   },
   "author": "",
   "license": "ISC",

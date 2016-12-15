@@ -6,7 +6,7 @@ module.exports = {
   node: { fs: 'empty' },
   context: path.join(__dirname),
   devtool: debug ? 'inline-sourcemap' : null,
-  entry: './tests/frontend/test-index.js',
+  entry: './frontend/test-index.js',
   module: {
     loaders: [
       {
@@ -36,7 +36,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
-    filename: '/tests/tests-bundle.js'
+    filename: '/tests-bundle.js'
   },
   plugins: debug ? [] : [
    new webpack.HotModuleReplacementPlugin(),

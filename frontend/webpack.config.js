@@ -6,7 +6,7 @@ module.exports = {
   node: { fs: 'empty' },
   context: path.join(__dirname),
   devtool: debug ? 'inline-sourcemap' : null,
-  entry: './frontend/js/app.js',
+  entry: './js/app.js',
   module: {
     loaders: [
       {
@@ -39,7 +39,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.join(__dirname, '/public'),
+    path: path.join(__dirname, '../public'),
     filename: '/bundle.js'
   },
   plugins: debug ? []:[
