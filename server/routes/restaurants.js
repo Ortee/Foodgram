@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const passport = require('passport');
+
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -47,7 +49,8 @@ router.get('/:login', function(req, res, next) {
 });
 
 // Update restaurant
-router.put('/update', function(req, res, next) {
+router.put('/update', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
   req.accepts('application/json');
   var _login = req.body[0].login;
   var update = {};

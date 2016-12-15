@@ -40,7 +40,7 @@ export function getSingleFood(_uuid) {
 export function addFood(_login, _username, food, token) {
   const request = req.post(config.url + '/api/foods')
   .set('Content-type', 'application/json')
-  .set('token', token);
+  .set('Authorization', 'Bearer ' + token);
   const _uuid = uuid.v1();
   return (dispatch) => {
     request.send([{
@@ -73,7 +73,7 @@ export function addFood(_login, _username, food, token) {
 export function removeFood(_uuid, indexInState, token) {
   const request = req.del(config.url + '/api/foods')
   .set('Content-type', 'application/json')
-  .set('token', token);
+  .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
     request.send([{ uuid: _uuid }])
     .end((err, res) => {
