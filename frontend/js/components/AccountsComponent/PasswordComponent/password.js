@@ -7,6 +7,7 @@ import './password.scss';
 class Password extends Component {
   constructor(props) {
     super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       newPassword: '',
       newPassword2: '',
@@ -18,7 +19,7 @@ class Password extends Component {
       <article className="password">
         <UserInformations {...this.props}/>
         <Col id="password-section">
-          <form ref="passwordForm" className="form-inline">
+          <form ref="passwordForm" onSubmit={this.handleSubmit} className="form-inline">
             <AccountsInput onChange={this.updateOldPassword} text="Old password" type="password" refer="oldpassword" placeholder="Old password"/>
             <AccountsInput onChange={this.updateNewPassword} text="New password" type="password" refer="newpassword" placeholder="New password"/>
             <AccountsInput onChange={this.updateNewPassword2} text="New password" type="password" refer="newpassword2" placeholder="New password"/>
@@ -43,25 +44,28 @@ class Password extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.state.newPassword === null ||
-    this.state.newPassword2 === null ||
-    this.state.oldPassword === null ?
-    this.props.addAlert('Error!', 'danger') :
-    this.props.updatePassword(this.props.auth.login, this.state);
-    this.setState({
-      newPassword: '',
-      newPassword2: '',
-      oldPassword: '',
-    });
-    this.refs.passwordForm.reset();
+    if (this.state.newPassword === '' ||
+      this.state.newPassword2 === '' ||
+      this.state.oldPassword === '') {
+      this.props.addAlert('Error!', 'danger');
+    } else {
+      this.state.newPassword !== this.state.newPassword2 ?
+      this.props.addAlert('Error!', 'danger') :
+      this.props.updatePassword(this.props.auth.login, this.state, this.props.auth.token);
+      this.setState({
+        newPassword: '',
+        newPassword2: '',
+        oldPassword: '',
+      });
+      this.refs.passwordForm.reset();
+    }
   }
 }
 
 Password.propTypes = {
   addAlert: React.PropTypes.func,
-  update: React.PropTypes.func,
   auth: React.PropTypes.object,
-  updatePassword: React.PropTypes.object,
+  updatePassword: React.PropTypes.function,
 };
 
 export default Password;

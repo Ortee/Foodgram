@@ -2,9 +2,10 @@ import req from 'superagent';
 import { addAlert } from './alertActions';
 import config from '../config';
 
-export function update(login, data) {
+export function update(login, data, token) {
   const request = req.put(config.url + '/api/restaurants/update')
-  .set('Content-type', 'application/json');
+  .set('Content-type', 'application/json')
+  .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
     request.send([{
       login: login,
@@ -21,15 +22,16 @@ export function update(login, data) {
         if (data.address !== null) dispatch(editAddress(data.address));
         if (data.avatar !== null) dispatch(editAvatar(data.avatar));
         if (data.description !== null) dispatch(editDescription(data.description));
-        dispatch(addAlert('Successd !', 'success'));
+        dispatch(addAlert('Success !', 'success'));
       }
     });
   };
 }
 
-export function updatePassword(login, data) {
+export function updatePassword(login, data, token) {
   const request = req.put(config.url + '/api/restaurants/password')
-  .set('Content-type', 'application/json');
+  .set('Content-type', 'application/json')
+  .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
     request.send([{
       login: login,
@@ -41,7 +43,7 @@ export function updatePassword(login, data) {
       if (err || !res.ok) {
         dispatch(addAlert('Error!', 'danger'));
       } else {
-        dispatch(addAlert('Successd !', 'success'));
+        dispatch(addAlert('Success !', 'success'));
       }
     });
   };

@@ -26,7 +26,7 @@ app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
 
 app.listen(PORT, function() {
-  logger(`SERVER Listening on ${PORT}`);
+  console.log(`SERVER Listening on ${PORT}`);
 });
 
 module.exports = app;

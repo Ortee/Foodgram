@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const request = require('superagent');
 const models = require('../models');
+const passport = require('passport');
 
 //classes
 var Food = require('../class/food');
@@ -84,7 +85,8 @@ router.get('/:uuid', function(req, res, next) {
 
 
 // Save food
-router.post('/', function(req, res, next) {
+router.post('/', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
@@ -109,7 +111,6 @@ router.post('/', function(req, res, next) {
       }])
       .end((err) => {
         if (err) {
-          console.log(err);
           res.status(404).send();
         } else {
           console.log('Image sent to nodestore.');
@@ -211,13 +212,13 @@ router.put('/dislikes', function(req, res, next) {
         }
       }
   )
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
-      res.send(error);
-      res.status(404).send();
-    });
+      .then(function() {
+        res.status(201).send();
+      })
+      .catch(function(error) {
+        res.send(error);
+        res.status(404).send();
+      });
   });
 });
 
@@ -251,7 +252,8 @@ router.put('/dislikes/decrement', function(req, res, next) {
 });
 
 // Delete food
-router.delete('/', function(req, res, next) {
+router.delete('/', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
   req.accepts('application/json');
   var _id = req.body[0].uuid;
   models.Food.destroy({

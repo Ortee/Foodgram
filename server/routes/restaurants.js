@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const passport = require('passport');
+
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -47,7 +49,8 @@ router.get('/:login', function(req, res, next) {
 });
 
 // Update restaurant
-router.put('/update', function(req, res, next) {
+router.put('/update', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
   req.accepts('application/json');
   var _login = req.body[0].login;
   var update = {};
@@ -66,6 +69,38 @@ router.put('/update', function(req, res, next) {
     .catch(function(error) {
       res.status(404).send();
     });
+});
+
+// Change password
+router.put('/password', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
+  req.accepts('application/json');
+  models.Restaurant.findOne({
+    where: {
+      login: req.body[0].login
+    }
+  }).then(function(restaurant) {
+    if (restaurant.password == req.body[0].oldPassword && req.body[0].newPassword == req.body[0].newPassword2) {
+      models.Restaurant.update(
+        {
+          password: req.body[0].newPassword
+        },
+        {
+          where: {
+            'login': req.body[0].login
+          }
+        }
+        )
+        .then(function() {
+          res.status(201).send();
+        })
+        .catch(function(error) {
+          res.status(404).send();
+        });
+    } else {
+      res.status(404).send();
+    }
+  });
 });
 
 module.exports = router;
