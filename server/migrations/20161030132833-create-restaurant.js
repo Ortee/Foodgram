@@ -28,8 +28,8 @@ module.exports = {
         unique: true
       },
       avatar: {
-        type: Sequelize.STRING,
-        default: 'test.jpg'
+        type: Sequelize.BOOLEAN,
+        default: false
       },
       description: {
         type: Sequelize.TEXT

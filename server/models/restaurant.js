@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
     address: DataTypes.STRING,
     login: DataTypes.STRING,
     password: DataTypes.STRING,
-    avatar: DataTypes.STRING,
+    avatar: DataTypes.BOOLEAN,
     description: DataTypes.TEXT
   }, {
     underscored: true,

@@ -8,7 +8,7 @@ module.exports = {
         address: 'Jaroczyńskiego 22, Poznan',
         login: 'pastwisko',
         password: 'pastwisko',
-        avatar: 'http://localhost:8000/api/images/avatar/default.png',
+        avatar: false,
         description: 'super opis pastwiska',
       },
       {
@@ -16,7 +16,7 @@ module.exports = {
         address: 'Kramarska 21, Poznan',
         login: 'fatbob',
         password: 'fatbob',
-        avatar: 'http://localhost:8000/api/images/avatar/default.png',
+        avatar: false,
         description: 'super opis fat boba'
       }
     ], {});
