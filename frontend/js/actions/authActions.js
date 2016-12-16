@@ -33,10 +33,19 @@ export function login(_login, _password) {
       password: _password,
     })
     .end((err, res) => {
-      if (err || !res.ok) {
+      if (res.status > 500) {
+        dispatch(loginUserFailure(err));
+        dispatch(addAlert('Sorry, offline server !', 'danger'));
+      } else if (res.status === 404) {
+        dispatch(loginUserFailure(err));
+        dispatch(addAlert('Sorry, server problem !', 'danger'));
+      } else if (res.status === 401) {
         dispatch(loginUserFailure(err));
         dispatch(addAlert('Incorrect login or password !', 'danger'));
-      } else {
+      } else if (err || !res.ok) {
+        dispatch(loginUserFailure(err));
+        dispatch(addAlert('Sorry, server problem !', 'danger'));
+      } else if (res.status === 202) {
         dispatch(loginUserSuccess(JSON.parse(res.text).token));
         dispatch(addAlert('You are logged in !', 'success'));
       }
