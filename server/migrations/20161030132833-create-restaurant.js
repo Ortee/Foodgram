@@ -10,8 +10,7 @@ module.exports = {
       },
       rest_name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
       },
       address: {
         type: Sequelize.STRING,
@@ -19,13 +18,11 @@ module.exports = {
       },
       login: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
       },
       avatar: {
         type: Sequelize.BOOLEAN,

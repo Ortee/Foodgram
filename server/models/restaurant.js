@@ -6,11 +6,12 @@ module.exports = function (sequelize, DataTypes) {
   var Restaurant = sequelize.define('Restaurant', {
     rest_name: DataTypes.STRING,
     address: DataTypes.STRING,
-    login: DataTypes.STRING,
+    login: {type: DataTypes.STRING, unique: true},
     password: DataTypes.STRING,
     avatar: DataTypes.BOOLEAN,
     description: DataTypes.TEXT
   }, {
+
     underscored: true,
     classMethods: {
       associate: function(models) {
@@ -39,8 +40,6 @@ module.exports = function (sequelize, DataTypes) {
         }
       }
     },
-
-
     freezeTableName: true,
     timestamps: false
   });

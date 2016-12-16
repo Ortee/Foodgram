@@ -33,14 +33,12 @@ router.post('/register', function(req, res, next) {
     login: req.body[0].login,
     password: req.body[0].password,
     avatar: false,
-    description: 'No description'
+    description: 'No description.'
   }, {})
     .then(function() {
-      console.log('POSZLO');
       res.status(201).send();
     })
     .catch(function(error) {
-      console.log('ERROR: ', error);
       res.status(404).send();
     });
 });
