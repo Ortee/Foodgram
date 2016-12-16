@@ -3,6 +3,7 @@ const router = express.Router();
 const request = require('superagent');
 const models = require('../models');
 const passport = require('passport');
+const winston = require('winston');
 
 //classes
 var Food = require('../class/food');
@@ -113,7 +114,7 @@ function(req, res, next) {
         if (err) {
           res.status(404).send();
         } else {
-          console.log('Image sent to nodestore.');
+          winston.log('info', 'Image sent to nodestore.');
           models.Food.create({
             uuid: newFood.getUuid(),
             description: newFood.getDescription(),
