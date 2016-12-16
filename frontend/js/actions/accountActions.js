@@ -1,5 +1,6 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
+import { browserHistory } from 'react-router';
 import config from '../config';
 
 export function update(login, data, token) {
@@ -23,6 +24,9 @@ export function update(login, data, token) {
         if (data.avatar !== null) dispatch(editAvatar(config.url + '/api/images/avatar/' + login + '.png'));
         if (data.description !== null) dispatch(editDescription(data.description));
         dispatch(addAlert('Success !', 'success'));
+        if (res.status === 201) {
+          browserHistory.pushState('/');
+        }
       }
     });
   };

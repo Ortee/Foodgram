@@ -36,6 +36,7 @@ router.get('/:login', function(req, res, next) {
       });
       res.setHeader('Content-Type', 'application/json');
       var newRestaurant = new Restaurant(data.rest_name)
+        .login(data.login)
         .address(data.address)
         .avatar(data.avatar)
         .description(data.description)
@@ -74,7 +75,7 @@ function(req, res, next) {
           res.status(404).send();
         } else {
           winston.log('info', 'Avatar sent to nodestore.');
-          Object.assign(update, {avatar: 'http://localhost:8000/api/images/avatar/' + req.body[0].login + '.png'});
+          Object.assign(update, {avatar: true});
           models.Restaurant.update(update, {
             where: {
               login: _login
