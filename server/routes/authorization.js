@@ -12,7 +12,7 @@ var Restaurant = require('../class/restaurant');
 
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { res.status(500).send(); }
+    if (err) { res.status(404).send(); }
     if (!user) {
       res.status(400).send(info);
     }
