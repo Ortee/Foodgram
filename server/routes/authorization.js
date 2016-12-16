@@ -7,23 +7,25 @@ const passport = require('passport');
 const jwt = require('jwt-simple');
 const models = require('../models');
 
-
 //classes
 var Restaurant = require('../class/restaurant');
 
-
-router.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login', session: false }),
-  function(req, res) {
-    var user = new Restaurant(req.user.rest_name)
-    .id(req.user.id)
-    .address(req.user.address)
-    .login(req.user.login)
-    .avatar(req.user.avatar)
-    .description(req.user.description);
-    var token = jwt.encode(user, config.tokenSecret);
+router.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { res.status(500).send(); }
+    if (!user) {
+      res.status(400).send(info);
+    }
+    var tmpUser = new Restaurant(user.rest_name)
+    .id(user.id)
+    .address(user.address)
+    .login(user.login)
+    .avatar(user.avatar)
+    .description(user.description);
+    var token = jwt.encode(tmpUser, config.tokenSecret);
     res.json({ token: token });
-  });
+  })(req, res, next);
+});
 
 router.post('/register', function(req, res, next) {
   req.accepts('application/json');
