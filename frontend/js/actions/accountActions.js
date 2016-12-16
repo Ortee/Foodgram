@@ -18,7 +18,7 @@ export function update(login, data, token) {
       if (err || !res.ok) {
         dispatch(addAlert('Error!', 'danger'));
       } else {
-        if (data.rest_name !== null) dispatch(editRestName(data.restName));
+        if (data.restName !== null) dispatch(editRestName(data.restName));
         if (data.address !== null) dispatch(editAddress(data.address));
         if (data.avatar !== null) dispatch(editAvatar(config.url + '/api/images/avatar/' + login + '.png'));
         if (data.description !== null) dispatch(editDescription(data.description));
