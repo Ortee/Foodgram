@@ -40,18 +40,6 @@ nodestore:
   ports:
     - "3500:3500"
 
-frontend:
-  image: node:7
-  command: npm run webpack
-  working_dir: /app/frontend/
-  volumes:
-    - ./frontend:/app/frontend/
-    - ./public:/app/public
-  environment:
-    PORT: 4000
-  ports:
-    - "4000:4000"
-
 db:
   image: postgres
   expose:
@@ -89,3 +77,29 @@ varnish:
         - loadbalancer:loadbalancer
     volumes:
         - ./nginx/default.vcl:/etc/varnish/default.vcl
+
+# DEV ONLY
+frontend:
+    image: node:7
+    command: npm run webpack
+    working_dir: /app/frontend/
+    volumes:
+      - ./frontend:/app/frontend/
+      - ./public:/app/public
+    environment:
+      PORT: 4000
+    ports:
+      - "4000:4000"
+
+# tests:
+#     image: node:7
+#     command: npm run backend
+#     working_dir: /app/tests/
+#     environment:
+#       CONNECTION_STRING_DEV: postgres://user:password@db/db
+#     volumes:
+#       - ./tests:/app/tests/
+#       - ./server:/app/server/
+#       - ./frontend:/app/frontend/
+#     links:
+#       - db

@@ -21,7 +21,6 @@ class Photo extends Component {
         <Col id="photo-section">
           <form ref="photoForm" onSubmit={this.handleSubmit} className="form-inline">
             <AccountsInput onChange={this.updateImage} text="Upload picture" type="file" refer="image" accept="image/*" id="img-input"/>
-            {/* <AccountsInput onChange={this.updateImage} text="Upload picture" type="text" refer="image" placeholder="Url to image"/> */}
             <AccountsInput onChange={this.updateDescription} text="Description" type="text" refer="description" placeholder="Picture description"/>
             <AccountsInput onChange={this.updateHashTags} text="Hashtags" type="text" refer="hashTags" placeholder="#food"/>
             <Button type="submit" className="auth-button">Add</Button>
@@ -55,7 +54,7 @@ class Photo extends Component {
     this.state.image === null ||
     this.state.description === null ?
     this.props.addAlert('Error!', 'danger') :
-    this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state);
+    this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
     this.setState({
       image: null,
       description: null,

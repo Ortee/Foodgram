@@ -10,8 +10,7 @@ module.exports = {
       },
       uuid: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
       },
       description: {
         type: Sequelize.TEXT

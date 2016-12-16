@@ -1,14 +1,12 @@
-var express = require('express');
-var path = require('path');
-var router = express.Router();
-const pgp = require('pg-promise')();
-const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, '/../config/config.json'))[env];
-const db = pgp(process.env[config.use_env_variable]);
+const express = require('express');
+const router = express.Router();
 const models = require('../models');
+const passport = require('passport');
+const request = require('superagent');
+
 
 //classes
-var Restaurant = require('../class/restaurant');
+const Restaurant = require('../class/restaurant');
 
 // Get single restaurant
 router.get('/:login', function(req, res, next) {
@@ -20,7 +18,7 @@ router.get('/:login', function(req, res, next) {
     include: [
       {
         model: models.Food,
-        attributes: ['uuid', 'photo', 'likes', 'dislikes']
+        attributes: ['uuid', 'likes', 'dislikes']
       }
     ],
     order: [
@@ -52,25 +50,77 @@ router.get('/:login', function(req, res, next) {
 });
 
 // Update restaurant
-router.put('/update', function(req, res, next) {
+router.put('/update', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
   req.accepts('application/json');
   var _login = req.body[0].login;
   var update = {};
   if (req.body[0].rest_name !== null) Object.assign(update, {rest_name: req.body[0].rest_name});
   if (req.body[0].address !== null) Object.assign(update, {address: req.body[0].address});
-  if (req.body[0].avatar !== null) Object.assign(update, {avatar: req.body[0].avatar});
   if (req.body[0].description !== null) Object.assign(update, {description: req.body[0].description});
-  models.Restaurant.update(update, {
+  if (req.body[0].avatar !== null) {
+    request
+      .post('http://nodestore:3500/api/upload-avatar')
+      .set('Content-Type', 'application/json')
+      .send([{
+        login: req.body[0].login,
+        avatar: req.body[0].avatar
+      }])
+      .end((err) => {
+        if (err) {
+          res.status(404).send();
+        } else {
+          console.log('Avatar sent to nodestore.');
+          Object.assign(update, {avatar: 'http://localhost:8000/api/images/avatar/' + req.body[0].login + '.png'});
+          models.Restaurant.update(update, {
+            where: {
+              login: _login
+            }
+          })
+            .then(function() {
+              res.status(201).send();
+            })
+            .catch(function(error) {
+              res.status(404).send();
+            });
+        }
+      });
+  }
+});
+
+// Change password
+router.put('/password', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
+  req.accepts('application/json');
+  models.Restaurant.findOne({
     where: {
-      login: _login
+      login: req.body[0].login
     }
-  })
-    .then(function() {
-      res.status(201).send();
-    })
-    .catch(function(error) {
+  }).then(function(restaurant) {
+    if (restaurant.password == req.body[0].oldPassword && req.body[0].newPassword == req.body[0].newPassword2) {
+      models.Restaurant.update(
+        {
+          password: req.body[0].newPassword
+        },
+        {
+          where: {
+            'login': req.body[0].login
+          }
+        }
+        )
+        .then(function() {
+          res.status(201).send();
+        })
+        .catch(function(error) {
+          res.status(404).send();
+        });
+    } else {
       res.status(404).send();
-    });
+    }
+  });
 });
 
 module.exports = router;

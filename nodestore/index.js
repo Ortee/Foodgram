@@ -33,51 +33,90 @@ function decodeBase64Image(dataString) {
 
 app.use('/api/images', express.static(path.join(__dirname, 'public')));
 
-app.post('/api/upload', function(req, res, next) {
+app.post('/api/upload-avatar', function(req, res, next) {
   req.accepts('application/json');
-  var imageBuffer = decodeBase64Image(req.body[0].photo);
-  fs.writeFile('./tmp/'+req.body[0].uuid+'.jpg', imageBuffer.data, function(err) {
+  var imageBuffer = decodeBase64Image(req.body[0].avatar);
+  fs.writeFile('./tmp/' + req.body[0].login + '.png', imageBuffer.data, function(err) {
     if (err) {
       res.status(404).send();
     }
     async.waterfall([
       (callback) => {
-        Jimp.read('./tmp/'+req.body[0].uuid+'.jpg', function (err, image) {
-            if (err) throw err;
-            image.contain(276, 276)
-                 .write('./public/thumbnail/'+req.body[0].uuid+'.png');
-            console.log(req.body[0].uuid,' - THUMBNAIL SAVED');
-            var thumbnail = true;
-            callback(null, thumbnail);
+        Jimp.read('./tmp/' + req.body[0].login + '.png', function(err, image) {
+          if (err) throw err;
+          image.contain(276, 276)
+            .write('./public/avatar/' + req.body[0].login + '.png');
+          console.log(req.body[0].login, ' - AVATAR SAVED');
+          var avatar = true;
+          callback(null, avatar);
         });
       },
-      (thumbnail, callback) => {
-        Jimp.read('./tmp/'+req.body[0].uuid+'.jpg', function (err, image) {
+      (avatar, callback) => {
+        if (fs.existsSync('./tmp/' + req.body[0].login + '.png')) {
+          fs.unlink('./tmp/' + req.body[0].login + '.png', (err) => {
             if (err) throw err;
-            image.contain(540, Jimp.AUTO)
-                 .write('./public/fullsize/'+req.body[0].uuid+'.png');
-            console.log(req.body[0].uuid,' - FULLSIZE SAVED');
-            var fullsize = true;
-            callback(null, fullsize);
-        });
-      },
-      (fullsize, callback) => {
-        if (fs.existsSync('./tmp/'+req.body[0].uuid+'.jpg')) {
-            fs.unlink('./tmp/'+req.body[0].uuid+'.jpg', (err) => {
-              if (err) throw err;
-              console.log(req.body[0].uuid + 'TMP SUCCESFULLY DELETED');
-              var done = true;
-              callback(null, done);
-            });
+            console.log(req.body[0].login + ' - TMP AVATAR SUCCESFULLY DELETED');
+            var done = true;
+            callback(null, done);
+          });
         }
       }
     ], (err, result) => {
-      console.log(result);
+      if (err) {
+        console.log(err);
+      }
     });
     res.status(201).send();
   });
 });
 
-app.listen(PORT, function () {
+app.post('/api/upload', function(req, res, next) {
+  req.accepts('application/json');
+  var imageBuffer = decodeBase64Image(req.body[0].photo);
+  fs.writeFile('./tmp/' + req.body[0].uuid + '.jpg', imageBuffer.data, function(err) {
+    if (err) {
+      res.status(404).send();
+    }
+    async.waterfall([
+      (callback) => {
+        Jimp.read('./tmp/' + req.body[0].uuid + '.jpg', function(err, image) {
+          if (err) throw err;
+          image.contain(276, 276)
+            .write('./public/thumbnail/' + req.body[0].uuid + '.png');
+            console.log(req.body[0].uuid, ' - THUMBNAIL SAVED');
+          var thumbnail = true;
+          callback(null, thumbnail);
+        });
+      },
+      (thumbnail, callback) => {
+        Jimp.read('./tmp/' + req.body[0].uuid + '.jpg', function(err, image) {
+          if (err) throw err;
+          image.contain(540, Jimp.AUTO)
+            .write('./public/fullsize/' + req.body[0].uuid + '.png');
+          console.log(req.body[0].uuid, ' - FULLSIZE SAVED');
+          var fullsize = true;
+          callback(null, fullsize);
+        });
+      },
+      (fullsize, callback) => {
+        if (fs.existsSync('./tmp/' + req.body[0].uuid + '.jpg')) {
+          fs.unlink('./tmp/' + req.body[0].uuid + '.jpg', (err) => {
+            if (err) throw err;
+            console.log(req.body[0].uuid + 'TMP SUCCESFULLY DELETED');
+            var done = true;
+            callback(null, done);
+          });
+        }
+      }
+    ], (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    res.status(201).send();
+  });
+});
+
+app.listen(PORT, function() {
   console.log(`STORE SERVER Listening on ${PORT}`);
 });

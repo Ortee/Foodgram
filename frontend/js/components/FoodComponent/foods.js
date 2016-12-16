@@ -3,6 +3,8 @@ import { Col } from 'reactstrap';
 import Food from './food';
 import './food.scss';
 
+var refreshInterval;
+
 class Foods extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +14,13 @@ class Foods extends Component {
     this.props.params.uuid === undefined ?
     this.props.showFoods() :
     this.props.getSingleFood(this.props.params.uuid);
-    setInterval(() => {
+    refreshInterval = setInterval(() => {
       this.props.updateLikes();
     }, 20000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(refreshInterval);
   }
 
   render() {

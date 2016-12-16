@@ -15,15 +15,14 @@ class Edit extends Component {
       avatar: null,
     };
   }
-  componentDidMount() {
-  }
+
   render = () => {
     return (
       <article className="edit">
         <UserInformations {...this.props}/>
         <Col id="edit-section">
           <form ref="editForm" onSubmit={this.handleSubmit} className="form-inline">
-            <AccountsInput onChange={this.updateAvatar} text="Avatar" type="text" refer="avatar" placeholder={this.props.auth.avatar}/>
+            <AccountsInput onChange={this.updateAvatar} text="Avatar" type="file" refer="avatar" accept="image/*" id="img-input"/>
             <AccountsInput onChange={this.updateRestName} text="Restaurant Name" type="text" refer="restName" placeholder={this.props.auth.rest_name}/>
             <AccountsInput onChange={this.updateDescription} text="Description" type="text" refer="description" placeholder={this.props.auth.description}/>
             <AccountsInput onChange={this.updateAddress} text="Address" type="text" refer="address" placeholder={this.props.auth.address}/>
@@ -38,8 +37,16 @@ class Edit extends Component {
     this.setState({restName: text});
   }
 
-  updateAvatar = (text) => {
-    this.setState({avatar: text});
+  updateAvatar = (text, e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        avatar: reader.result,
+      });
+    };
+    reader.readAsDataURL(file);
   }
 
   updateDescription = (text) => {
@@ -57,7 +64,7 @@ class Edit extends Component {
     this.state.avatar === null &&
     this.state.address === null ?
     this.props.addAlert('Fields are empty!', 'danger') :
-    this.props.update(this.props.auth.login, this.state);
+    this.props.update(this.props.auth.login, this.state, this.props.auth.token);
     this.setState({
       restName: null,
       description: null,

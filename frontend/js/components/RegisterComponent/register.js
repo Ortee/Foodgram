@@ -17,7 +17,6 @@ class Register extends Component {
           <span>Sign up to add photos and comment from your favourite restaurant.</span>
           <hr />
           <form ref="registerForm" onSubmit={this.handleSubmit} className="form-inline">
-            <input type="email" ref="email" placeholder="Email" className="form-control auth-input"/>
             <input type="text" ref="username" placeholder="Username" className="form-control auth-input"/>
             <input type="text" ref="login" placeholder="Login" className="form-control auth-input"/>
             <input type="password" ref="password" placeholder="Password" className="form-control auth-input"/>
@@ -32,11 +31,10 @@ class Register extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const email = this.refs.email.value;
     const username = this.refs.username.value;
     const login = this.refs.login.value;
     const password = this.refs.password.value;
-    this.props.register(email, username, login, password);
+    this.props.register(username, login, password);
     this.refs.registerForm.reset();
   }
 }

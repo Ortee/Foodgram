@@ -13,6 +13,7 @@ class Accounts extends Component {
     };
   }
   componentDidMount() {
+    this.props.getUser(this.props.auth.login);
   }
   render = () => {
     return (
@@ -60,8 +61,10 @@ class Accounts extends Component {
 }
 
 Accounts.propTypes = {
+  auth: React.PropTypes.object,
   children: React.PropTypes.element.isRequired,
   logout: React.PropTypes.func,
+  getUser: React.PropTypes.func,
 };
 
 export default Accounts;

@@ -27,7 +27,6 @@ module.exports = function(passport) {
         function(token, done) {
           try {
             var decoded = jwt.decode(token, config.tokenSecret);
-            
             Restaurant.find({ where: { id: decoded.id } }).then(function(user) {
               if (!user) {
                 return done(null, false);
@@ -41,4 +40,3 @@ module.exports = function(passport) {
         }
     ));
 };
-

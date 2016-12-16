@@ -28,13 +28,13 @@ class Menu extends Component {
             </NavItem>
             <NavItem>
               <Link className="menu-icon-right" to={`/profile/${username}`}>
-                <i className="fa fa-heart-o fa-2x" aria-hidden="true"/>
+                <i className="fa fa-user fa-2x" aria-hidden="true"/>
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="menu-icon-right" to={`/profile/${username}`}>
-                <i className="fa fa-user fa-2x" aria-hidden="true"/>
-              </Link>
+              <p className="menu-icon-right" style={username === ' ' ? {display: 'none'} : {display: 'block'}} onClick={this.props.logout.bind()}>
+                <i className="fa fa-sign-out fa-2x" aria-hidden="true"/>
+              </p>
             </NavItem>
           </Nav>
         </div>
@@ -45,6 +45,7 @@ class Menu extends Component {
 
 Menu.propTypes = {
   auth: React.PropTypes.object,
+  logout: React.PropTypes.func,
 };
 
 export default Menu;
