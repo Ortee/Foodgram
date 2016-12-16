@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Food = sequelize.define('Food', {
-    uuid: DataTypes.STRING,
+    uuid: {type: DataTypes.STRING, unique: true},
     description: DataTypes.TEXT,
     hashtags: DataTypes.STRING,
     likes: DataTypes.INTEGER,

@@ -2,7 +2,7 @@ function user(state = {
   login: null,
   rest_name: null,
   description: null,
-  avatar: null,
+  avatar: false,
   address: null,
   foods: [],
   likes: 0,

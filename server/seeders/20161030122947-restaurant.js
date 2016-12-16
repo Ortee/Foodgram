@@ -8,7 +8,7 @@ module.exports = {
         address: 'Jaroczyńskiego 22, Poznan',
         login: 'pastwisko',
         password: 'pastwisko',
-        avatar: 'http://images.franchising.pl/5de/48d/bb-logo.png',
+        avatar: false,
         description: 'super opis pastwiska',
       },
       {
@@ -16,7 +16,7 @@ module.exports = {
         address: 'Kramarska 21, Poznan',
         login: 'fatbob',
         password: 'fatbob',
-        avatar: 'https://s-media-cache-ak0.pinimg.com/736x/0c/a1/a9/0ca1a9e8436a2d50f669825487217b40.jpg',
+        avatar: false,
         description: 'super opis fat boba'
       }
     ], {});
