@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookie';
 import { Col, Button } from 'reactstrap';
+import validator from 'validator';
 import './login.scss';
 
 class Login extends Component {
@@ -29,13 +30,24 @@ class Login extends Component {
     e.preventDefault();
     const login = this.refs.login.value;
     const password = this.refs.password.value;
-    this.props.login(login, password);
+    if (!validator.isAlpha(login)) {
+      this.props.addAlert('Invalid login!', 'danger');
+    } else if (!validator.isAlpha(password)) {
+      this.props.addAlert('Invalid password!', 'danger');
+    } else if (validator.isEmpty(login)) {
+      this.props.addAlert('Enter your login!', 'danger');
+    } else if (validator.isEmpty(password)) {
+      this.props.addAlert('Enter your password!', 'danger');
+    } else {
+      this.props.login(login, password);
+    }
     this.refs.loginForm.reset();
   }
 }
 
 Login.propTypes = {
   login: React.PropTypes.func,
+  addAlert: React.PropTypes.func,
 };
 
 export default Login;
