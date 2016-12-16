@@ -4,6 +4,7 @@ const models = require('../models');
 const passport = require('passport');
 const request = require('superagent');
 const winston = require('winston');
+const validator = require('validator');
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -101,26 +102,35 @@ function(req, res, next) {
       login: req.body[0].login
     }
   }).then(function(restaurant) {
-    if (restaurant.password == req.body[0].oldPassword && req.body[0].newPassword == req.body[0].newPassword2) {
-      models.Restaurant.update(
-        {
-          password: req.body[0].newPassword
-        },
-        {
-          where: {
-            'login': req.body[0].login
-          }
-        }
-        )
-        .then(function() {
-          res.status(201).send();
-        })
-        .catch(function(error) {
-          res.status(404).send();
-        });
-    } else {
-      res.status(404).send();
+    if (!validator.equals(restaurant.password, req.body[0].oldPassword)) {
+      return res.status(400).send('Old password doesnt match');
+    } else if (!validator.equals(req.body[0].newPassword, req.body[0].newPassword2)) {
+      return res.status(400).send('New passwords are different.');
+    } else if (!validator.isLength(req.body[0].newPassword, {min: 5, max: undefined})) {
+      return res.status(400).send('New password is too short (min: 5 letters).');
+    } else if (validator.isEmpty(req.body[0].oldPassword) ||
+      validator.isEmpty(req.body[0].newPassword) ||
+      validator.isEmpty(req.body[0].newPassword2)) {
+      return res.status(400).send('Some of the fields are empty');
     }
+
+    models.Restaurant.update(
+      {
+        password: req.body[0].newPassword
+      },
+      {
+        where: {
+          'login': req.body[0].login
+        }
+      }
+      )
+      .then(function() {
+        res.status(200).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
+
   });
 });
 

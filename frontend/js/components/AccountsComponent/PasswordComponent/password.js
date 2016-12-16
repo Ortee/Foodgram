@@ -3,6 +3,7 @@ import { Col, Button } from 'reactstrap';
 import AccountsInput from '../accountsInput';
 import UserInformations from '../userInformations';
 import './password.scss';
+import validator from 'validator';
 
 class Password extends Component {
   constructor(props) {
@@ -44,13 +45,13 @@ class Password extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.state.newPassword === '' ||
-      this.state.newPassword2 === '' ||
-      this.state.oldPassword === '') {
-      this.props.addAlert('Error!', 'danger');
+    if (validator.isEmpty(this.state.oldPassword) ||
+    validator.isEmpty(this.state.newPassword) ||
+    validator.isEmpty(this.state.newPassword2)) {
+      this.props.addAlert('Some of the fields are empty', 'danger');
     } else {
-      this.state.newPassword !== this.state.newPassword2 ?
-      this.props.addAlert('Error!', 'danger') :
+      !validator.equals(this.state.newPassword, this.state.newPassword2) ?
+      this.props.addAlert('New passwords are different.', 'danger') :
       this.props.updatePassword(this.props.auth.login, this.state, this.props.auth.token);
       this.setState({
         newPassword: '',

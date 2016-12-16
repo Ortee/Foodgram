@@ -44,10 +44,16 @@ export function updatePassword(login, data, token) {
       oldPassword: data.oldPassword,
     }])
     .end((err, res) => {
-      if (err || !res.ok) {
-        dispatch(addAlert('Error!', 'danger'));
-      } else {
-        dispatch(addAlert('Success !', 'success'));
+      if (res.status > 500) {
+        dispatch(addAlert('Sorry, offline server !', 'danger'));
+      } else if (res.status === 404) {
+        dispatch(addAlert('Sorry, server problem !', 'danger'));
+      } else if (res.status === 400) {
+        dispatch(addAlert(res.text, 'danger'));
+      } else if (err || !res.ok) {
+        dispatch(addAlert('Sorry, server problem !', 'danger'));
+      } else if (res.status === 200) {
+        dispatch(addAlert('Password successfully changed', 'success'));
       }
     });
   };
