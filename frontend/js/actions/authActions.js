@@ -5,12 +5,12 @@ import { addAlert } from './alertActions';
 import cookie from 'react-cookie';
 import config from '../config';
 
-export function register(_email, _username, _login, _password) {
+export function register(_username, _login, _password) {
   const request = req.post(config.url + '/api/register')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
-      email: _email, username: _username, login: _login, password: _password,
+      username: _username, login: _login, password: _password,
     }])
     .end((err, res) => {
       if (err || !res.ok) {
