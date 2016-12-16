@@ -3,7 +3,7 @@ const router = express.Router();
 const models = require('../models');
 const passport = require('passport');
 const request = require('superagent');
-
+const winston = require('winston');
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -73,7 +73,7 @@ function(req, res, next) {
         if (err) {
           res.status(404).send();
         } else {
-          console.log('Avatar sent to nodestore.');
+          winston.log('info', 'Avatar sent to nodestore.');
           Object.assign(update, {avatar: 'http://localhost:8000/api/images/avatar/' + req.body[0].login + '.png'});
           models.Restaurant.update(update, {
             where: {

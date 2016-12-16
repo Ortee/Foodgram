@@ -6,6 +6,7 @@ var fs = require('fs');
 var Jimp = require('jimp');
 var async = require('async');
 const PORT = process.env.PORT || 3500;
+const winston = require('winston');
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -46,7 +47,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
           if (err) throw err;
           image.contain(276, 276)
             .write('./public/avatar/' + req.body[0].login + '.png');
-          console.log(req.body[0].login, ' - AVATAR SAVED');
+          winston.log('info', req.body[0].login, ' - AVATAR SAVED');
           var avatar = true;
           callback(null, avatar);
         });
@@ -55,7 +56,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
         if (fs.existsSync('./tmp/' + req.body[0].login + '.png')) {
           fs.unlink('./tmp/' + req.body[0].login + '.png', (err) => {
             if (err) throw err;
-            console.log(req.body[0].login + ' - TMP AVATAR SUCCESFULLY DELETED');
+            winston.log('info', req.body[0].login + ' - TMP AVATAR SUCCESFULLY DELETED');
             var done = true;
             callback(null, done);
           });
@@ -63,7 +64,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
       }
     ], (err, result) => {
       if (err) {
-        console.log(err);
+        winston.log('error', err);
       }
     });
     res.status(201).send();
@@ -83,7 +84,7 @@ app.post('/api/upload', function(req, res, next) {
           if (err) throw err;
           image.contain(276, 276)
             .write('./public/thumbnail/' + req.body[0].uuid + '.png');
-            console.log(req.body[0].uuid, ' - THUMBNAIL SAVED');
+          winston.log('info', req.body[0].uuid, ' - THUMBNAIL SAVED');
           var thumbnail = true;
           callback(null, thumbnail);
         });
@@ -93,7 +94,7 @@ app.post('/api/upload', function(req, res, next) {
           if (err) throw err;
           image.contain(540, Jimp.AUTO)
             .write('./public/fullsize/' + req.body[0].uuid + '.png');
-          console.log(req.body[0].uuid, ' - FULLSIZE SAVED');
+          winston.log('info', req.body[0].uuid, ' - FULLSIZE SAVED');
           var fullsize = true;
           callback(null, fullsize);
         });
@@ -102,7 +103,7 @@ app.post('/api/upload', function(req, res, next) {
         if (fs.existsSync('./tmp/' + req.body[0].uuid + '.jpg')) {
           fs.unlink('./tmp/' + req.body[0].uuid + '.jpg', (err) => {
             if (err) throw err;
-            console.log(req.body[0].uuid + 'TMP SUCCESFULLY DELETED');
+            winston.log('info', req.body[0].uuid + 'TMP SUCCESFULLY DELETED');
             var done = true;
             callback(null, done);
           });
@@ -110,7 +111,7 @@ app.post('/api/upload', function(req, res, next) {
       }
     ], (err, result) => {
       if (err) {
-        console.log(err);
+        winston.log('error', err);
       }
     });
     res.status(201).send();
@@ -118,5 +119,5 @@ app.post('/api/upload', function(req, res, next) {
 });
 
 app.listen(PORT, function() {
-  console.log(`STORE SERVER Listening on ${PORT}`);
+  winston.log('info', `STORE SERVER Listening on ${PORT}`);
 });
