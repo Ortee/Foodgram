@@ -39,13 +39,13 @@ export function login(_login, _password) {
       } else if (res.status === 404) {
         dispatch(loginUserFailure(err));
         dispatch(addAlert('Sorry, server problem !', 'danger'));
-      } else if (res.status === 401) {
+      } else if (res.status === 400) {
         dispatch(loginUserFailure(err));
         dispatch(addAlert('Incorrect login or password !', 'danger'));
       } else if (err || !res.ok) {
         dispatch(loginUserFailure(err));
         dispatch(addAlert('Sorry, server problem !', 'danger'));
-      } else if (res.status === 202) {
+      } else if (res.status === 200) {
         dispatch(loginUserSuccess(JSON.parse(res.text).token));
         dispatch(addAlert('You are logged in !', 'success'));
       }
