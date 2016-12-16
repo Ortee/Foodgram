@@ -19,7 +19,7 @@ class User extends Component {
           <img  className="img-thumbnail img-logo"
                 height="150px"
                 width="150px"
-                src={this.props.user.avatar}/>
+                src={this.props.user.avatar !== false ? config.avatar + this.props.user.login + '.png' : config.avatar + 'default.png' }/>
           </Col>
           <Col xs={{ size: 8}}>
             <Col>

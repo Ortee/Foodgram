@@ -15,8 +15,7 @@ class Edit extends Component {
       avatar: null,
     };
   }
-  componentDidMount() {
-  }
+
   render = () => {
     return (
       <article className="edit">
