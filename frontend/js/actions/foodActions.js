@@ -52,7 +52,7 @@ export function addFood(_login, _username, food, token) {
     }])
     .end((err, res) => {
       if (err || !res.ok) {
-        dispatch(addAlert('Your food wasn`t added !', 'danger'));
+        dispatch(addAlert(res.text, 'danger'));
         dispatch({ type: 'ADD_FOODS', res: false });
       } else {
         dispatch(addAlert('Your food was successfully added !', 'success'));

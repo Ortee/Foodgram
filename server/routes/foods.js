@@ -4,6 +4,7 @@ const request = require('superagent');
 const models = require('../models');
 const passport = require('passport');
 const winston = require('winston');
+const validator = require('validator');
 
 //classes
 var Food = require('../class/food');
@@ -95,6 +96,19 @@ function(req, res, next) {
     },
     attributes: ['id']
   }).then(function(user) {
+    if (!validator.isLength(req.body[0].description, {min: 2, max: 250})) {
+      return res.status(400).send('Description is too short or too long (min: 2, max: 250 letters).');
+    } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
+      return res.status(400).send('Hashtahs is too short (min: 2, max: 250 letters).');
+    } else if (!validator.isAlphanumeric(req.body[0].hashtags)) {
+      return res.status(400).send('Description can contain only letters and numbers.');
+    } else if (!validator.isAlphanumeric(req.body[0].description)) {
+      return res.status(400).send('Description can contain only letters and numbers.');
+    } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].photo))) {
+      return res.status(400).send('Wrong File Extension');
+    } else if (Buffer.byteLength(req.body[0].photo, 'utf8') < 2097152) {
+      return res.status(400).send('Photo is too large!');
+    }
     var newFood = new Food(user.login)
       .uuid(req.body[0].uuid)
       .username(user.rest_name)
