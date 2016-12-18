@@ -5,17 +5,23 @@ import { addAlert } from './alertActions';
 import cookie from 'react-cookie';
 import config from '../config';
 
-export function register(_username, _login, _password) {
+export function register(_username, _login, _password, _passwordTwo) {
   const request = req.post(config.url + '/api/register')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
-      username: _username, login: _login, password: _password,
+      username: _username, login: _login, passwordOne: _password, passwordTwo: _passwordTwo,
     }])
     .end((err, res) => {
-      if (err || !res.ok) {
-        dispatch(addAlert('User wasn`t added !', 'danger'));
-      } else {
+      if (res.status > 500) {
+        dispatch(addAlert('Sorry, offline server !', 'danger'));
+      } else if (res.status === 404) {
+        dispatch(addAlert('Sorry, server problem !', 'danger'));
+      } else if (res.status === 400) {
+        dispatch(addAlert(res.text, 'danger'));
+      } else if (err || !res.ok) {
+        dispatch(addAlert('Sorry, server problem !', 'danger'));
+      } else if (res.status === 200) {
         dispatch(addAlert('User was successfully added !', 'success'));
       }
     });

@@ -30,11 +30,7 @@ class Login extends Component {
     e.preventDefault();
     const login = this.refs.login.value;
     const password = this.refs.password.value;
-    if (!validator.isAlpha(login)) {
-      this.props.addAlert('Invalid login!', 'danger');
-    } else if (!validator.isAlpha(password)) {
-      this.props.addAlert('Invalid password!', 'danger');
-    } else if (validator.isEmpty(login)) {
+    if (validator.isEmpty(login)) {
       this.props.addAlert('Enter your login!', 'danger');
     } else if (validator.isEmpty(password)) {
       this.props.addAlert('Enter your password!', 'danger');
