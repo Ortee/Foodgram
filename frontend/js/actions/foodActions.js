@@ -3,6 +3,7 @@ import uuid from 'uuid';
 import config from '../config';
 import { browserHistory } from 'react-router';
 import { addAlert } from './alertActions';
+import { addFoodText } from '../alertsConfig';
 
 export function showFoods() {
   const request = req
@@ -52,10 +53,10 @@ export function addFood(_login, _username, food, token) {
     }])
     .end((err, res) => {
       if (err || !res.ok) {
-        dispatch(addAlert('Your food wasn`t added !', 'danger'));
+        dispatch(addAlert(res.text, 'danger'));
         dispatch({ type: 'ADD_FOODS', res: false });
       } else {
-        dispatch(addAlert('Your food was successfully added !', 'success'));
+        dispatch(addAlert(addFoodText.successAdd, 'success'));
         dispatch({ type: 'ADD_FOODS', res: true, req: {
           'description': food.description,
           'hashtags': food.hashTags,
@@ -79,9 +80,9 @@ export function removeFood(_uuid, indexInState, token) {
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch({ type: 'REMOVE_FOODS', res: false });
-        dispatch(addAlert('Your food wasn`t removed !', 'danger'));
+        dispatch(addAlert(addFoodText.failRemove, 'danger'));
       } else {
-        dispatch(addAlert('Your food was successfully removed !', 'success'));
+        dispatch(addAlert(addFoodText.successRemove, 'success'));
         dispatch({ type: 'REMOVE_FOODS', res: true, req: { 'uuid': uuid, 'indexInState': indexInState}});
       }
     });

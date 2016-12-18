@@ -6,7 +6,12 @@ module.exports = function (sequelize, DataTypes) {
   var Restaurant = sequelize.define('Restaurant', {
     rest_name: DataTypes.STRING,
     address: DataTypes.STRING,
-    login: {type: DataTypes.STRING, unique: true},
+    login: {
+      type: DataTypes.STRING,
+      unique: {
+        msg: 'Login already in use'
+      }
+    },
     password: DataTypes.STRING,
     avatar: DataTypes.BOOLEAN,
     description: DataTypes.TEXT

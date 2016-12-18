@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const logger = require('morgan');
 const PORT = process.env.PORT || 3000;
+const winston = require('winston');
 
 app.use(logger('dev'));
 app.use(function(req, res, next) {
@@ -26,7 +27,7 @@ app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
 
 app.listen(PORT, function() {
-  console.log(`SERVER Listening on ${PORT}`);
+  winston.log('info', `SERVER Listening on ${PORT}`);
 });
 
 module.exports = app;

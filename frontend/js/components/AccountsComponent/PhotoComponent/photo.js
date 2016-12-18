@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
+import validator from 'validator';
 import UserInformations from '../userInformations';
 import AccountsInput from '../accountsInput';
+import { addFoodText } from '../../../alertsConfig';
+import { isHashTag, isPhoto, checkPhotoSize } from '../../../foodgramValidator';
 import './photo.scss';
 
 class Photo extends Component {
@@ -29,14 +32,24 @@ class Photo extends Component {
       </article>
     );
   }
+
   updateImage = (text, e) => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      this.setState({
-        image: reader.result,
-      });
+      if (!isPhoto(reader.result)) {
+        this.props.addAlert(addFoodText.photo.extension, 'danger');
+        this.setState({ image: null });
+      } else {
+        if (checkPhotoSize(reader.result)) {
+          this.setState({ image: reader.result });
+          this.props.addAlert(addFoodText.photo.loaded, 'success');
+        } else {
+          this.props.addAlert(addFoodText.photo.large, 'danger');
+          this.setState({ image: null });
+        }
+      }
     };
     reader.readAsDataURL(file);
   }
@@ -49,18 +62,33 @@ class Photo extends Component {
     this.setState({hashTags: text});
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-    this.state.image === null ||
-    this.state.description === null ?
-    this.props.addAlert('Error!', 'danger') :
-    this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
-    this.setState({
-      image: null,
-      description: null,
-      hashTags: null,
-    });
-    this.refs.photoForm.reset();
+    if (this.state.image === null) {
+      this.props.addAlert(addFoodText.photo.invalid, 'danger');
+    } else {
+      if (isHashTag(this.state.hashTags)) {
+        if (!validator.isLength(this.state.description, {min: 2, max: 250})) {
+          this.props.addAlert(addFoodText.description.length, 'danger');
+        } else if (!validator.isLength(this.state.hashTags, {min: 2, max: 250})) {
+          this.props.addAlert(addFoodText.hashtags.length, 'danger');
+        } else if (!validator.isAscii(this.state.hashTags)) {
+          this.props.addAlert(addFoodText.hashtags.ascii, 'danger');
+        } else if (!validator.isAscii(this.state.description)) {
+          this.props.addAlert(addFoodText.description.ascii, 'danger');
+        } else {
+          this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
+          this.setState({
+            image: null,
+            description: null,
+            hashTags: null,
+          });
+          this.refs.photoForm.reset();
+        }
+      } else {
+        this.props.addAlert(addFoodText.hashtags.invalid, 'danger');
+      }
+    }
   }
 }
 

@@ -13,7 +13,7 @@ module.exports = function(passport) {
     function(username, password, done) {
       Restaurant.find({ where: { login: username } }).then(function(user) {
         if (!user) {
-          return done(null, false, { message: 'Incorrect email address.' });
+          return done(null, false, { message: 'Incorrect login.' });
         }
         if (!user.validPassword(password)) {
           return done(null, false, { message: 'Incorrect password.' });

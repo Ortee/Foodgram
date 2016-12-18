@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
 import AccountsInput from '../accountsInput';
 import UserInformations from '../userInformations';
+import validator from 'validator';
+import { changePasswordText } from '../../../alertsConfig';
+
 import './password.scss';
 
 class Password extends Component {
@@ -44,13 +47,15 @@ class Password extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.state.newPassword === '' ||
-      this.state.newPassword2 === '' ||
-      this.state.oldPassword === '') {
-      this.props.addAlert('Error!', 'danger');
+    if (validator.isEmpty(this.state.oldPassword) ||
+    validator.isEmpty(this.state.newPassword) ||
+    validator.isEmpty(this.state.newPassword2)) {
+      this.props.addAlert(changePasswordText.empty, 'danger');
+    } else if (!validator.isLength(this.state.newPassword, {min: 5, max: undefined})) {
+      this.props.addAlert(changePasswordText.short, 'danger');
     } else {
-      this.state.newPassword !== this.state.newPassword2 ?
-      this.props.addAlert('Error!', 'danger') :
+      !validator.equals(this.state.newPassword, this.state.newPassword2) ?
+      this.props.addAlert(changePasswordText.different, 'danger') :
       this.props.updatePassword(this.props.auth.login, this.state, this.props.auth.token);
       this.setState({
         newPassword: '',

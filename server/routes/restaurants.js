@@ -3,7 +3,9 @@ const router = express.Router();
 const models = require('../models');
 const passport = require('passport');
 const request = require('superagent');
-
+const winston = require('winston');
+const validator = require('validator');
+const alertConfig = require('./alertsConfig');
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -36,6 +38,7 @@ router.get('/:login', function(req, res, next) {
       });
       res.setHeader('Content-Type', 'application/json');
       var newRestaurant = new Restaurant(data.rest_name)
+        .login(data.login)
         .address(data.address)
         .avatar(data.avatar)
         .description(data.description)
@@ -73,8 +76,8 @@ function(req, res, next) {
         if (err) {
           res.status(404).send();
         } else {
-          console.log('Avatar sent to nodestore.');
-          Object.assign(update, {avatar: 'http://localhost:8000/api/images/avatar/' + req.body[0].login + '.png'});
+          winston.log('info', 'Avatar sent to nodestore.');
+          Object.assign(update, {avatar: true});
           models.Restaurant.update(update, {
             where: {
               login: _login
@@ -100,26 +103,35 @@ function(req, res, next) {
       login: req.body[0].login
     }
   }).then(function(restaurant) {
-    if (restaurant.password == req.body[0].oldPassword && req.body[0].newPassword == req.body[0].newPassword2) {
-      models.Restaurant.update(
-        {
-          password: req.body[0].newPassword
-        },
-        {
-          where: {
-            'login': req.body[0].login
-          }
-        }
-        )
-        .then(function() {
-          res.status(201).send();
-        })
-        .catch(function(error) {
-          res.status(404).send();
-        });
-    } else {
-      res.status(404).send();
+    if (!validator.equals(restaurant.password, req.body[0].oldPassword)) {
+      return res.status(400).send(alertConfig.changePassword.match);
+    } else if (!validator.equals(req.body[0].newPassword, req.body[0].newPassword2)) {
+      return res.status(400).send(alertConfig.changePassword.different);
+    } else if (!validator.isLength(req.body[0].newPassword, {min: 5, max: undefined})) {
+      return res.status(400).send(alertConfig.changePassword.length);
+    } else if (validator.isEmpty(req.body[0].oldPassword) ||
+      validator.isEmpty(req.body[0].newPassword) ||
+      validator.isEmpty(req.body[0].newPassword2)) {
+      return res.status(400).send(alertConfig.changePassword.empty);
     }
+
+    models.Restaurant.update(
+      {
+        password: req.body[0].newPassword
+      },
+      {
+        where: {
+          'login': req.body[0].login
+        }
+      }
+      )
+      .then(function() {
+        res.status(200).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
+
   });
 });
 
