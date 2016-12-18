@@ -27,9 +27,16 @@ module.exports = {
   addFood: {
     description: {
       length: 'Description is too short or too long (min: 2, max: 250 letters).',
+      ascii: 'Description can contain only letters and numbers.',
     },
     hashtags: {
-      length: 'Hashtahs is too short (min: 2, max: 250 letters).',
+      length: 'Hashtags is too short (min: 2, max: 250 letters).',
+      ascii: 'Hashtags can contain only letters and numbers.',
+      valid: 'Hashtags should be separated by space',
+    },
+    photo: {
+      extension: 'Wrong File Extension',
+      size: 'Photo is too large!',
     },
   }
 };

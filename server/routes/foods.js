@@ -101,13 +101,13 @@ function(req, res, next) {
       return res.status(400).send(alertConfig.addFood.description.length);
     } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
       return res.status(400).send(alertConfig.addFood.hashtags.length);
-    } else if (!validator.isAlphanumeric(req.body[0].hashtags)) {
-      return res.status(400).send(alertConfig.addFood.hashtags.ascii);
-    } else if (!validator.isAlphanumeric(req.body[0].description)) {
+    } else if (!(new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(req.body[0].hashtags))) {
+      return res.status(400).send(alertConfig.addFood.hashtags.valid);
+    } else if (!validator.isAscii(req.body[0].description)) {
       return res.status(400).send(alertConfig.addFood.description.ascii);
     } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].photo))) {
       return res.status(400).send(alertConfig.addFood.photo.extension);
-    } else if (Buffer.byteLength(req.body[0].photo, 'utf8') < 2097152) {
+    } else if (Buffer.byteLength(req.body[0].photo, 'utf8') > 2097152) {
       return res.status(400).send(alertConfig.addFood.photo.size);
     }
     var newFood = new Food(user.login)
