@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
+import validator from 'validator';
 import UserInformations from '../userInformations';
 import AccountsInput from '../accountsInput';
 import './photo.scss';
@@ -29,14 +30,26 @@ class Photo extends Component {
       </article>
     );
   }
+
   updateImage = (text, e) => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      this.setState({
-        image: reader.result,
-      });
+      if (new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(reader.result) === false) {
+        this.props.addAlert('Wrong File Extension!', 'danger');
+        this.setState({ image: null });
+      } else {
+        if (Buffer.byteLength(reader.result, 'utf8') < 2097152) {
+          this.setState({
+            image: reader.result,
+          });
+          this.props.addAlert('Photo loaded correctly!', 'success');
+        } else {
+          this.props.addAlert('Photo is too large!', 'danger');
+          this.setState({ image: null });
+        }
+      }
     };
     reader.readAsDataURL(file);
   }
@@ -49,18 +62,33 @@ class Photo extends Component {
     this.setState({hashTags: text});
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-    this.state.image === null ||
-    this.state.description === null ?
-    this.props.addAlert('Error!', 'danger') :
-    this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
-    this.setState({
-      image: null,
-      description: null,
-      hashTags: null,
-    });
-    this.refs.photoForm.reset();
+    if (this.state.image === null) {
+      this.props.addAlert('Invalid photo!', 'danger');
+    } else {
+      if (new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(this.state.hashTags) === true) {
+        if (!validator.isLength(this.state.description, {min: 2, max: 250})) {
+          this.props.addAlert('Description is too long or too short (min: 2, max: 250 letters).', 'danger');
+        } else if (!validator.isLength(this.state.hashTags, {min: 2, max: 250})) {
+          this.props.addAlert('Hashtags is too long or too short (min: 2, max: 250 letters).', 'danger');
+        } else if (!validator.isAscii(this.state.hashTags)) {
+          this.props.addAlert('Incorrect hashTags', 'danger');
+        } else if (!validator.isAscii(this.state.description)) {
+          this.props.addAlert('Incorrect description', 'danger');
+        } else {
+          this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
+          this.setState({
+            image: null,
+            description: null,
+            hashTags: null,
+          });
+          this.refs.photoForm.reset();
+        }
+      } else {
+        this.props.addAlert('Invalid hashtags!', 'danger');
+      }
+    }
   }
 }
 
