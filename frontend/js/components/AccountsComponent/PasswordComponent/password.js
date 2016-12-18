@@ -49,6 +49,8 @@ class Password extends Component {
     validator.isEmpty(this.state.newPassword) ||
     validator.isEmpty(this.state.newPassword2)) {
       this.props.addAlert('Some of the fields are empty', 'danger');
+    } else if (!validator.isLength(this.state.newPassword, {min: 5, max: undefined})) {
+      this.props.addAlert('New password is too short (min: 5 letters).', 'danger');
     } else {
       !validator.equals(this.state.newPassword, this.state.newPassword2) ?
       this.props.addAlert('New passwords are different.', 'danger') :
