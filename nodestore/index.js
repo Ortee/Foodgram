@@ -38,9 +38,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].avatar);
   fs.writeFile('./tmp/' + req.body[0].login + '.png', imageBuffer.data, function(err) {
-    if (err) {
-      res.status(404).send();
-    }
+    if (err) throw err;
     async.waterfall([
       (callback) => {
         Jimp.read('./tmp/' + req.body[0].login + '.png', function(err, image) {
@@ -64,10 +62,10 @@ app.post('/api/upload-avatar', function(req, res, next) {
       }
     ], (err, result) => {
       if (err) {
-        winston.log('error', err);
+        throw err;
       }
     });
-    res.status(201).send();
+    res.status(200).send();
   });
 });
 
@@ -75,9 +73,7 @@ app.post('/api/upload', function(req, res, next) {
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].photo);
   fs.writeFile('./tmp/' + req.body[0].uuid + '.jpg', imageBuffer.data, function(err) {
-    if (err) {
-      res.status(404).send();
-    }
+    if (err) throw err;
     async.waterfall([
       (callback) => {
         Jimp.read('./tmp/' + req.body[0].uuid + '.jpg', function(err, image) {
@@ -111,10 +107,10 @@ app.post('/api/upload', function(req, res, next) {
       }
     ], (err, result) => {
       if (err) {
-        winston.log('error', err);
+        throw err;
       }
     });
-    res.status(201).send();
+    res.status(200).send();
   });
 });
 
