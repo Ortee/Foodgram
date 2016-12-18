@@ -101,7 +101,7 @@ function(req, res, next) {
     } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
       return res.status(400).send('Hashtahs is too short (min: 2, max: 250 letters).');
     } else if (!validator.isAlphanumeric(req.body[0].hashtags)) {
-      return res.status(400).send('Description can contain only letters and numbers.');
+      return res.status(400).send('Hashtahs can contain only letters and numbers.');
     } else if (!validator.isAlphanumeric(req.body[0].description)) {
       return res.status(400).send('Description can contain only letters and numbers.');
     } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].photo))) {

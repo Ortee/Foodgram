@@ -3,6 +3,8 @@ import { Col, Button } from 'reactstrap';
 import validator from 'validator';
 import UserInformations from '../userInformations';
 import AccountsInput from '../accountsInput';
+import { addFoodText } from '../../../alertsConfig';
+import { isHashTag, isPhoto, checkPhotoSize } from '../../../foodgramValidator';
 import './photo.scss';
 
 class Photo extends Component {
@@ -36,17 +38,15 @@ class Photo extends Component {
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      if (new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(reader.result) === false) {
-        this.props.addAlert('Wrong File Extension!', 'danger');
+      if (!isPhoto(reader.result)) {
+        this.props.addAlert(addFoodText.photo.extension, 'danger');
         this.setState({ image: null });
       } else {
-        if (Buffer.byteLength(reader.result, 'utf8') < 2097152) {
-          this.setState({
-            image: reader.result,
-          });
-          this.props.addAlert('Photo loaded correctly!', 'success');
+        if (checkPhotoSize(reader.result)) {
+          this.setState({ image: reader.result });
+          this.props.addAlert(addFoodText.photo.loaded, 'success');
         } else {
-          this.props.addAlert('Photo is too large!', 'danger');
+          this.props.addAlert(addFoodText.photo.large, 'danger');
           this.setState({ image: null });
         }
       }
@@ -65,17 +65,17 @@ class Photo extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (this.state.image === null) {
-      this.props.addAlert('Invalid photo!', 'danger');
+      this.props.addAlert(addFoodText.photo.invalid, 'danger');
     } else {
-      if (new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(this.state.hashTags) === true) {
+      if (isHashTag(this.state.hashTags)) {
         if (!validator.isLength(this.state.description, {min: 2, max: 250})) {
-          this.props.addAlert('Description is too long or too short (min: 2, max: 250 letters).', 'danger');
+          this.props.addAlert(addFoodText.description.length, 'danger');
         } else if (!validator.isLength(this.state.hashTags, {min: 2, max: 250})) {
-          this.props.addAlert('Hashtags is too long or too short (min: 2, max: 250 letters).', 'danger');
+          this.props.addAlert(addFoodText.hashtags.length, 'danger');
         } else if (!validator.isAscii(this.state.hashTags)) {
-          this.props.addAlert('Incorrect hashTags', 'danger');
+          this.props.addAlert(addFoodText.hashtags.ascii, 'danger');
         } else if (!validator.isAscii(this.state.description)) {
-          this.props.addAlert('Incorrect description', 'danger');
+          this.props.addAlert(addFoodText.description.ascii, 'danger');
         } else {
           this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
           this.setState({
@@ -86,7 +86,7 @@ class Photo extends Component {
           this.refs.photoForm.reset();
         }
       } else {
-        this.props.addAlert('Invalid hashtags!', 'danger');
+        this.props.addAlert(addFoodText.hashtags.invalid, 'danger');
       }
     }
   }
