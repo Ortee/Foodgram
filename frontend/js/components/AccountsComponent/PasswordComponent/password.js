@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
 import AccountsInput from '../accountsInput';
 import UserInformations from '../userInformations';
-import './password.scss';
 import validator from 'validator';
+import { changePasswordText } from '../../../alertsConfig';
+
+import './password.scss';
 
 class Password extends Component {
   constructor(props) {
@@ -48,12 +50,12 @@ class Password extends Component {
     if (validator.isEmpty(this.state.oldPassword) ||
     validator.isEmpty(this.state.newPassword) ||
     validator.isEmpty(this.state.newPassword2)) {
-      this.props.addAlert('Some of the fields are empty', 'danger');
+      this.props.addAlert(changePasswordText.empty, 'danger');
     } else if (!validator.isLength(this.state.newPassword, {min: 5, max: undefined})) {
-      this.props.addAlert('New password is too short (min: 5 letters).', 'danger');
+      this.props.addAlert(changePasswordText.short, 'danger');
     } else {
       !validator.equals(this.state.newPassword, this.state.newPassword2) ?
-      this.props.addAlert('New passwords are different.', 'danger') :
+      this.props.addAlert(changePasswordText.different, 'danger') :
       this.props.updatePassword(this.props.auth.login, this.state, this.props.auth.token);
       this.setState({
         newPassword: '',

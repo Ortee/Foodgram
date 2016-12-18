@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
-import './register.scss';
+import { registerText } from '../../alertsConfig';
 import validator from 'validator';
+import './register.scss';
 
 class Register extends Component {
   constructor() {
@@ -41,22 +42,22 @@ class Register extends Component {
       validator.isEmpty(login) ||
       validator.isEmpty(password) ||
       validator.isEmpty(passwordTwo)) {
-      this.props.addAlert('Some of the fields are empty', 'danger');
+      this.props.addAlert(registerText.empty, 'danger');
     } else if (!validator.isLength(username, {min: 5, max: undefined})) {
-      this.props.addAlert('Username is too short (min: 5 letters).', 'danger');
+      this.props.addAlert(registerText.username.length, 'danger');
     } else if (!validator.isLength(login, {min: 5, max: undefined})) {
-      this.props.addAlert('Login is too short (min: 5 letters).', 'danger');
+      this.props.addAlert(registerText.login.length, 'danger');
     } else if (!validator.isLength(password, {min: 5, max: undefined})) {
-      this.props.addAlert('Password is too short (min: 5 letters).', 'danger');
+      this.props.addAlert(registerText.password.length, 'danger');
     } else if (!validator.isAlphanumeric(username)) {
-      this.props.addAlert('Username can contain only letters and numbers.', 'danger');
+      this.props.addAlert(registerText.username.ascii, 'danger');
     } else if (!validator.isAlphanumeric(login)) {
-      this.props.addAlert('Login can contain only letters and numbers.', 'danger');
+      this.props.addAlert(registerText.login.ascii, 'danger');
     } else if (!validator.isAlphanumeric(password)) {
-      this.props.addAlert('Password can contain only letters and numbers.', 'danger');
+      this.props.addAlert(registerText.password.ascii, 'danger');
     } else {
       !validator.equals(password, passwordTwo) ?
-      this.props.addAlert('The two passwords do not match!', 'danger') :
+      this.props.addAlert(registerText.matchPassword, 'danger') :
       this.props.register(username, login, password, passwordTwo);
     }
     this.refs.registerForm.reset();
