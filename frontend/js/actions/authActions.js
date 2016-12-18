@@ -4,6 +4,7 @@ import req from 'superagent';
 import { addAlert } from './alertActions';
 import cookie from 'react-cookie';
 import config from '../config';
+import { serverText, userText } from '../alertsConfig';
 
 export function register(_username, _login, _password, _passwordTwo) {
   const request = req.post(config.url + '/api/register')
@@ -14,15 +15,15 @@ export function register(_username, _login, _password, _passwordTwo) {
     }])
     .end((err, res) => {
       if (res.status > 500) {
-        dispatch(addAlert('Sorry, offline server !', 'danger'));
+        dispatch(addAlert(serverText.offline, 'danger'));
       } else if (res.status === 404) {
-        dispatch(addAlert('Sorry, server problem !', 'danger'));
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 400) {
         dispatch(addAlert(res.text, 'danger'));
       } else if (err || !res.ok) {
-        dispatch(addAlert('Sorry, server problem !', 'danger'));
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 200) {
-        dispatch(addAlert('User was successfully added !', 'success'));
+        dispatch(addAlert(userText.added, 'success'));
       }
     });
   };
@@ -41,19 +42,19 @@ export function login(_login, _password) {
     .end((err, res) => {
       if (res.status > 500) {
         dispatch(loginUserFailure(err));
-        dispatch(addAlert('Sorry, offline server !', 'danger'));
+        dispatch(addAlert(serverText.offline, 'danger'));
       } else if (res.status === 404) {
         dispatch(loginUserFailure(err));
-        dispatch(addAlert('Sorry, server problem !', 'danger'));
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 400) {
         dispatch(loginUserFailure(err));
-        dispatch(addAlert('Incorrect login or password !', 'danger'));
+        dispatch(addAlert(userText.incorrect, 'danger'));
       } else if (err || !res.ok) {
         dispatch(loginUserFailure(err));
-        dispatch(addAlert('Sorry, server problem !', 'danger'));
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 200) {
         dispatch(loginUserSuccess(JSON.parse(res.text).token));
-        dispatch(addAlert('You are logged in !', 'success'));
+        dispatch(addAlert(userText.logIn, 'success'));
       }
     });
   };
@@ -77,7 +78,7 @@ export function logout() {
   cookie.remove('token');
   browserHistory.push('/');
   return (dispatch) => {
-    dispatch(addAlert('LOGOUT !', 'success'));
+    dispatch(addAlert(userText.logout, 'success'));
     dispatch({ type: 'LOGOUT_USER' });
   };
 }

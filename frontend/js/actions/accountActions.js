@@ -1,6 +1,7 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
 import { browserHistory } from 'react-router';
+import { serverText, userText } from '../alertsConfig';
 import config from '../config';
 
 export function update(login, data, token) {
@@ -45,15 +46,15 @@ export function updatePassword(login, data, token) {
     }])
     .end((err, res) => {
       if (res.status > 500) {
-        dispatch(addAlert('Sorry, offline server !', 'danger'));
+        dispatch(addAlert(serverText.offline, 'danger'));
       } else if (res.status === 404) {
-        dispatch(addAlert('Sorry, server problem !', 'danger'));
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 400) {
         dispatch(addAlert(res.text, 'danger'));
       } else if (err || !res.ok) {
-        dispatch(addAlert('Sorry, server problem !', 'danger'));
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 200) {
-        dispatch(addAlert('Password successfully changed', 'success'));
+        dispatch(addAlert(userText.passwordChanged, 'success'));
       }
     });
   };

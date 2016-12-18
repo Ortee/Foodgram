@@ -1,5 +1,19 @@
 module.exports = {
+  serverText: {
+    offline: 'Sorry, offline server !',
+    problem: 'Sorry, server problem !',
+  },
+  userText: {
+    added: 'User was successfully added !',
+    logIn: 'You are logged in !',
+    logout: 'LOGOUT !',
+    incorrect: 'Incorrect login or password !',
+    passwordChanged: 'Password successfully changed',
+  },
   addFoodText: {
+    successAdd: 'Your food was successfully added !',
+    failRemove: 'Your food wasn`t removed !',
+    successRemove: 'Your food was successfully removed !',
     description: {
       length: 'Description is too short or too long (min: 2, max: 250 letters).',
       ascii: 'Description can contain only letters and numbers.',
