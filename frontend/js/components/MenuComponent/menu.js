@@ -17,7 +17,7 @@ class Menu extends Component {
           <NavbarBrand href="/">
             <Link className="menu-icon-left" to={'/'} style={{ textDecoration: 'none' }}>
                 <i id="insta-logo" className="fa fa-instagram fa-2x" aria-hidden="true"/>
-                <span className="footgram-logo">Foodgram</span>
+                <span onClick={this.props.showFoods.bind()} className="footgram-logo">Foodgram</span>
             </Link>
           </NavbarBrand>
           <Nav className="pull-xs-right" navbar>
@@ -46,6 +46,7 @@ class Menu extends Component {
 Menu.propTypes = {
   auth: React.PropTypes.object,
   logout: React.PropTypes.func,
+  showFoods: React.PropTypes.func,
 };
 
 export default Menu;
