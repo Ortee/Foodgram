@@ -15,7 +15,7 @@ router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { res.status(404).send(); }
     if (!user) {
-      res.status(400).send(info);
+      res.status(400).send();
     }
     var tmpUser = new Restaurant(user.rest_name)
     .id(user.id)
