@@ -48,6 +48,12 @@ class Register extends Component {
       this.props.addAlert('Login is too short (min: 5 letters).', 'danger');
     } else if (!validator.isLength(password, {min: 5, max: undefined})) {
       this.props.addAlert('Password is too short (min: 5 letters).', 'danger');
+    } else if (!validator.isAlphanumeric(username)) {
+      this.props.addAlert('Username can contain only letters and numbers.', 'danger');
+    } else if (!validator.isAlphanumeric(login)) {
+      this.props.addAlert('Login can contain only letters and numbers.', 'danger');
+    } else if (!validator.isAlphanumeric(password)) {
+      this.props.addAlert('Password can contain only letters and numbers.', 'danger');
     } else {
       !validator.equals(password, passwordTwo) ?
       this.props.addAlert('The two passwords do not match!', 'danger') :

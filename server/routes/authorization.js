@@ -37,6 +37,12 @@ router.post('/register', function(req, res, next) {
     return res.status(400).send('Login is too short (min: 5 letters).');
   } else if (!validator.isLength(req.body[0].passwordOne, {min: 5, max: undefined})) {
     return res.status(400).send('Password is too short (min: 5 letters).');
+  } else if (!validator.isAlphanumeric(req.body[0].username)) {
+    return res.status(400).send('Username can contain only letters and numbers.');
+  } else if (!validator.isAlphanumeric(req.body[0].login)) {
+    return res.status(400).send('Login can contain only letters and numbers.');
+  } else if (!validator.isAlphanumeric(req.body[0].passwordOne)) {
+    return res.status(400).send('Password can contain only letters and numbers.');
   } else if (!validator.equals(req.body[0].passwordOne, req.body[0].passwordTwo)) {
     return res.status(400).send('The two passwords do not match!');
   } else if (validator.isEmpty(req.body[0].username) ||
