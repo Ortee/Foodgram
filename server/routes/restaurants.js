@@ -5,6 +5,7 @@ const passport = require('passport');
 const request = require('superagent');
 const winston = require('winston');
 const validator = require('validator');
+const alertConfig = require('./alertsConfig');
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -103,15 +104,15 @@ function(req, res, next) {
     }
   }).then(function(restaurant) {
     if (!validator.equals(restaurant.password, req.body[0].oldPassword)) {
-      return res.status(400).send('Old password doesnt match');
+      return res.status(400).send(alertConfig.changePassword.match);
     } else if (!validator.equals(req.body[0].newPassword, req.body[0].newPassword2)) {
-      return res.status(400).send('New passwords are different.');
+      return res.status(400).send(alertConfig.changePassword.different);
     } else if (!validator.isLength(req.body[0].newPassword, {min: 5, max: undefined})) {
-      return res.status(400).send('New password is too short (min: 5 letters).');
+      return res.status(400).send(alertConfig.changePassword.length);
     } else if (validator.isEmpty(req.body[0].oldPassword) ||
       validator.isEmpty(req.body[0].newPassword) ||
       validator.isEmpty(req.body[0].newPassword2)) {
-      return res.status(400).send('Some of the fields are empty');
+      return res.status(400).send(alertConfig.changePassword.empty);
     }
 
     models.Restaurant.update(

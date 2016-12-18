@@ -7,10 +7,10 @@ const passport = require('passport');
 const jwt = require('jwt-simple');
 const models = require('../models');
 const validator = require('validator');
+const alertConfig = require('./alertsConfig');
 
 var Restaurant = require('../class/restaurant');
 const forbiddenWords = require('./forbiddenWords');
-
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { res.status(404).send(); }
@@ -32,31 +32,31 @@ router.post('/register', function(req, res, next) {
   req.accepts('application/json');
 
   if (!validator.isLength(req.body[0].username, {min: 5, max: undefined})) {
-    return res.status(400).send('Username is too short (min: 5 letters).');
+    return res.status(400).send(alertConfig.register.username.length);
   } else if (!validator.isLength(req.body[0].login, {min: 5, max: undefined})) {
-    return res.status(400).send('Login is too short (min: 5 letters).');
+    return res.status(400).send(alertConfig.register.login.length);
   } else if (!validator.isLength(req.body[0].passwordOne, {min: 5, max: undefined})) {
-    return res.status(400).send('Password is too short (min: 5 letters).');
+    return res.status(400).send(alertConfig.register.password.length);
   } else if (!validator.isAlphanumeric(req.body[0].username)) {
-    return res.status(400).send('Username can contain only letters and numbers.');
+    return res.status(400).send(alertConfig.register.username.ascii);
   } else if (!validator.isAlphanumeric(req.body[0].login)) {
-    return res.status(400).send('Login can contain only letters and numbers.');
+    return res.status(400).send(alertConfig.register.login.ascii);
   } else if (!validator.isAlphanumeric(req.body[0].passwordOne)) {
-    return res.status(400).send('Password can contain only letters and numbers.');
+    return res.status(400).send(alertConfig.register.password.ascii);
   } else if (!validator.equals(req.body[0].passwordOne, req.body[0].passwordTwo)) {
-    return res.status(400).send('The two passwords do not match!');
+    return res.status(400).send(alertConfig.register.match);
   } else if (validator.isEmpty(req.body[0].username) ||
     validator.isEmpty(req.body[0].login) ||
     validator.isEmpty(req.body[0].passwordOne) ||
     validator.isEmpty(req.body[0].passwordTwo)) {
-    return res.status(400).send('Some of the fields are empty');
+    return res.status(400).send(alertConfig.register.empty);
   }
 
   forbiddenWords.map((elem) => {
     if (validator.contains(req.body[0].login, elem)) {
-      return res.status(400).send('Login contains forbidden characters.');
+      return res.status(400).send(alertConfig.register.login.forbidden);
     } else if (validator.contains(req.body[0].username, elem)) {
-      return res.status(400).send('Username contains forbidden characters.');
+      return res.status(400).send(alertConfig.register.username.forbidden);
     }
   });
 
@@ -72,7 +72,7 @@ router.post('/register', function(req, res, next) {
       res.status(200).send();
     })
     .catch(function(error) {
-      if (validator.equals(error.message, 'Login already in use')) {
+      if (validator.equals(error.message, alertConfig.register.use)) {
         return res.status(400).send(error.message);
       }
       res.status(404).send();

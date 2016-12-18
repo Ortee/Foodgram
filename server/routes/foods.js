@@ -5,6 +5,7 @@ const models = require('../models');
 const passport = require('passport');
 const winston = require('winston');
 const validator = require('validator');
+const alertConfig = require('./alertsConfig');
 
 //classes
 var Food = require('../class/food');
@@ -97,17 +98,17 @@ function(req, res, next) {
     attributes: ['id']
   }).then(function(user) {
     if (!validator.isLength(req.body[0].description, {min: 2, max: 250})) {
-      return res.status(400).send('Description is too short or too long (min: 2, max: 250 letters).');
+      return res.status(400).send(alertConfig.addFood.description.length);
     } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
-      return res.status(400).send('Hashtahs is too short (min: 2, max: 250 letters).');
+      return res.status(400).send(alertConfig.addFood.hashtags.length);
     } else if (!validator.isAlphanumeric(req.body[0].hashtags)) {
-      return res.status(400).send('Hashtahs can contain only letters and numbers.');
+      return res.status(400).send(alertConfig.addFood.hashtags.ascii);
     } else if (!validator.isAlphanumeric(req.body[0].description)) {
-      return res.status(400).send('Description can contain only letters and numbers.');
+      return res.status(400).send(alertConfig.addFood.description.ascii);
     } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].photo))) {
-      return res.status(400).send('Wrong File Extension');
+      return res.status(400).send(alertConfig.addFood.photo.extension);
     } else if (Buffer.byteLength(req.body[0].photo, 'utf8') < 2097152) {
-      return res.status(400).send('Photo is too large!');
+      return res.status(400).send(alertConfig.addFood.photo.size);
     }
     var newFood = new Food(user.login)
       .uuid(req.body[0].uuid)
