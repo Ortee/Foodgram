@@ -20,13 +20,6 @@ if (config.use_env_variable) {
     });
 }
 
-// Uncomment it only when you edit a migration or your seeder doesn't work
-
-// sequelize.sync({
-//   force: true,
-//   logging: console.log,
-// })
-
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
@@ -45,5 +38,12 @@ Object.keys(db).forEach(function(modelName) {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+  db.Food.findAll().catch(function (err){
+    sequelize.sync({
+      force: true,
+      logging: console.log,
+    })
+  });
 
 module.exports = db;
