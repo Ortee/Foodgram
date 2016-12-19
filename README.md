@@ -4,7 +4,7 @@ Technology Stack
 
 ![alt tag](http://tech.orteedev.pl/stack.jpg)
 
-![alt tag](http://tech.orteedev.pl/diag2.png)
+![alt tag](http://tech.orteedev.pl/diag3.png)
 
 ## Install:
 ```
@@ -34,6 +34,13 @@ FIRST RUN
 ```
 $ docker-compose up
 $ ./setup.sh     <-- fix node-sass problem
+Open Foodgram/server/models/index.js
+Uncomment commented lines
+Send request to auto migration eg. http://loclahost:8000/
+Comment this lines.
+$ ./seed.sh
+Done.
+If your have any problems email: kontakt@mateuszoracz.pl
 ```
 START
 ```
