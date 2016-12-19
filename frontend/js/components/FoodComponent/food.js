@@ -20,6 +20,10 @@ class Food extends Component {
     this.incrementDislike = this.incrementDislike.bind();
   }
 
+  _click = (uuid) => {
+    this.props.getSingleFood(uuid);
+  }
+
   componentDidMount = () => {
     if (cookie.load(this.props.food.uuid) === 'like') {
       this.setState({
@@ -99,9 +103,7 @@ class Food extends Component {
       </Col>
     );
   }
-  _click = (uuid) => {
-    this.props.getSingleFood(uuid)
-  }
+
   heartOnEnter = () => {
     if (!this.state.isLiked) {
       this.setState({
@@ -190,6 +192,7 @@ Food.propTypes =  {
   auth: React.PropTypes.object,
   i: React.PropTypes.number,
   removeFood: React.PropTypes.func,
+  getSingleFood: React.PropTypes.func,
 };
 
 export default Food;
