@@ -17,16 +17,23 @@ Technology Stack
 [Npm](https://docs.npmjs.com/getting-started/installing-node)   
 ```
 ```
-$ git clone https://github.com/Ortee/docker-express-postgresql-react-starter docker-express-postgresql-react-starter
-$ cd docker-express-postgresql-react-starter
+$ git clone https://github.com/Ortee/Foodgram.git Foodgram
+$ cd Foodgram
+$ cd server
 $ npm install
+$ cd ..
+$ cd nodestore
+$ npm install
+$ cd ..
+$ cd frontend
+$ npm install
+$ cd ..
 ```
 ## Usage
 FIRST RUN
 ```
-$ npm install
 $ docker-compose up
-$ ./setup.sh      <-in another console
+$ ./setup.sh     <-- fix node-sass problem
 ```
 START
 ```
@@ -34,7 +41,7 @@ $ docker-compose up
 ```
 STOP
 ```
-$ docker-compose down
+$ docker-compose down / CTRL+C / CMD+C
 ```
 > SERVER : localhost:3000 <br>
 > FRONTEND : localhost:4000
