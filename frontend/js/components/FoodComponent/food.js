@@ -20,6 +20,10 @@ class Food extends Component {
     this.incrementDislike = this.incrementDislike.bind();
   }
 
+  _click = (uuid) => {
+    this.props.getSingleFood(uuid);
+  }
+
   componentDidMount = () => {
     if (cookie.load(this.props.food.uuid) === 'like') {
       this.setState({
@@ -59,10 +63,12 @@ class Food extends Component {
           </span>
         </Col>
         <Col className="food-photo">
-          <img  className="img-thumbnail"
-                height="600px"
-                width="538px"
-                src={config.fullsize + this.props.food.uuid + '.png'} />
+          <Link onClick={this._click.bind(this, this.props.food.uuid)} to={`/photo/${this.props.food.uuid}`}>
+            <img  className="img-thumbnail"
+                  height="600px"
+                  width="538px"
+                  src={config.fullsize + this.props.food.uuid + '.png'} />
+          </Link>
         </Col>
         <Col className="food-desciption">
           <p className="food-desciption-likes">{this.props.food.hashtags}</p>
@@ -186,6 +192,7 @@ Food.propTypes =  {
   auth: React.PropTypes.object,
   i: React.PropTypes.number,
   removeFood: React.PropTypes.func,
+  getSingleFood: React.PropTypes.func,
 };
 
 export default Food;
