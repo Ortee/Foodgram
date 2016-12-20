@@ -61,4 +61,24 @@ module.exports = {
       ascii: 'Password can contain only letters and numbers.',
     },
   },
+  updateRestaurantText: {
+    empty: 'All of the fields are empty.',
+    ascii: 'Invalid input type.',
+    success: 'Profile successfully edited.',
+    rest_name: {
+      length: 'Restaurant length is invalid (5-25 letters)',
+    },
+    address: {
+      length: 'Address length is invalid (5-100 letters)',
+    },
+    description: {
+      length: 'Description length is invalid (5-200 letters)',
+    },
+    avatar: {
+      extension: 'Wrong File Extension.',
+      large: 'Avatar is too large.',
+      loaded: 'Avatar loaded correctly.',
+      invalid: 'Invalid avatar!',
+    },
+  },
 };

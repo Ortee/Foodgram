@@ -1,7 +1,7 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
 import { browserHistory } from 'react-router';
-import { serverText, userText } from '../alertsConfig';
+import { serverText, userText, updateRestaurantText } from '../alertsConfig';
 import config from '../config';
 
 export function update(login, data, token) {
@@ -17,15 +17,23 @@ export function update(login, data, token) {
       avatar: data.avatar,
     }])
     .end((err, res) => {
-      if (err || !res.ok) {
-        dispatch(addAlert('Error!', 'danger'));
+      if (res.status > 500) {
+        dispatch(addAlert(serverText.offline, 'danger'));
+      } else if (res.status === 404) {
+        dispatch(addAlert(serverText.problem, 'danger'));
+      } else if (res.status === 413) {
+        dispatch(addAlert(updateRestaurantText.avatar.size, 'danger'));
+      } else if (res.status === 400) {
+        dispatch(addAlert(res.text, 'danger'));
+      } else if (err || !res.ok) {
+        dispatch(addAlert(serverText.problem, 'danger'));
       } else {
         if (data.restName !== null) dispatch(editRestName(data.restName));
         if (data.address !== null) dispatch(editAddress(data.address));
         if (data.avatar !== null) dispatch(editAvatar(config.url + '/api/images/avatar/' + login + '.png'));
         if (data.description !== null) dispatch(editDescription(data.description));
-        dispatch(addAlert('Success !', 'success'));
-        if (res.status === 201) {
+        dispatch(addAlert(updateRestaurantText.success, 'success'));
+        if (res.status === 200) {
           browserHistory.pushState('/');
         }
       }

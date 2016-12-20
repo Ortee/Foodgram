@@ -37,7 +37,7 @@ $ ./setup.sh     <-- fix node-sass problem
 Wait few seconds
 $ ./seed.sh
 Done.
-If your have any problems email: kontakt@mateuszoracz.pl
+If you have any problems email: kontakt@mateuszoracz.pl
 ```
 START
 ```
