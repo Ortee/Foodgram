@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
 import AccountsInput from '../accountsInput';
 import UserInformations from '../userInformations';
+import validator from 'validator';
+import { updateRestaurantText } from '../../../alertsConfig';
+import { isPhoto, checkPhotoSize } from '../../../foodgramValidator';
 import './edit.scss';
 
 class Edit extends Component {
@@ -42,9 +45,18 @@ class Edit extends Component {
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      this.setState({
-        avatar: reader.result,
-      });
+      if (!isPhoto(reader.result)) {
+        this.props.addAlert(updateRestaurantText.avatar.extension, 'danger');
+        this.setState({ avatar: null });
+      } else {
+        if (checkPhotoSize(reader.result)) {
+          this.setState({ avatar: reader.result });
+          this.props.addAlert(updateRestaurantText.avatar.loaded, 'success');
+        } else {
+          this.props.addAlert(updateRestaurantText.avatar.large, 'danger');
+          this.setState({ avatar: null });
+        }
+      }
     };
     reader.readAsDataURL(file);
   }
@@ -59,19 +71,59 @@ class Edit extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.state.restName === null &&
+
+    let changeState = true;
+    if (this.state.restName !== null) {
+      if (!validator.isAscii(this.state.restName)) {
+        this.props.addAlert(updateRestaurantText.ascii, 'danger');
+        changeState = false;
+      } else if (!validator.isLength(this.state.restName, {min: 5, max: 25})) {
+        this.props.addAlert(updateRestaurantText.rest_name.length, 'danger');
+        changeState = false;
+      }
+    }
+    if (this.state.address !== null) {
+      if (!validator.isAscii(this.state.address)) {
+        this.props.addAlert(updateRestaurantText.ascii, 'danger');
+        changeState = false;
+      } else if (!validator.isLength(this.state.address, {min: 5, max: 100})) {
+        this.props.addAlert(updateRestaurantText.address.length, 'danger');
+        changeState = false;
+      }
+    }
+    if (this.state.description !== null) {
+      if (!validator.isAscii(this.state.description)) {
+        this.props.addAlert(updateRestaurantText.ascii, 'danger');
+        changeState = false;
+      } else if (!validator.isLength(this.state.description, {min: 5, max: 200})) {
+        this.props.addAlert(updateRestaurantText.description.length, 'danger');
+        changeState = false;
+      }
+    }
+    if (this.state.avatar !== null) {
+      if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(this.state.avatar))) {
+        this.props.addAlert(updateRestaurantText.avatar.extension, 'danger');
+        changeState = false;
+      } else if (Buffer.byteLength(this.state.avatar, 'utf8') > 2097152) {
+        this.props.addAlert(updateRestaurantText.avatar.size, 'danger');
+        changeState = false;
+      }
+    }
+    if (this.state.restName === null &&
     this.state.description === null &&
     this.state.avatar === null &&
-    this.state.address === null ?
-    this.props.addAlert('Fields are empty!', 'danger') :
-    this.props.update(this.props.auth.login, this.state, this.props.auth.token);
-    this.setState({
-      restName: null,
-      description: null,
-      address: null,
-      avatar: null,
-    });
-    this.refs.editForm.reset();
+    this.state.address === null) {
+      this.props.addAlert(updateRestaurantText.empty, 'danger');
+    } else if (changeState) {
+      this.props.update(this.props.auth.login, this.state, this.props.auth.token);
+      this.setState({
+        restName: null,
+        description: null,
+        address: null,
+        avatar: null,
+      });
+      this.refs.editForm.reset();
+    }
   }
 }
 

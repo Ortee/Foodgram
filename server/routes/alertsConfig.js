@@ -38,5 +38,21 @@ module.exports = {
       extension: 'Wrong File Extension',
       size: 'Photo is too large!',
     },
+  },
+  updateRestaurant: {
+    ascii: 'Invalid input type.',
+    rest_name: {
+      length: 'Restaurant length is invalid (5-25 letters)',
+    },
+    address: {
+      length: 'Address length is invalid (5-100 letters)',
+    },
+    description: {
+      length: 'Description length is invalid (5-200 letters)',
+    },
+    avatar: {
+      extension: 'Wrong File Extension',
+      size: 'Avatar is too large!',
+    },
   }
 };

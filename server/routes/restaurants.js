@@ -61,10 +61,37 @@ function(req, res, next) {
   req.accepts('application/json');
   var _login = req.body[0].login;
   var update = {};
-  if (req.body[0].rest_name !== null) Object.assign(update, {rest_name: req.body[0].rest_name});
-  if (req.body[0].address !== null) Object.assign(update, {address: req.body[0].address});
-  if (req.body[0].description !== null) Object.assign(update, {description: req.body[0].description});
+
+  if (req.body[0].rest_name !== null) {
+    if (!validator.isAscii(req.body[0].rest_name)) {
+      return res.status(400).send(alertConfig.updateRestaurant.ascii);
+    } else if (!validator.isLength(req.body[0].rest_name, {min: 5, max: 25})) {
+      return res.status(400).send(alertConfig.updateRestaurant.rest_name.length);
+    }
+    Object.assign(update, {rest_name: req.body[0].rest_name});
+  }
+  if (req.body[0].address !== null) {
+    if (!validator.isAscii(req.body[0].address)) {
+      return res.status(400).send(alertConfig.updateRestaurant.ascii);
+    } else if (!validator.isLength(req.body[0].address, {min: 5, max: 100})) {
+      return res.status(400).send(alertConfig.updateRestaurant.address.length);
+    }
+    Object.assign(update, {address: req.body[0].address});
+  }
+  if (req.body[0].description !== null) {
+    if (!validator.isAscii(req.body[0].description)) {
+      return res.status(400).send(alertConfig.updateRestaurant.ascii);
+    } else if (!validator.isLength(req.body[0].description, {min: 5, max: 200})) {
+      return res.status(400).send(alertConfig.updateRestaurant.description.length);
+    }
+    Object.assign(update, {description: req.body[0].description});
+  }
   if (req.body[0].avatar !== null) {
+    if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].avatar))) {
+      return res.status(400).send(alertConfig.updateRestaurant.avatar.extension);
+    } else if (Buffer.byteLength(req.body[0].avatar, 'utf8') > 2097152) {
+      return res.status(400).send(alertConfig.updateRestaurant.avatar.size);
+    }
     request
       .post('http://nodestore:3500/api/upload-avatar')
       .set('Content-Type', 'application/json')
@@ -78,20 +105,21 @@ function(req, res, next) {
         } else {
           winston.log('info', 'Avatar sent to nodestore.');
           Object.assign(update, {avatar: true});
-          models.Restaurant.update(update, {
-            where: {
-              login: _login
-            }
-          })
-            .then(function() {
-              res.status(201).send();
-            })
-            .catch(function(error) {
-              res.status(404).send();
-            });
         }
       });
   }
+
+  models.Restaurant.update(update, {
+    where: {
+      login: _login
+    }
+  })
+    .then(function() {
+      res.status(200).send();
+    })
+    .catch(function(error) {
+      res.status(404).send();
+    });
 });
 
 // Change password
