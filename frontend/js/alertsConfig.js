@@ -62,7 +62,7 @@ module.exports = {
     },
   },
   updateRestaurantText: {
-    empty: 'Some of the fields are empty',
+    empty: 'All of the fields are empty.',
     ascii: 'Invalid input type.',
     success: 'Profile successfully edited.',
     rest_name: {
