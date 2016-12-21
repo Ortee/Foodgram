@@ -4,7 +4,7 @@ import AccountsInput from '../accountsInput';
 import UserInformations from '../userInformations';
 import validator from 'validator';
 import { updateRestaurantText } from '../../../alertsConfig';
-import { isPhoto, checkPhotoSize } from '../../../foodgramValidator';
+import FoodgramValidator from '../../../foodgramValidator';
 import './edit.scss';
 
 class Edit extends Component {
@@ -45,18 +45,14 @@ class Edit extends Component {
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      if (!isPhoto(reader.result)) {
-        this.props.addAlert(updateRestaurantText.avatar.extension, 'danger');
-        this.setState({ avatar: null });
-      } else {
-        if (checkPhotoSize(reader.result)) {
+      FoodgramValidator.uploadImage(reader.result,
+        this.props.addAlert, updateRestaurantText.avatar)
+        .then(()=>{
           this.setState({ avatar: reader.result });
-          this.props.addAlert(updateRestaurantText.avatar.loaded, 'success');
-        } else {
-          this.props.addAlert(updateRestaurantText.avatar.large, 'danger');
+        })
+        .catch(()=>{
           this.setState({ avatar: null });
-        }
-      }
+        });
     };
     reader.readAsDataURL(file);
   }
