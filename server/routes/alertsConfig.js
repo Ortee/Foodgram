@@ -5,7 +5,7 @@ module.exports = {
     use: 'Login already in use',
     username: {
       length: 'Username is too short (min: 5 letters).',
-      ascii: 'Username can contain only letters and numbers.',
+      ascii: 'Invalid input type (username)',
       forbidden: 'Username contains forbidden characters.',
     },
     login: {

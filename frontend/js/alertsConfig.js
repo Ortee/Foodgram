@@ -50,7 +50,7 @@ module.exports = {
     matchPassword: 'The two passwords do not match!',
     username: {
       length: 'Username is too short (min: 5 letters).',
-      ascii: 'Username can contain only letters and numbers.',
+      ascii: 'Invalid input type (username)',
     },
     login: {
       length: 'Login is too short (min: 5 letters).',

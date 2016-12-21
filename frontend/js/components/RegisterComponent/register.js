@@ -49,7 +49,7 @@ class Register extends Component {
       this.props.addAlert(registerText.login.length, 'danger');
     } else if (!validator.isLength(password, {min: 5, max: undefined})) {
       this.props.addAlert(registerText.password.length, 'danger');
-    } else if (!validator.isAlphanumeric(username)) {
+    } else if (!validator.isAscii(username)) {
       this.props.addAlert(registerText.username.ascii, 'danger');
     } else if (!validator.isAlphanumeric(login)) {
       this.props.addAlert(registerText.login.ascii, 'danger');

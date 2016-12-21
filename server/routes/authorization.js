@@ -37,7 +37,7 @@ router.post('/register', function(req, res, next) {
     return res.status(400).send(alertConfig.register.login.length);
   } else if (!validator.isLength(req.body[0].passwordOne, {min: 5, max: undefined})) {
     return res.status(400).send(alertConfig.register.password.length);
-  } else if (!validator.isAlphanumeric(req.body[0].username)) {
+  } else if (!validator.isAscii(req.body[0].username)) {
     return res.status(400).send(alertConfig.register.username.ascii);
   } else if (!validator.isAlphanumeric(req.body[0].login)) {
     return res.status(400).send(alertConfig.register.login.ascii);
