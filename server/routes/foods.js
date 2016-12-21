@@ -271,17 +271,29 @@ router.put('/dislikes/decrement', function(req, res, next) {
 router.delete('/', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');
-  var _id = req.body[0].uuid;
-  models.Food.destroy({
-    where: {
-      uuid: _id
-    }
-  })
-    .then(function() {
-      res.status(204).send();
-    })
-    .catch(function(error) {
-      res.status(409).send();
+  request
+    .delete('http://nodestore:3500/api/delete')
+    .set('Content-Type', 'application/json')
+    .send([{
+      uuid: req.body[0].uuid,
+    }])
+    .end((err) => {
+      if (err) {
+        res.status(404).send();
+      } else {
+        winston.log('info', 'Image sent to nodestore.');
+        models.Food.destroy({
+          where: {
+            uuid: req.body[0].uuid
+          }
+        })
+          .then(function() {
+            res.status(204).send();
+          })
+          .catch(function(error) {
+            res.status(409).send();
+          });
+      }
     });
 });
 
