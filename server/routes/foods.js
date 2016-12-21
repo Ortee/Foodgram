@@ -279,7 +279,6 @@ function(req, res, next) {
     }])
     .end((err) => {
       if (err) {
-        console.log('err: ', err);
         res.status(404).send();
       } else {
         winston.log('info', 'Image sent to nodestore.');

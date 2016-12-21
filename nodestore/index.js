@@ -120,7 +120,6 @@ app.post('/api/upload', function(req, res, next) {
 // Delete food image
 app.delete('/api/delete', function(req, res, next) {
   req.accepts('application/json');
-  console.log('JESTEM HERE');
   async.waterfall([
     (callback) => {
       if (fs.existsSync('./public/thumbnail/' + req.body[0].uuid + '.png')) {
