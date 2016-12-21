@@ -37,18 +37,14 @@ class Photo extends Component {
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      if (!FoodgramValidator.isPhoto(reader.result)) {
-        this.props.addAlert(addFoodText.photo.extension, 'danger');
-        this.setState({ image: null });
-      } else {
-        if (FoodgramValidator.checkPhotoSize(reader.result)) {
+      FoodgramValidator.uploadImage(reader.result, this.props.addAlert)
+        .then(()=>{
           this.setState({ image: reader.result });
           this.props.addAlert(addFoodText.photo.loaded, 'success');
-        } else {
-          this.props.addAlert(addFoodText.photo.large, 'danger');
+        })
+        .catch(()=>{
           this.setState({ image: null });
-        }
-      }
+        });
     };
     reader.readAsDataURL(file);
   }

@@ -69,5 +69,22 @@ class FoodgramValidator {
         reject(false);
       });
   }
+
+  uploadImage(img, addAlert) {
+    return new Promise(
+      (resolve, reject) => {
+        if (!this.isPhoto(img)) {
+          addAlert(addFoodText.photo.extension, 'danger');
+        } else {
+          if (this.checkPhotoSize(img)) {
+            resolve(true);
+          } else {
+            addAlert(addFoodText.photo.large, 'danger');
+          }
+        }
+        reject(false);
+      }
+    );
+  }
 }
 export default new FoodgramValidator();
