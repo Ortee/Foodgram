@@ -63,15 +63,16 @@ class Photo extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    FoodgramValidator.addFood(this.state.image, this.state.description, this.state.hashTags, this.props.addAlert).then(() => {
-      this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
-      this.setState({
-        image: null,
-        description: null,
-        hashTags: null,
-      });
-      this.refs.photoForm.reset();
-    }).catch();
+    FoodgramValidator.addFood(this.state, this.props.addAlert)
+      .then(() => {
+        this.props.addFood(this.props.auth.login, this.props.auth.rest_name, this.state, this.props.auth.token);
+        this.setState({
+          image: null,
+          description: null,
+          hashTags: null,
+        });
+        this.refs.photoForm.reset();
+      }).catch(()=>{});
   }
 }
 

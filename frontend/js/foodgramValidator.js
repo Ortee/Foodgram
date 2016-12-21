@@ -1,4 +1,4 @@
-import { addFoodText } from './alertsConfig';
+import { addFoodText, changePasswordText } from './alertsConfig';
 import validator from 'validator';
 
 class FoodgramValidator {
@@ -23,7 +23,8 @@ class FoodgramValidator {
     return false;
   }
 
-  addFood(image, description, hashTags, addAlert) {
+  addFood(state, addAlert) {
+    const {image, description, hashTags} = state;
     return new Promise(
       (resolve, reject) => {
         if (image === null) {
@@ -49,6 +50,24 @@ class FoodgramValidator {
       }
     );
   }
-}
 
+  editPassword(state, addAlert) {
+    const {oldPassword, newPassword, newPassword2} = state;
+    return new Promise(
+      (resolve, reject) => {
+        if (validator.isEmpty(oldPassword) ||
+        validator.isEmpty(newPassword) ||
+        validator.isEmpty(newPassword2)) {
+          addAlert(changePasswordText.empty, 'danger');
+        } else if (!validator.isLength(newPassword, {min: 5, max: undefined})) {
+          addAlert(changePasswordText.short, 'danger');
+        } else {
+          !validator.equals(newPassword, newPassword2) ?
+          addAlert(changePasswordText.different, 'danger') :
+          resolve(true);
+        }
+        reject(false);
+      });
+  }
+}
 export default new FoodgramValidator();
