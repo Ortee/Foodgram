@@ -1,5 +1,5 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 var path = require('path');
 const bodyParser = require('body-parser');
 var fs = require('fs');
@@ -32,8 +32,10 @@ function decodeBase64Image(dataString) {
   return response;
 }
 
+// Serve static images
 app.use('/api/images', express.static(path.join(__dirname, 'public')));
 
+// Save avatar
 app.post('/api/upload-avatar', function(req, res, next) {
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].avatar);
@@ -69,6 +71,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
   });
 });
 
+// Save food image
 app.post('/api/upload', function(req, res, next) {
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].photo);
@@ -112,6 +115,39 @@ app.post('/api/upload', function(req, res, next) {
     });
     res.status(200).send();
   });
+});
+
+// Delete food image
+app.delete('/api/delete', function(req, res, next) {
+  req.accepts('application/json');
+  console.log('JESTEM HERE');
+  async.waterfall([
+    (callback) => {
+      if (fs.existsSync('./public/thumbnail/' + req.body[0].uuid + '.png')) {
+        fs.unlink('./public/thumbnail/' + req.body[0].uuid + '.png', (err) => {
+          if (err) throw err;
+          winston.log('info', req.body[0].uuid + ' - THUMBNAIL SUCCESFULLY DELETED');
+          var thumbnail = true;
+          callback(null, thumbnail);
+        });
+      }
+    },
+    (thumbnail, callback) => {
+      if (fs.existsSync('./public/fullsize/' + req.body[0].uuid + '.png')) {
+        fs.unlink('./public/fullsize/' + req.body[0].uuid + '.png', (err) => {
+          if (err) throw err;
+          winston.log('info', req.body[0].uuid + ' - FULLSIZE SUCCESFULLY DELETED');
+          var done = true;
+          callback(null, done);
+        });
+      }
+    },
+  ], (err, result) => {
+    if (err) {
+      throw err;
+    }
+  });
+  res.status(200).send();
 });
 
 app.listen(PORT, function() {
