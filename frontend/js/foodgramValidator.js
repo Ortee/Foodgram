@@ -70,16 +70,17 @@ class FoodgramValidator {
       });
   }
 
-  uploadImage(img, addAlert) {
+  uploadImage(img, addAlert, msg) {
     return new Promise(
       (resolve, reject) => {
         if (!this.isPhoto(img)) {
-          addAlert(addFoodText.photo.extension, 'danger');
+          addAlert(msg.extension, 'danger');
         } else {
           if (this.checkPhotoSize(img)) {
+            addAlert(msg.loaded, 'success');
             resolve(true);
           } else {
-            addAlert(addFoodText.photo.large, 'danger');
+            addAlert(msg.large, 'danger');
           }
         }
         reject(false);

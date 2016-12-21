@@ -37,10 +37,10 @@ class Photo extends Component {
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
-      FoodgramValidator.uploadImage(reader.result, this.props.addAlert)
+      FoodgramValidator.uploadImage(reader.result,
+        this.props.addAlert, addFoodText.photo)
         .then(()=>{
           this.setState({ image: reader.result });
-          this.props.addAlert(addFoodText.photo.loaded, 'success');
         })
         .catch(()=>{
           this.setState({ image: null });
