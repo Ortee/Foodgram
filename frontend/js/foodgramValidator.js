@@ -1,4 +1,4 @@
-import { addFoodText, changePasswordText } from './alertsConfig';
+import { addFoodText, changePasswordText, updateRestaurantText } from './alertsConfig';
 import validator from 'validator';
 
 class FoodgramValidator {
@@ -82,6 +82,48 @@ class FoodgramValidator {
           } else {
             addAlert(msg.large, 'danger');
           }
+        }
+        reject(false);
+      }
+    );
+  }
+
+  editProfile(state, addAlert) {
+    const {restName, address, description, avatar} = state;
+    function checkText(value, prop, len) {
+      if (value !== null) {
+        if (!validator.isAscii(value)) {
+          addAlert(updateRestaurantText.ascii, 'danger');
+        } else if (!validator.isLength(value, {min: 5, max: len})) {
+          addAlert(updateRestaurantText[prop].length, 'danger');
+        } else {
+          return true;
+        }
+        reject(false);
+      }
+      return true;
+    }
+    function checkPhoto(value, self) {
+      if (value !== null) {
+        if (!self.isPhoto(value)) {
+          addAlert(updateRestaurantText.avatar.extension, 'danger');
+        } else
+        if (!self.checkPhotoSize(value)) {
+          addAlert(updateRestaurantText.avatar.size, 'danger');
+        } else {
+          return true;
+        }
+        reject(false);
+      }
+      return true;
+    }
+    return new Promise(
+      (resolve, reject) => {
+        if (checkText(restName, 'rest_name', 25) &&
+            checkText(description, 'description', 200) &&
+            checkText(address, 'address', 100) &&
+            checkPhoto(avatar, this)) {
+          resolve(true);
         }
         reject(false);
       }
