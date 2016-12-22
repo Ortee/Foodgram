@@ -24,25 +24,22 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
 
-    // hooks: {
-    //   beforeCreate: function (user, options, next) {
-    //     // bcrypt.genSalt(10, function (err, salt) {
-    //     //   bcrypt.hash(user.password, salt, function (err, hash) {
-    //     //     user.password = hash;
-    //     //     next(null, user);
-    //     //   });
-    //     // });
-    //   },
-    // },
+    hooks: {
+      beforeCreate: function (user, options, next) {
+        bcrypt.genSalt(10, function (err, salt) {
+          console.log('SALT 1: ', salt);
+          bcrypt.hash(user.password, salt, function (err, hash) {
+            console.log('SALT 2: ', salt);
+            user.password = hash;
+            next(null, user);
+          });
+        });
+      },
+    },
 
     instanceMethods: {
       validPassword: function (password) {
-        // return bcrypt.compareSync(password, this.password);
-        if (password == this.password) {
-          return true;
-        } else {
-          return false;
-        }
+        return bcrypt.compareSync(password, this.password);
       }
     },
     freezeTableName: true,
