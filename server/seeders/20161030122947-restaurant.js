@@ -7,7 +7,7 @@ module.exports = {
         rest_name: 'Pastwisko',
         address: 'Jaroczyńskiego 22, Poznan',
         login: 'pastwisko',
-        password: 'pastwisko',
+        password: '$2a$10$Q3eye/etGK0G/OcqhKmFo.hdzsjiAaVPgCaYT82k/1NlcAqc8f7SO',
         avatar: false,
         description: 'super opis pastwiska',
       },
@@ -15,7 +15,7 @@ module.exports = {
         rest_name: 'Fat Bob Burger',
         address: 'Kramarska 21, Poznan',
         login: 'fatbob',
-        password: 'fatbob',
+        password: '$2a$10$FOk46QdElNrJVAM6Z6phc.NRHsw8i5/aU.A2vS0rk4g52Nl.G58iW',
         avatar: false,
         description: 'super opis fat boba'
       }
