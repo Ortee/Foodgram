@@ -10,7 +10,42 @@ const alertConfig = require('./alertsConfig');
 //classes
 const Restaurant = require('../class/restaurant');
 
-// Get single restaurant
+/**
+ Get single restaurant
+ * @api {get} /api/restaurant/:login Get Restaurant
+ * @apiName GetRestaurant
+ * @apiGroup Restaurant
+ *
+ * @apiParam {Login} login Restaurant unique LOGIN.
+ *
+ * @apiSuccess {String} rest_name Name of the Restaurant.
+ * @apiSuccess {String} login Login of the Restaurant.
+ * @apiSuccess {String} address  Address of the Restaurant.
+ * @apiSuccess {Boolean} avatar  Checks if avatar of the Restaurant is set.
+ * @apiSuccess {String} description  Description of the Restaurant.
+ * @apiSuccess {Array} foods Foods of the Restaurant.
+ * @apiSuccess {Int} likes Likes of the Restaurant.
+ * @apiSuccess {Int} dislikes Dislikes of the Restaurant.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "rest_name": "Fat Bob Burger",
+ *        "login": "fatbob",
+ *        "address": "Kramarska 21, Poznan",
+ *        "avatar": false,
+ *        "description": "super opis fat boba",
+ *        "foods": [
+ *          {
+ *           "uuid": "x7dafa30-9b83-11e6-84da-212055eb89db",
+ *           "likes": 53,
+ *           "dislikes": 23
+ *          }
+ *        ],
+ *        "likes": 53,
+ *        "dislikes": 23
+ *     }
+ */
 router.get('/:login', function(req, res, next) {
   var _login = req.params.login;
   models.Restaurant.findOne({

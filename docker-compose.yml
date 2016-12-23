@@ -57,6 +57,14 @@ public:
         - ./nginx/publicDefault/default.conf:/etc/nginx/conf.d/default.conf
         - ./public:/usr/share/nginx/html
 
+apidoc:
+    image: nginx
+    ports:
+        - "8500:8080"
+    volumes:
+        - ./nginx/apidocDefault/default.conf:/etc/nginx/conf.d/default.conf
+        - ./apidoc:/usr/share/nginx/html
+
 loadbalancer:
     image: nginx
     ports:
@@ -66,6 +74,7 @@ loadbalancer:
         - serv2
         - nodestore
         - public
+        - apidoc
     volumes:
         - ./nginx/loadbalancerDefault/default.conf:/etc/nginx/conf.d/default.conf
 
