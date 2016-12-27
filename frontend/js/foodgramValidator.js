@@ -1,7 +1,9 @@
-import { addFoodText,
+import {
+  addFoodText,
   changePasswordText,
   updateRestaurantText,
-  loginText } from './alertsConfig';
+  loginText,
+  registerText } from './alertsConfig';
 import validator from 'validator';
 
 class FoodgramValidator {
@@ -152,5 +154,34 @@ class FoodgramValidator {
     );
   }
 
+  register(username, login, password, passwordTwo, addAlert) {
+    return new Promise(
+      (resolve, reject) => {
+        if (validator.isEmpty(username) ||
+          validator.isEmpty(login) ||
+          validator.isEmpty(password) ||
+          validator.isEmpty(passwordTwo)) {
+          addAlert(registerText.empty, 'danger');
+        } else if (!validator.isLength(username, {min: 5, max: undefined})) {
+          addAlert(registerText.username.length, 'danger');
+        } else if (!validator.isLength(login, {min: 5, max: undefined})) {
+          addAlert(registerText.login.length, 'danger');
+        } else if (!validator.isLength(password, {min: 5, max: undefined})) {
+          addAlert(registerText.password.length, 'danger');
+        } else if (!validator.isAscii(username)) {
+          addAlert(registerText.username.ascii, 'danger');
+        } else if (!validator.isAlphanumeric(login)) {
+          addAlert(registerText.login.ascii, 'danger');
+        } else if (!validator.isAlphanumeric(password)) {
+          addAlert(registerText.password.ascii, 'danger');
+        } else {
+          !validator.equals(password, passwordTwo) ?
+          addAlert(registerText.matchPassword, 'danger') :
+          resolve(true);
+        }
+        reject(false);
+      }
+    );
+  }
 }
 export default new FoodgramValidator();
