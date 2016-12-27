@@ -1,4 +1,7 @@
-import { addFoodText, changePasswordText, updateRestaurantText } from './alertsConfig';
+import { addFoodText,
+  changePasswordText,
+  updateRestaurantText,
+  loginText } from './alertsConfig';
 import validator from 'validator';
 
 class FoodgramValidator {
@@ -129,5 +132,25 @@ class FoodgramValidator {
       }
     );
   }
+
+  login(login, password, addAlert) {
+    return new Promise(
+      (resolve, reject) => {
+        if (!validator.isAlphanumeric(login)) {
+          addAlert(loginText.login.ascii, 'danger');
+        } else if (!validator.isAlphanumeric(password)) {
+          addAlert(loginText.password.ascii, 'danger');
+        } else if (validator.isEmpty(login)) {
+          addAlert(loginText.login.enter, 'danger');
+        } else if (validator.isEmpty(password)) {
+          addAlert(loginText.password.enter, 'danger');
+        } else {
+          resolve(true);
+        }
+        reject(false);
+      }
+    );
+  }
+
 }
 export default new FoodgramValidator();
