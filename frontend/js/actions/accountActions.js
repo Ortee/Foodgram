@@ -1,6 +1,5 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
-import { browserHistory } from 'react-router';
 import { serverText, userText, updateRestaurantText } from '../alertsConfig';
 import config from '../config';
 
