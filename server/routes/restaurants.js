@@ -105,21 +105,32 @@ function(req, res, next) {
         } else {
           winston.log('info', 'Avatar sent to nodestore.');
           Object.assign(update, {avatar: true});
+          models.Restaurant.update(update, {
+            where: {
+              login: _login
+            }
+          })
+            .then(function() {
+              res.status(200).send();
+            })
+            .catch(function(error) {
+              res.status(404).send();
+            });
         }
       });
-  }
-
-  models.Restaurant.update(update, {
-    where: {
-      login: _login
-    }
-  })
-    .then(function() {
-      res.status(200).send();
+  } else {
+    models.Restaurant.update(update, {
+      where: {
+        login: _login
+      }
     })
-    .catch(function(error) {
-      res.status(404).send();
-    });
+      .then(function() {
+        res.status(200).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
+  }
 });
 
 // Change password

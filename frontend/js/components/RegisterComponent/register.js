@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Button } from 'reactstrap';
-import { registerText } from '../../alertsConfig';
-import validator from 'validator';
+import FoodgramValidator from '../../foodgramValidator';
 import './register.scss';
 
 class Register extends Component {
@@ -38,29 +37,12 @@ class Register extends Component {
     const login = this.refs.login.value;
     const password = this.refs.password.value;
     const passwordTwo = this.refs.passwordTwo.value;
-    if (validator.isEmpty(username) ||
-      validator.isEmpty(login) ||
-      validator.isEmpty(password) ||
-      validator.isEmpty(passwordTwo)) {
-      this.props.addAlert(registerText.empty, 'danger');
-    } else if (!validator.isLength(username, {min: 5, max: undefined})) {
-      this.props.addAlert(registerText.username.length, 'danger');
-    } else if (!validator.isLength(login, {min: 5, max: undefined})) {
-      this.props.addAlert(registerText.login.length, 'danger');
-    } else if (!validator.isLength(password, {min: 5, max: undefined})) {
-      this.props.addAlert(registerText.password.length, 'danger');
-    } else if (!validator.isAscii(username)) {
-      this.props.addAlert(registerText.username.ascii, 'danger');
-    } else if (!validator.isAlphanumeric(login)) {
-      this.props.addAlert(registerText.login.ascii, 'danger');
-    } else if (!validator.isAlphanumeric(password)) {
-      this.props.addAlert(registerText.password.ascii, 'danger');
-    } else {
-      !validator.equals(password, passwordTwo) ?
-      this.props.addAlert(registerText.matchPassword, 'danger') :
-      this.props.register(username, login, password, passwordTwo);
-    }
-    this.refs.registerForm.reset();
+    FoodgramValidator.register(username, login, password, passwordTwo, this.props.addAlert)
+      .then(()=>{
+        this.props.register(username, login, password, passwordTwo);
+        this.refs.registerForm.reset();
+      })
+      .catch(()=>{});
   }
 }
 

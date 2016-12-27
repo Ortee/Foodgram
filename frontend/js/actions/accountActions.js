@@ -1,6 +1,5 @@
 import req from 'superagent';
 import { addAlert } from './alertActions';
-import { browserHistory } from 'react-router';
 import { serverText, userText, updateRestaurantText } from '../alertsConfig';
 import config from '../config';
 
@@ -33,9 +32,6 @@ export function update(login, data, token) {
         if (data.avatar !== null) dispatch(editAvatar(config.url + '/api/images/avatar/' + login + '.png'));
         if (data.description !== null) dispatch(editDescription(data.description));
         dispatch(addAlert(updateRestaurantText.success, 'success'));
-        if (res.status === 200) {
-          browserHistory.pushState('/');
-        }
       }
     });
   };
