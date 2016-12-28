@@ -22,7 +22,7 @@ const Restaurant = require('../class/restaurant');
  * @apiSuccess {String} rest_name Name of the Restaurant.
  * @apiSuccess {String} login Login of the Restaurant.
  * @apiSuccess {String} address  Address of the Restaurant.
- * @apiSuccess {Boolean} avatar  Checks if avatar of the Restaurant is set.
+ * @apiSuccess {Boolean} avatar=false  Checks if avatar of the Restaurant is set.
  * @apiSuccess {String} description  Description of the Restaurant.
  * @apiSuccess {Array} foods Foods of the Restaurant.
  * @apiSuccess {Int} likes Likes of the Restaurant.

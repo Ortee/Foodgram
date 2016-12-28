@@ -15,7 +15,56 @@ function getTimestamp() {
     * 60000) + (3600000 * 2));
 }
 
-// Get all food
+/**
+ Get all foods
+ * @api {get} /api/foods Get Foods
+ * @apiName GetFoods
+ * @apiGroup Food
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccess {String} login Login of the Restaurant.
+ * @apiSuccess {Int} id Id of the Food.
+ * @apiSuccess {String} uuid UUID of the Food.
+ * @apiSuccess {String} username  Name of the Restaurant who owns this food.
+ * @apiSuccess {String} description  Description of the Food.
+ * @apiSuccess {String} hashtags Hashtags of the Food.
+ * @apiSuccess {Int} likes Likes of the Food.
+ * @apiSuccess {Int} dislikes Dislikes of the Food.
+ * @apiSuccess {Date} created_at Food creation date.
+ * @apiSuccess {Date} updated_at Food update date.
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *     [
+ *      {
+ *        "login": "pastwisko",
+ *        "id": 3,
+ *        "uuid": "ffa3fa30-9b83-11e6-84da-212055eb89db",
+ *        "username": "Pastwisko",
+ *        "description": "Nice",
+ *        "hashtags": "#love",
+ *        "likes": 10,
+ *        "dislikes": 13,
+ *        "created_at": "2016-10-17T20:31:40.000Z",
+ *        "updated_at": "2016-10-17T20:31:40.000Z"
+ *      },
+ *      {
+ *        "login": "pastwisko",
+ *        "id": 2,
+ *        "uuid": "efa3fa30-9b83-11e6-84da-212055eb89db",
+ *        "username": "Pastwisko",
+ *        "description": "Very nice",
+ *        "hashtags": "#tasty #love",
+ *        "likes": 8,
+ *        "dislikes": 3,
+ *        "created_at": "2016-10-16T20:31:40.000Z",
+ *        "updated_at": "2016-10-16T20:31:40.000Z"
+ *      }
+ *    ]
+ *
+ * @apiErrorExample {json} Foods not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.get('/', function(req, res, next) {
   models.Food.findAll({
     order: [
@@ -42,6 +91,35 @@ router.get('/', function(req, res, next) {
   });
 });
 
+/**
+ Get foods likes/dislikes
+ * @api {get} /api/foods Get Likes/Dislikes
+ * @apiName GetLikesDislikes
+ * @apiGroup Food
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccess {Int} id Id of the Food.
+ * @apiSuccess {Int} likes Likes of the Food.
+ * @apiSuccess {Int} dislikes Dislikes of the Food.
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *     [
+ *      {
+ *        "id": 1,
+ *        "likes": 3,
+ *        "dislikes": 5,
+ *      },
+ *      {
+ *        "id": 2,
+ *        "likes": 8,
+ *        "dislikes": 3,
+ *      }
+ *    ]
+ *
+ * @apiErrorExample {json} Foods not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.get('/likes/update', function(req, res, next) {
   models.Food.findAll({
     attributes: ['id', 'likes', 'dislikes'],
