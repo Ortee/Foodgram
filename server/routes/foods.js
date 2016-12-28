@@ -204,7 +204,43 @@ router.get('/:uuid', function(req, res, next) {
 });
 
 
-// Save food
+/**
+ Add food
+ * @api {post} /api/foods Add Food
+ * @apiName AddFood
+ * @apiGroup Food
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} login Login of the Restaurant.
+ * @apiParam {String} uuid UUID of the Food.
+ * @apiParam {String} description  Description of the Food.
+ * @apiParam {String} hashtags Hashtags of the Food.
+ * @apiParam {String} avatar Avatar of the Restaurant (base64 format).
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "login": "fatbob",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "description": "Very good burger",
+ *      "hashatags": "#tasty #awesome",
+ *      "avatar": "data:image/png;base64,iVBORw0K......"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 201 Created
+ *
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ *    {
+ *      "Description is too short or too long (min: 2, max: 250 letters)."
+ *    }
+ *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
 router.post('/', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');

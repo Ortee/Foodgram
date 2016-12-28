@@ -115,6 +115,9 @@ router.get('/:login', function(req, res, next) {
  * @apiSuccessExample Success
  *     HTTP/1.1 200 OK
  *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
+ *
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
@@ -207,6 +210,9 @@ function(req, res, next) {
  *
  * @apiSuccessExample Success
  *     HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
  *
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
