@@ -12,9 +12,10 @@ const Restaurant = require('../class/restaurant');
 
 /**
  Get single restaurant
- * @api {get} /api/restaurant/:login Get Restaurant
+ * @api {get} /api/restaurants/:login Get Restaurant
  * @apiName GetRestaurant
  * @apiGroup Restaurant
+ * @apiVersion 1.0.0
  *
  * @apiParam {Login} login Restaurant unique LOGIN.
  *
@@ -27,7 +28,7 @@ const Restaurant = require('../class/restaurant');
  * @apiSuccess {Int} likes Likes of the Restaurant.
  * @apiSuccess {Int} dislikes Dislikes of the Restaurant.
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample Success
  *     HTTP/1.1 200 OK
  *     {
  *        "rest_name": "Fat Bob Burger",
@@ -45,6 +46,9 @@ const Restaurant = require('../class/restaurant');
  *        "likes": 53,
  *        "dislikes": 23
  *     }
+ *
+ * @apiErrorExample {json} Restaurant not found
+ *    HTTP/1.1 404 Not Found
  */
 router.get('/:login', function(req, res, next) {
   var _login = req.params.login;
@@ -87,7 +91,33 @@ router.get('/:login', function(req, res, next) {
     });
 });
 
-// Update restaurant
+/**
+ Update restaurant
+ * @api {put} /api/restaurants/update Update Restaurant
+ * @apiName UpdateRestaurant
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} login Login of the Restaurant.
+ * @apiParam {String} rest_name Name of the Restaurant.
+ * @apiParam {String} address  Address of the Restaurant.
+ * @apiParam {String} description  Description of the Restaurant.
+ * @apiParam {String} avatar Avatar of the Restaurant (base64 format).
+ * @apiParamExample {json} Input
+ *    {
+ *      "login": "fatbob",
+ *      "rest_name": "Fat Bob Burger",
+ *      "address": "Kramarska 21, Poznan",
+ *      "description": "super opis fat boba",
+ *      "avatar": "data:image/jpeg;base64,/9j/4AAQS...."
+ *    }
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Restaurant not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.put('/update', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -156,7 +186,31 @@ function(req, res, next) {
   }
 });
 
-// Change password
+/**
+ Change password
+ * @api {put} /api/restaurants/password Change Password
+ * @apiName ChangePassword
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} login Login of the Restaurant.
+ * @apiParam {String} oldPassword Old password of the Restaurant.
+ * @apiParam {String} newPassword  New password of the Restaurant.
+ * @apiParam {String} newPassword2  Again new password of the Restaurant.
+ * @apiParamExample {json} Input
+ *    {
+ *      "login": "fatbob",
+ *      "oldPassword": "fatbob",
+ *      "newPassword": "newpass",
+ *      "newPassword2": "newpass",
+ *    }
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Restaurant not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.put('/password', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');

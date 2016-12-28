@@ -30,5 +30,14 @@
     "superagent": "^2.3.0",
     "validator": "^6.2.0",
     "winston": "^2.3.0"
+  },
+  "apidoc": {
+    "name": "Foodgram",
+    "version": "1.0.0",
+    "description": "Documentation of Foodgram - instagram copy.",
+    "apidoc": {
+      "title": "Foodgram - DOC",
+      "url" : "https://github.com/Ortee/Foodgram"
+    }
   }
 }
