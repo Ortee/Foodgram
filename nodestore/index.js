@@ -35,7 +35,28 @@ function decodeBase64Image(dataString) {
 // Serve static images
 app.use('/api/images', express.static(path.join(__dirname, 'public')));
 
-// Save avatar
+/**
+ Save Avatar
+ * @api {post} /api/upload-avatar Save Avatar
+ * @apiName SaveAvatar
+ * @apiGroup Imagestore
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} login Login of the Restaurant.
+ * @apiParam {String} avatar Avatar of the Restaurant (base64 format).
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "login": "fatob",
+ *      "avatar": "data:image/png;base64,iVBORw0K......",
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
 app.post('/api/upload-avatar', function(req, res, next) {
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].avatar);
@@ -71,7 +92,28 @@ app.post('/api/upload-avatar', function(req, res, next) {
   });
 });
 
-// Save food image
+/**
+ Save Food Image
+ * @api {post} /api/upload Save Food Image
+ * @apiName SaveFoodImage
+ * @apiGroup Imagestore
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} uuid UUID of the Food.
+ * @apiParam {String} photo Photo of the Food (base64 format).
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "photo": "data:image/png;base64,iVBORw0K......",
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
 app.post('/api/upload', function(req, res, next) {
   req.accepts('application/json');
   var imageBuffer = decodeBase64Image(req.body[0].photo);
@@ -117,7 +159,27 @@ app.post('/api/upload', function(req, res, next) {
   });
 });
 
-// Delete food image
+/**
+ Delete Food Image
+ * @api {delete} /api/upload Delete Food Image
+ * @apiName DeleteFoodImage
+ * @apiGroup Imagestore
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} uuid UUID of the Food.
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
+
 app.delete('/api/delete', function(req, res, next) {
   req.accepts('application/json');
   async.waterfall([
@@ -146,7 +208,7 @@ app.delete('/api/delete', function(req, res, next) {
       throw err;
     }
   });
-  res.status(200).send();
+  res.status(204).send();
 });
 
 app.listen(PORT, function() {
