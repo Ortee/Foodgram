@@ -470,7 +470,7 @@ router.put('/dislikes/decrement', function(req, res, next) {
   req.accepts('application/json');
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: req.body[0].uui
     },
     attributes: ['dislikes']
   }).then(function(food) {
@@ -480,7 +480,7 @@ router.put('/dislikes/decrement', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': req.body[0].uui
         }
       }
     )
@@ -494,7 +494,29 @@ router.put('/dislikes/decrement', function(req, res, next) {
   });
 });
 
-// Delete food
+/**
+ Delete Food
+ * @api {delete} /api/likes Delete Food
+ * @apiName DeleteFood
+ * @apiGroup Food
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} uuid UUID of the Food.
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 204 No Content
+ *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
 router.delete('/', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');
@@ -518,7 +540,7 @@ function(req, res, next) {
             res.status(204).send();
           })
           .catch(function(error) {
-            res.status(409).send();
+            res.status(404).send();
           });
       }
     });
