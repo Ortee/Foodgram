@@ -16,6 +16,7 @@ const Restaurant = require('../class/restaurant');
  * @apiName GetRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
+ * @apiHeader  Accept application/json.
  *
  * @apiParam {Login} login Restaurant unique LOGIN.
  *
@@ -97,6 +98,7 @@ router.get('/:login', function(req, res, next) {
  * @apiName UpdateRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json.
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} rest_name Name of the Restaurant.
@@ -195,6 +197,7 @@ function(req, res, next) {
  * @apiName ChangePassword
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json.
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} oldPassword Old password of the Restaurant.

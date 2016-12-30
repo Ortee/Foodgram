@@ -41,6 +41,7 @@ app.use('/api/images', express.static(path.join(__dirname, 'public')));
  * @apiName SaveAvatar
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json.
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} avatar Avatar of the Restaurant (base64 format).
@@ -98,6 +99,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
  * @apiName SaveFoodImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json.
  *
  * @apiParam {String} uuid UUID of the Food.
  * @apiParam {String} photo Photo of the Food (base64 format).
@@ -165,6 +167,7 @@ app.post('/api/upload', function(req, res, next) {
  * @apiName DeleteFoodImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json.
  *
  * @apiParam {String} uuid UUID of the Food.
  *
