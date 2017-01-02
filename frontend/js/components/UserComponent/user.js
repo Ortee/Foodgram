@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router'
 import { Col } from 'reactstrap';
 import config from '../../config';
+import UserPhoto from './UserPhoto';
 import './user.scss';
 
 class User extends Component {
@@ -43,12 +43,10 @@ class User extends Component {
         <Col xs={{ size: 10, offset: 1}} id="images">
           { this.props.user.foods.map((elem, index) => {
             return (
-              <Col xs={{ size: 4}} key={index} className="image" onClick={()=>{browserHistory.push(`/photo/${elem.uuid}`);}}>
-                <img  className="img-thumbnail"
-                      height="100%"
-                      width="100%"
-                      src={config.thumbnail + elem.uuid + '.png'} />
-              </Col>
+              <UserPhoto
+                key={index}
+                uuid={elem.uuid}
+                link={config.thumbnail + elem.uuid + '.png'}/>
             );
           })}
         </Col>
