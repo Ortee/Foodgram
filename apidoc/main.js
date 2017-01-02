@@ -133,7 +133,9 @@ require([
         });
     });
     // api overwrite with ordered list
-    api = newList;
+    api = _.sortBy(newList, function (entry) {
+        return entry.group + entry.name;
+    });
 
     //
     // Group- and Versionlists

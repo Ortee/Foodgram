@@ -38,7 +38,7 @@ app.use('/api/images', express.static(path.join(__dirname, 'public')));
 /**
  Save Avatar
  * @api {post} /api/upload-avatar Save Avatar
- * @apiName SaveAvatar
+ * @apiName 01_SaveAvatar
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -96,7 +96,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
 /**
  Save Food Image
  * @api {post} /api/upload Save Food Image
- * @apiName SaveFoodImage
+ * @apiName 02_SaveFoodImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -164,7 +164,7 @@ app.post('/api/upload', function(req, res, next) {
 /**
  Delete Food Image
  * @api {delete} /api/upload Delete Food Image
- * @apiName DeleteFoodImage
+ * @apiName 03_DeleteFoodImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -182,7 +182,6 @@ app.post('/api/upload', function(req, res, next) {
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-
 app.delete('/api/delete', function(req, res, next) {
   req.accepts('application/json');
   async.waterfall([
