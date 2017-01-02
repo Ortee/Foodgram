@@ -479,7 +479,7 @@ router.put('/dislikes/decrement', function(req, res, next) {
   req.accepts('application/json');
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uui
+      uuid: req.body[0].uuid
     },
     attributes: ['dislikes']
   }).then(function(food) {
@@ -489,7 +489,7 @@ router.put('/dislikes/decrement', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uui
+          'uuid': req.body[0].uuid
         }
       }
     )
