@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import req from 'superagent';
 import { Col } from 'reactstrap';
+import './loading.scss';
 
 class UserPhoto extends Component {
   constructor(props) {
@@ -10,18 +11,19 @@ class UserPhoto extends Component {
       loaded: false,
     };
   }
-  shouldComponentUpdate() {
+
+  componentDidMount()    {
     req.get(this.props.link)
       .then((response)=>{
-        if (response.status === 200) {
+        if (response.status === 200 ) {
           this.setState({
             loaded: true,
           });
-          return false;
+          this.forceUpdate();
         }
       });
-    return true;
   }
+
   render = () => {
     if (this.state.loaded) {
       return (
@@ -32,13 +34,17 @@ class UserPhoto extends Component {
                 src={this.props.link} />
         </Col>
       );
-    } else {
-      return (
-        <Col xs={{ size: 4}} key={this.props.key} className="image" onClick={()=>{browserHistory.push(`/photo/${this.props.uuid}`);}}>
-          LOOOOOOADING
-        </Col>
-      );
     }
+    return (
+      <Col xs={{ size: 4}} key={this.props.key} className="image">
+        <div className="loading-container">
+          <div className="loading" />
+          <div id="loading-text">
+            loading
+          </div>
+        </div>
+      </Col>
+    );
   }
 }
 
