@@ -214,6 +214,7 @@ router.get('/:uuid', function(req, res, next) {
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
+ * @apiHeader Authorization Bearer token
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} uuid UUID of the Food.
@@ -509,6 +510,7 @@ router.put('/dislikes/decrement', function(req, res, next) {
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
+ * @apiHeader Authorization Bearer token
  *
  * @apiParam {String} uuid UUID of the Food.
  *

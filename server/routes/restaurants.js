@@ -99,6 +99,7 @@ router.get('/:login', function(req, res, next) {
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
+ * @apiHeader Authorization Bearer token
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} rest_name Name of the Restaurant.
@@ -198,6 +199,7 @@ function(req, res, next) {
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
+ * @apiHeader Authorization Bearer token
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} oldPassword Old password of the Restaurant.
