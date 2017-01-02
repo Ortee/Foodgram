@@ -41,7 +41,7 @@ app.use('/api/images', express.static(path.join(__dirname, 'public')));
  * @apiName 01_SaveAvatar
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} login Login of the Restaurant.
  * @apiParam {String} avatar Avatar of the Restaurant (base64 format).
@@ -49,7 +49,7 @@ app.use('/api/images', express.static(path.join(__dirname, 'public')));
  * @apiParamExample {json} Input
  *    {
  *      "login": "fatob",
- *      "avatar": "data:image/png;base64,iVBORw0K......",
+ *      "avatar": "data:image/png;base64,iVBORw0K......"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -99,7 +99,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
  * @apiName 02_SaveFoodImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} uuid UUID of the Food.
  * @apiParam {String} photo Photo of the Food (base64 format).
@@ -107,7 +107,7 @@ app.post('/api/upload-avatar', function(req, res, next) {
  * @apiParamExample {json} Input
  *    {
  *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
- *      "photo": "data:image/png;base64,iVBORw0K......",
+ *      "photo": "data:image/png;base64,iVBORw0K......"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -163,17 +163,17 @@ app.post('/api/upload', function(req, res, next) {
 
 /**
  Delete Food Image
- * @api {delete} /api/upload Delete Food Image
+ * @api {delete} /api/delete Delete Food Image
  * @apiName 03_DeleteFoodImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} uuid UUID of the Food.
  *
  * @apiParamExample {json} Input
  *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
  *    }
  *
  * @apiSuccessExample {json} Success

@@ -21,7 +21,7 @@ function getTimestamp() {
  * @apiName 02_GetFoods
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Accept application/json.
+ * @apiHeader  Accept application/json
  *
  * @apiSuccess {String} login Login of the Restaurant.
  * @apiSuccess {Int} id Id of the Food.
@@ -98,7 +98,7 @@ router.get('/', function(req, res, next) {
  * @apiName 05_GetLikesDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Accept application/json.
+ * @apiHeader  Accept application/json
  *
  * @apiSuccess {Int} id Id of the Food.
  * @apiSuccess {Int} likes Likes of the Food.
@@ -140,9 +140,9 @@ router.get('/likes/update', function(req, res, next) {
  * @apiName 01_GetFood
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Accept application/json.
+ * @apiHeader  Accept application/json
  *
- * @apiParam {Uuid} uuid Food unique id.
+ * @apiParam uuid Food unique id.
  *
  * @apiSuccess {String} login Login of the Restaurant.
  * @apiSuccess {Int} id Id of the Food.
@@ -172,7 +172,7 @@ router.get('/likes/update', function(req, res, next) {
  *      }
  *    ]
  *
- * @apiErrorExample {json} Foods not found
+ * @apiErrorExample {json} Food not found
  *    HTTP/1.1 404 Not Found
  */
 router.get('/:uuid', function(req, res, next) {
@@ -213,7 +213,7 @@ router.get('/:uuid', function(req, res, next) {
  * @apiName 03_AddFood
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  * @apiHeader Authorization Bearer token
  *
  * @apiParam {String} login Login of the Restaurant.
@@ -315,13 +315,13 @@ function(req, res, next) {
  * @apiName 06_AddLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} uuid UUID of the Food.
  *
  * @apiParamExample {json} Input
  *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -359,17 +359,17 @@ router.put('/likes', function(req, res, next) {
 
 /**
  Decrease Likes
- * @api {put} /api/likes Decrease Likes
+ * @api {put} /api/likes/decrement Decrease Likes
  * @apiName 07_DecreaseLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} uuid UUID of the Food.
  *
  * @apiParamExample {json} Input
  *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -407,17 +407,17 @@ router.put('/likes/decrement', function(req, res, next) {
 
 /**
  Add Dislikes
- * @api {put} /api/likes Add Dislikes
+ * @api {put} /api/dislikes Add Dislikes
  * @apiName 08_AddDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} uuid UUID of the Food.
  *
  * @apiParamExample {json} Input
  *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -456,17 +456,17 @@ router.put('/dislikes', function(req, res, next) {
 
 /**
  Decrease Dislikes
- * @api {put} /api/likes Decrease Dislikes
+ * @api {put} /api/dislikes/decrement Decrease Dislikes
  * @apiName 09_DecreaseDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  *
  * @apiParam {String} uuid UUID of the Food.
  *
  * @apiParamExample {json} Input
  *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -505,18 +505,18 @@ router.put('/dislikes/decrement', function(req, res, next) {
 
 /**
  Delete Food
- * @api {delete} /api/likes Delete Food
+ * @api {delete} /api/foods Delete Food
  * @apiName 04_DeleteFood
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json.
+ * @apiHeader  Content-Type application/json
  * @apiHeader Authorization Bearer token
  *
  * @apiParam {String} uuid UUID of the Food.
  *
  * @apiParamExample {json} Input
  *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
  *    }
  *
  * @apiSuccessExample {json} Success
