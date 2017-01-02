@@ -47,6 +47,7 @@ class User extends Component {
             return (
               <UserPhoto
                 key={index}
+                index={index}
                 uuid={elem.uuid}
                 link={config.thumbnail + elem.uuid + '.png'}/>
             );

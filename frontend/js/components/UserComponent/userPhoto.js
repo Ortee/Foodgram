@@ -40,7 +40,7 @@ class UserPhoto extends Component {
   render = () => {
     if (this.state.loaded) {
       return (
-        <Col xs={{ size: 4}} key={this.props.key} className="image" onClick={()=>{browserHistory.push(`/photo/${this.props.uuid}`);}}>
+        <Col xs={{ size: 4}} key={this.props.index} className="image" onClick={()=>{browserHistory.push(`/photo/${this.props.uuid}`);}}>
           <img  className="img-thumbnail"
                 height="100%"
                 width="100%"
@@ -63,7 +63,7 @@ class UserPhoto extends Component {
 
 UserPhoto.propTypes = {
   link: React.PropTypes.string,
-  key: React.PropTypes.number,
+  index: React.PropTypes.number,
   uuid: React.PropTypes.string,
 };
 
