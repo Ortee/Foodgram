@@ -189,6 +189,18 @@ function(req, res, next) {
             });
         }
       });
+  } else {
+    models.Restaurant.update(update, {
+      where: {
+        login: _login
+      }
+    })
+      .then(function() {
+        res.status(200).send();
+      })
+      .catch(function(error) {
+        res.status(404).send();
+      });
   }
 });
 

@@ -1,4 +1,9 @@
-import { addFoodText, changePasswordText, updateRestaurantText } from './alertsConfig';
+import {
+  addFoodText,
+  changePasswordText,
+  updateRestaurantText,
+  loginText,
+  registerText } from './alertsConfig';
 import validator from 'validator';
 
 class FoodgramValidator {
@@ -123,6 +128,55 @@ class FoodgramValidator {
             checkText(description, 'description', 200) &&
             checkText(address, 'address', 100) &&
             checkPhoto(avatar, this)) {
+          resolve(true);
+        }
+        reject(false);
+      }
+    );
+  }
+
+  login(login, password, addAlert) {
+    return new Promise(
+      (resolve, reject) => {
+        if (!validator.isAlphanumeric(login)) {
+          addAlert(loginText.login.ascii, 'danger');
+        } else if (!validator.isAlphanumeric(password)) {
+          addAlert(loginText.password.ascii, 'danger');
+        } else if (validator.isEmpty(login)) {
+          addAlert(loginText.login.enter, 'danger');
+        } else if (validator.isEmpty(password)) {
+          addAlert(loginText.password.enter, 'danger');
+        } else {
+          resolve(true);
+        }
+        reject(false);
+      }
+    );
+  }
+
+  register(username, login, password, passwordTwo, addAlert) {
+    return new Promise(
+      (resolve, reject) => {
+        if (validator.isEmpty(username) ||
+          validator.isEmpty(login) ||
+          validator.isEmpty(password) ||
+          validator.isEmpty(passwordTwo)) {
+          addAlert(registerText.empty, 'danger');
+        } else if (!validator.isLength(username, {min: 5, max: undefined})) {
+          addAlert(registerText.username.length, 'danger');
+        } else if (!validator.isLength(login, {min: 5, max: undefined})) {
+          addAlert(registerText.login.length, 'danger');
+        } else if (!validator.isLength(password, {min: 5, max: undefined})) {
+          addAlert(registerText.password.length, 'danger');
+        } else if (!validator.isAscii(username)) {
+          addAlert(registerText.username.ascii, 'danger');
+        } else if (!validator.isAlphanumeric(login)) {
+          addAlert(registerText.login.ascii, 'danger');
+        } else if (!validator.isAlphanumeric(password)) {
+          addAlert(registerText.password.ascii, 'danger');
+        } else {
+          !validator.equals(password, passwordTwo) ?
+          addAlert(registerText.matchPassword, 'danger') :
           resolve(true);
         }
         reject(false);

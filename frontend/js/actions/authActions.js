@@ -24,6 +24,7 @@ export function register(_username, _login, _password, _passwordTwo) {
         dispatch(addAlert(serverText.problem, 'danger'));
       } else if (res.status === 200) {
         dispatch(addAlert(userText.added, 'success'));
+        browserHistory.pushState('/login');
       }
     });
   };

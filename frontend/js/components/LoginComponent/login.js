@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookie';
 import { Col, Button } from 'reactstrap';
-import validator from 'validator';
-import { loginText } from '../../alertsConfig';
+import FoodgramValidator from '../../foodgramValidator';
 import './login.scss';
 
 class Login extends Component {
@@ -31,18 +30,12 @@ class Login extends Component {
     e.preventDefault();
     const login = this.refs.login.value;
     const password = this.refs.password.value;
-    if (!validator.isAlphanumeric(login)) {
-      this.props.addAlert(loginText.login.ascii, 'danger');
-    } else if (!validator.isAlphanumeric(password)) {
-      this.props.addAlert(loginText.password.ascii, 'danger');
-    } else if (validator.isEmpty(login)) {
-      this.props.addAlert(loginText.login.enter, 'danger');
-    } else if (validator.isEmpty(password)) {
-      this.props.addAlert(loginText.password.enter, 'danger');
-    } else {
-      this.props.login(login, password);
-    }
-    this.refs.loginForm.reset();
+    FoodgramValidator.login(login, password, this.props.addAlert)
+      .then(()=>{
+        this.props.login(login, password);
+        this.refs.loginForm.reset();
+      })
+      .catch(()=>{});
   }
 }
 
