@@ -13,7 +13,9 @@ class Accounts extends Component {
     };
   }
   componentDidMount() {
-    this.props.getUser(this.props.auth.login);
+    if (this.props.auth.login !== null) {
+      this.props.getUser(this.props.auth.login);
+    }
   }
   render = () => {
     return (

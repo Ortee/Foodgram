@@ -9,7 +9,9 @@ class User extends Component {
     super(props);
   }
   componentWillMount() {
-    this.props.getUser(this.props.params.name);
+    if (this.props.params.name !== null) {
+      this.props.getUser(this.props.params.name);
+    }
   }
   render = () => {
     return (
