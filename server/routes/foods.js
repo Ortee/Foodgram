@@ -18,7 +18,7 @@ function getTimestamp() {
 /**
  Get all foods
  * @api {get} /api/foods Get Foods
- * @apiName GetFoods
+ * @apiName 02_GetFoods
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Accept application/json.
@@ -95,7 +95,7 @@ router.get('/', function(req, res, next) {
 /**
  Get foods likes/dislikes
  * @api {get} /api/foods/likes/update Get Likes/Dislikes
- * @apiName GetLikesDislikes
+ * @apiName 05_GetLikesDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Accept application/json.
@@ -137,7 +137,7 @@ router.get('/likes/update', function(req, res, next) {
 /**
  Get single food
  * @api {get} /api/foods/:uuid Get Food
- * @apiName GetFood
+ * @apiName 01_GetFood
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Accept application/json.
@@ -210,7 +210,7 @@ router.get('/:uuid', function(req, res, next) {
 /**
  Add food
  * @api {post} /api/foods Add Food
- * @apiName AddFood
+ * @apiName 03_AddFood
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -311,7 +311,7 @@ function(req, res, next) {
 /**
  Add Likes
  * @api {put} /api/likes Add Likes
- * @apiName AddLikes
+ * @apiName 06_AddLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -359,7 +359,7 @@ router.put('/likes', function(req, res, next) {
 /**
  Decrease Likes
  * @api {put} /api/likes Decrease Likes
- * @apiName DecreaseLikes
+ * @apiName 07_DecreaseLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -407,7 +407,7 @@ router.put('/likes/decrement', function(req, res, next) {
 /**
  Add Dislikes
  * @api {put} /api/likes Add Dislikes
- * @apiName AddDislikes
+ * @apiName 08_AddDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -456,7 +456,7 @@ router.put('/dislikes', function(req, res, next) {
 /**
  Decrease Dislikes
  * @api {put} /api/likes Decrease Dislikes
- * @apiName DecreaseDislikes
+ * @apiName 09_DecreaseDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
@@ -505,7 +505,7 @@ router.put('/dislikes/decrement', function(req, res, next) {
 /**
  Delete Food
  * @api {delete} /api/likes Delete Food
- * @apiName DeleteFood
+ * @apiName 04_DeleteFood
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json.
