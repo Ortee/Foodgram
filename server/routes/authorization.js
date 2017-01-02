@@ -11,6 +11,36 @@ const alertConfig = require('./alertsConfig');
 
 var Restaurant = require('../class/restaurant');
 const forbiddenWords = require('./forbiddenWords');
+
+/**
+ Login
+ * @api {post} /api/login Login
+ * @apiName 02_Login
+ * @apiGroup Authorization
+ * @apiVersion 1.0.0
+ * @apiHeader Content-Type application/x-www-form-urlencoded
+ * @apiHeader  Accept application/json
+ *
+ * @apiParam username Username of the Restaurant.
+ * @apiParam password Password of the Restaurant.
+ *
+ * @apiParamExample {x-www-form-urlencoded} Input
+ *    {
+ *      "username": "fatbob",
+ *      "password": "fatbob"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6dHJ1ZSwiZGVzY3JpcHRpb24iOiJzdXBlciBvcGlzIGZhdCBib2JhIn0._4pN-LCt_RZqkx2Z1QLIV-t6MdEtT0Rl9sAFWza3_n0"
+ *    }
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ */
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { res.status(404).send(); }
@@ -28,6 +58,38 @@ router.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+/**
+ Register
+ * @api {post} /api/register Register
+ * @apiName 01_Register
+ * @apiGroup Authorization
+ * @apiVersion 1.0.0
+ * @apiHeader Content-Type application/json
+ *
+ * @apiParam username Username of the Restaurant.
+ * @apiParam login Login of the Restaurant.
+ * @apiParam passwordOne Password of the Restaurant.
+ * @apiParam passwordTwo Password of the Restaurant again.
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "username": "fatbob",
+ *      "login": "Fat Bob Burger"
+ *      "passwordOne": "fatbob",
+ *      "passwordTwo": "fatbob"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 201 Created
+ *
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ *    {
+ *      "Login already in use"
+ *    }
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
 router.post('/register', function(req, res, next) {
   req.accepts('application/json');
 
@@ -69,7 +131,7 @@ router.post('/register', function(req, res, next) {
     description: 'No description.'
   }, {})
     .then(function() {
-      res.status(200).send();
+      res.status(201).send();
     })
     .catch(function(error) {
       if (validator.equals(error.message, alertConfig.register.use)) {
@@ -78,12 +140,5 @@ router.post('/register', function(req, res, next) {
       res.status(404).send();
     });
 });
-
-// tmp route for bearer strategy test
-router.get('/profile', passport.authenticate('bearer', {session: false}),
-  function(req, res) {
-    var user = req.user;
-    res.send(user);
-  });
 
 module.exports = router;

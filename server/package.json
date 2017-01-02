@@ -7,11 +7,13 @@
     "backend": "nodemon -L --debug=5858 index.js",
     "db:migrate": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --config=config/config.json db:migrate",
     "db:seed": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --seeders-path=seeders --config=config/config.json db:seed:all",
-    "db:seed:undo:all": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --seeders-path=seeders --config=config/config.json db:seed:undo:all"
+    "db:seed:undo:all": "./node_modules/.bin/sequelize --migrations-path=migrations --models-path=models --seeders-path=seeders --config=config/config.json db:seed:undo:all",
+    "apidoc": "apidoc -e '(node_modules|public|tmp)' -i ../nodestore/ -i ./routes/ -o ../apidoc -t ../apidoc/template"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.16.1",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
@@ -26,5 +28,14 @@
     "superagent": "^2.3.0",
     "validator": "^6.2.0",
     "winston": "^2.3.0"
+  },
+  "apidoc": {
+    "name": "Foodgram",
+    "version": "1.0.0",
+    "description": "Documentation of Foodgram - instagram copy.",
+    "apidoc": {
+      "title": "Foodgram - DOC",
+      "url": "https://github.com/Ortee/Foodgram"
+    }
   }
 }

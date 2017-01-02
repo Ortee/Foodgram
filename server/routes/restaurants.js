@@ -10,7 +10,47 @@ const alertConfig = require('./alertsConfig');
 //classes
 const Restaurant = require('../class/restaurant');
 
-// Get single restaurant
+/**
+ Get single restaurant
+ * @api {get} /api/restaurants/:login Get Restaurant
+ * @apiName 01_GetRestaurant
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ * @apiHeader  Accept application/json
+ *
+ * @apiParam login Restaurant unique LOGIN.
+ *
+ * @apiSuccess {String} rest_name Name of the Restaurant.
+ * @apiSuccess {String} login Login of the Restaurant.
+ * @apiSuccess {String} address  Address of the Restaurant.
+ * @apiSuccess {Boolean} avatar=false  Checks if avatar of the Restaurant is set.
+ * @apiSuccess {String} description  Description of the Restaurant.
+ * @apiSuccess {Array} foods Foods of the Restaurant.
+ * @apiSuccess {Int} likes Likes of the Restaurant.
+ * @apiSuccess {Int} dislikes Dislikes of the Restaurant.
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "rest_name": "Fat Bob Burger",
+ *        "login": "fatbob",
+ *        "address": "Kramarska 21, Poznan",
+ *        "avatar": false,
+ *        "description": "super opis fat boba",
+ *        "foods": [
+ *          {
+ *           "uuid": "x7dafa30-9b83-11e6-84da-212055eb89db",
+ *           "likes": 53,
+ *           "dislikes": 23
+ *          }
+ *        ],
+ *        "likes": 53,
+ *        "dislikes": 23
+ *     }
+ *
+ * @apiErrorExample {json} Restaurant not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.get('/:login', function(req, res, next) {
   var _login = req.params.login;
   models.Restaurant.findOne({
@@ -52,7 +92,38 @@ router.get('/:login', function(req, res, next) {
     });
 });
 
-// Update restaurant
+/**
+ Update restaurant
+ * @api {put} /api/restaurants/update Update Restaurant
+ * @apiName 02_UpdateRestaurant
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json
+ * @apiHeader Authorization Bearer token
+ *
+ * @apiParam {String} login Login of the Restaurant.
+ * @apiParam {String} rest_name Name of the Restaurant.
+ * @apiParam {String} address  Address of the Restaurant.
+ * @apiParam {String} description  Description of the Restaurant.
+ * @apiParam {String} avatar Avatar of the Restaurant (base64 format).
+ * @apiParamExample {json} Input
+ *    {
+ *      "login": "fatbob",
+ *      "rest_name": "Fat Bob Burger",
+ *      "address": "Kramarska 21, Poznan",
+ *      "description": "super opis fat boba",
+ *      "avatar": "data:image/jpeg;base64,/9j/4AAQS...."
+ *    }
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
+ *
+ * @apiErrorExample {json} Restaurant not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.put('/update', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -133,7 +204,36 @@ function(req, res, next) {
   }
 });
 
-// Change password
+/**
+ Change password
+ * @api {put} /api/restaurants/password Change Password
+ * @apiName 03_ChangePassword
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json
+ * @apiHeader Authorization Bearer token
+ *
+ * @apiParam {String} login Login of the Restaurant.
+ * @apiParam {String} oldPassword Old password of the Restaurant.
+ * @apiParam {String} newPassword  New password of the Restaurant.
+ * @apiParam {String} newPassword2  Again new password of the Restaurant.
+ * @apiParamExample {json} Input
+ *    {
+ *      "login": "fatbob",
+ *      "oldPassword": "fatbob",
+ *      "newPassword": "newpass",
+ *      "newPassword2": "newpass"
+ *    }
+ *
+ * @apiSuccessExample Success
+ *     HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
+ *
+ * @apiErrorExample {json} Restaurant not found
+ *    HTTP/1.1 404 Not Found
+ */
 router.put('/password', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');

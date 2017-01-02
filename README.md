@@ -152,6 +152,15 @@ Available manuals
   help:seed:create            The documentation for "sequelize seed:create".
   help:version                The documentation for "sequelize version".
   ```
+## Documentation
+Documentation created with apiDoc - added to the project by default, available at port 8500.
+
+In case of editing
+
+```
+$ cd server
+$ npm run apidoc
+```
 ## Fixes
 SASS-LOADER FIX
 
