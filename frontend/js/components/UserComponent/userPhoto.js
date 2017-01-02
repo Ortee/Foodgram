@@ -12,7 +12,7 @@ class UserPhoto extends Component {
     };
   }
 
-  componentDidMount()    {
+  componentWillMount() {
     req.get(this.props.link)
       .then((response)=>{
         if (response.status === 200 ) {
@@ -20,6 +20,19 @@ class UserPhoto extends Component {
             loaded: true,
           });
           this.forceUpdate();
+        } else {
+          const loadingInverval = setInterval(() => {
+            req.get(this.props.link)
+              .then((response2)=>{
+                if (response2.status === 200 ) {
+                  this.setState({
+                    loaded: true,
+                  });
+                  clearInterval(loadingInverval);
+                  this.forceUpdate();
+                }
+              });
+          }, 1000);
         }
       });
   }
