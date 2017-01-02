@@ -11,6 +11,36 @@ const alertConfig = require('./alertsConfig');
 
 var Restaurant = require('../class/restaurant');
 const forbiddenWords = require('./forbiddenWords');
+
+/**
+ Login
+ * @api {post} /api/login Login
+ * @apiName 02_Login
+ * @apiGroup Authorization
+ * @apiVersion 1.0.0
+ * @apiHeader Content-Type application/x-www-form-urlencoded
+ * @apiHeader  Accept application/json
+ *
+ * @apiParam username Username of the Restaurant.
+ * @apiParam password Password of the Restaurant.
+ *
+ * @apiParamExample {x-www-form-urlencoded} Input
+ *    {
+ *      "username": "fatbob",
+ *      "password": "fatbob"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6dHJ1ZSwiZGVzY3JpcHRpb24iOiJzdXBlciBvcGlzIGZhdCBib2JhIn0._4pN-LCt_RZqkx2Z1QLIV-t6MdEtT0Rl9sAFWza3_n0"
+ *    }
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ */
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { res.status(404).send(); }
@@ -78,12 +108,5 @@ router.post('/register', function(req, res, next) {
       res.status(404).send();
     });
 });
-
-// tmp route for bearer strategy test
-router.get('/profile', passport.authenticate('bearer', {session: false}),
-  function(req, res) {
-    var user = req.user;
-    res.send(user);
-  });
 
 module.exports = router;
