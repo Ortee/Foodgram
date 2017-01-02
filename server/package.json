@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.16.1",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
@@ -37,7 +38,7 @@
     "description": "Documentation of Foodgram - instagram copy.",
     "apidoc": {
       "title": "Foodgram - DOC",
-      "url" : "https://github.com/Ortee/Foodgram"
+      "url": "https://github.com/Ortee/Foodgram"
     }
   }
 }
