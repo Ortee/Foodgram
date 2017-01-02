@@ -58,6 +58,38 @@ router.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+/**
+ Register
+ * @api {post} /api/register Register
+ * @apiName 01_Register
+ * @apiGroup Authorization
+ * @apiVersion 1.0.0
+ * @apiHeader Content-Type application/json
+ *
+ * @apiParam username Username of the Restaurant.
+ * @apiParam login Login of the Restaurant.
+ * @apiParam passwordOne Password of the Restaurant.
+ * @apiParam passwordTwo Password of the Restaurant again.
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "username": "fatbob",
+ *      "login": "Fat Bob Burger"
+ *      "passwordOne": "fatbob",
+ *      "passwordTwo": "fatbob"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 201 Created
+ *
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ *    {
+ *      "Login already in use"
+ *    }
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
 router.post('/register', function(req, res, next) {
   req.accepts('application/json');
 
@@ -99,7 +131,7 @@ router.post('/register', function(req, res, next) {
     description: 'No description.'
   }, {})
     .then(function() {
-      res.status(200).send();
+      res.status(201).send();
     })
     .catch(function(error) {
       if (validator.equals(error.message, alertConfig.register.use)) {
