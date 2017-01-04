@@ -1,5 +1,8 @@
 # Foodgram
 
+##API-DOC: 
+http://foodgram.tk:8500/
+
 Technology Stack
 
 ![alt tag](http://tech.orteedev.pl/stack.jpg)

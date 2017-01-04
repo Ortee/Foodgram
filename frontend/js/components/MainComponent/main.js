@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row } from 'reactstrap';
-import cookie from 'react-cookie';
+import store from 'store';
 
 import Menu from '../MenuComponent/menu';
 import './main.scss';
@@ -30,8 +30,8 @@ class Main extends Component {
   }
 
   checkAuth = (isAuthenticated) => {
-    if (cookie.load('token') !== undefined && !isAuthenticated) {
-      this.props.loginUserSuccess(cookie.load('token'));
+    if (store.get('token') !== undefined && !isAuthenticated) {
+      this.props.loginUserSuccess(store.get('token'));
     }
   }
 }
