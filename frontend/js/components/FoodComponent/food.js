@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Col } from 'reactstrap';
-import cookie from 'react-cookie';
+import store from 'store';
 import config from '../../config';
 
 class Food extends Component {
@@ -25,13 +25,13 @@ class Food extends Component {
   }
 
   componentDidMount = () => {
-    if (cookie.load(this.props.food.uuid) === 'like') {
+    if (store.get(this.props.food.uuid) === 'like') {
       this.setState({
         isLiked: true,
         isDisliked: false,
         styles: Object.assign(this.state.styles, {heart: 'fa-heart color-icon'}),
       });
-    } else if (cookie.load(this.props.food.uuid) === 'dislike') {
+    } else if (store.get(this.props.food.uuid) === 'dislike') {
       this.setState({
         isLiked: false,
         isDisliked: true,

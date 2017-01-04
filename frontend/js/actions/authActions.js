@@ -2,7 +2,7 @@ import jwtDecode from 'jwt-decode';
 import { browserHistory } from 'react-router';
 import req from 'superagent';
 import { addAlert } from './alertActions';
-import cookie from 'react-cookie';
+import store from 'store';
 import config from '../config';
 import { serverText, userText } from '../alertsConfig';
 
@@ -69,14 +69,14 @@ export function loginUserRequest() {
 
 export function loginUserSuccess(token) {
   browserHistory.pushState(`/profile/${jwtDecode(token).rest_name.replace(' ', '').toLowerCase()}`);
-  cookie.save('token', token);
+  store.set('token', token);
   return (dispatch) => {
     dispatch({ type: 'LOGIN_USER_SUCCESS', payload: { token: token }});
   };
 }
 
 export function logout() {
-  cookie.remove('token');
+  store.remove('token');
   browserHistory.push('/');
   return (dispatch) => {
     dispatch(addAlert(userText.logout, 'success'));

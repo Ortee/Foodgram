@@ -1,5 +1,5 @@
 import React from 'react';
-import cookie from 'react-cookie';
+import store from 'store';
 import { browserHistory } from 'react-router';
 
 export default (Component) => {
@@ -21,10 +21,10 @@ export default (Component) => {
       );
     }
     checkAuth = (isAuthenticated) => {
-      if (cookie.load('token') !== undefined && !isAuthenticated) {
-        this.props.loginUserSuccess(cookie.load('token'));
+      if (store.get('token') !== undefined && !isAuthenticated) {
+        this.props.loginUserSuccess(store.get('token'));
       }
-      if (!isAuthenticated && cookie.load('token') === undefined) {
+      if (!isAuthenticated && store.get('token') === undefined) {
         browserHistory.push('/login');
       }
     }

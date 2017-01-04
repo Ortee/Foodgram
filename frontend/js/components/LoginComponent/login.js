@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import cookie from 'react-cookie';
+import store from 'store';
 import { Col, Button } from 'reactstrap';
 import FoodgramValidator from '../../foodgramValidator';
 import './login.scss';
@@ -8,7 +8,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    cookie.remove('token');
+    store.remove('token');
   }
   render = () => {
     return (
