@@ -74,7 +74,7 @@ router.get('/', function(req, res, next) {
     include: [{ model: models.Restaurant, attributes: ['rest_name', 'login']}]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
-    // res.setHeader('Cache-Control', 'public, max-age=31557600');
+    res.setHeader('Cache-Control', 'no-cache');
     var Foods = data.map((elem) => new Food(elem.Restaurant.login)
       .id(elem.id)
       .uuid(elem.uuid)
@@ -189,6 +189,7 @@ router.get('/:uuid', function(req, res, next) {
     ]
   }).then(function(data) {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'no-cache');
     var newFood = data.map((elem) => new Food(elem.Restaurant.login)
       .id(elem.id)
       .uuid(elem.uuid)

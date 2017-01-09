@@ -77,6 +77,7 @@ router.get('/:login', function(req, res, next) {
         Object.assign(rate, {dislikes: rate.dislikes + elem.dislikes});
       });
       res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Cache-Control', 'no-cache');
       var newRestaurant = new Restaurant(data.rest_name)
         .login(data.login)
         .address(data.address)
