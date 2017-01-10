@@ -100,7 +100,7 @@ router.get('/:login', function(req, res, next) {
 
 /**
  Update restaurant
- * @api {put} /api/restaurants/update Update Restaurant
+ * @api {put} /api/restaurants Update Restaurant
  * @apiName 04_UpdateRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
@@ -130,7 +130,7 @@ router.get('/:login', function(req, res, next) {
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
-router.put('/update', passport.authenticate('bearer', {session: false}),
+router.put('/', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
