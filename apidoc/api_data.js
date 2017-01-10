@@ -566,7 +566,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/foods/likes/update",
+    "url": "/api/foods/likes",
     "title": "Get Likes/Dislikes",
     "name": "05_GetLikesDislikes",
     "group": "Food",

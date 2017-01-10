@@ -94,7 +94,7 @@ router.get('/', function(req, res, next) {
 
 /**
  Get foods likes/dislikes
- * @api {get} /api/foods/likes/update Get Likes/Dislikes
+ * @api {get} /api/foods/likes Get Likes/Dislikes
  * @apiName 05_GetLikesDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
@@ -122,7 +122,7 @@ router.get('/', function(req, res, next) {
  * @apiErrorExample {json} Foods not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/likes/update', function(req, res, next) {
+router.get('/likes', function(req, res, next) {
   models.Food.findAll({
     attributes: ['id', 'likes', 'dislikes'],
   }).then(function(data) {

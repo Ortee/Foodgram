@@ -32,6 +32,12 @@ $ cd frontend
 $ npm install
 $ cd ..
 ```
+###### Windows users
+Do all the commands above and after that install pg manually.
+```
+$ cd server
+$ npm install pg
+```
 ## Usage
 FIRST RUN
 ```
@@ -42,6 +48,17 @@ $ ./seed.sh
 Done.
 If you have any problems email: kontakt@mateuszoracz.pl
 ```
+###### Windows users
+Scripts for windows not included. You need to do it manually.
+```
+$ docker-compose up
+
+1. Fix sass problem <- on the bottom of readme
+2. Seed
+  Enter server container
+  $ npm run db:seed
+```
+
 START
 ```
 $ docker-compose up
@@ -176,6 +193,6 @@ SASS-LOADER FIX
 Enter frontend container
 
 ```
-npm rebuild node-sass
+$ npm rebuild node-sass
 ```
 Restart docker containers
