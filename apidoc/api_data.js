@@ -1178,7 +1178,7 @@ define({ "api": [
   },
   {
     "type": "put",
-    "url": "/api/restaurants/update",
+    "url": "/api/restaurants",
     "title": "Update Restaurant",
     "name": "04_UpdateRestaurant",
     "group": "Restaurant",
