@@ -228,8 +228,8 @@ router.get('/:uuid', function(req, res, next) {
  *      "login": "fatbob",
  *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
  *      "description": "Very good burger",
- *      "hashatags": "#tasty #awesome",
- *      "avatar": "data:image/png;base64,iVBORw0K......"
+ *      "hashtags": "#tasty #awesome",
+ *      "photo": "data:image/png;base64,iVBORw0K......"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -256,6 +256,7 @@ function(req, res, next) {
     },
     attributes: ['id']
   }).then(function(user) {
+
     if (!validator.isLength(req.body[0].description, {min: 2, max: 250})) {
       return res.status(400).send(alertConfig.addFood.description.length);
     } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
