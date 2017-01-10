@@ -1,6 +1,6 @@
 # Foodgram
 
-##API-DOC: 
+##API-DOC:
 http://foodgram.tk:8500/
 
 Technology Stack
@@ -164,6 +164,12 @@ In case of editing
 $ cd server
 $ npm run apidoc
 ```
+###### Windows users
+You need to change server/package.json apidoc script to:
+```
+"apidoc": "apidoc -e \"(node_modules|public|tmp)\" -i ../nodestore/ -i ./routes/ -o ../apidoc -t ../apidoc/template"
+```
+Then you can run commands above.
 ## Fixes
 SASS-LOADER FIX
 

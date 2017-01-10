@@ -507,19 +507,14 @@ router.put('/dislikes/decrement', function(req, res, next) {
 
 /**
  Delete Food
- * @api {delete} /api/foods Delete Food
+ * @api {delete} /api/foods/:uuid Delete Food
  * @apiName 04_DeleteFood
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json
  * @apiHeader Authorization Bearer token
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid Food unique id.
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 204 No Content
@@ -530,14 +525,15 @@ router.put('/dislikes/decrement', function(req, res, next) {
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-router.delete('/', passport.authenticate('bearer', {session: false}),
+router.delete('/:uuid', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
+  var _uuid = req.params.uuid;
   req.accepts('application/json');
   request
     .delete('http://nodestore:3500/api/delete')
     .set('Content-Type', 'application/json')
     .send([{
-      uuid: req.body[0].uuid,
+      uuid: _uuid,
     }])
     .end((err) => {
       if (err) {
@@ -546,7 +542,7 @@ function(req, res, next) {
         winston.log('info', 'Image sent to nodestore.');
         models.Food.destroy({
           where: {
-            uuid: req.body[0].uuid
+            uuid: _uuid
           }
         })
           .then(function() {
