@@ -72,7 +72,6 @@ export function addFood(_login, _username, food, token) {
 }
 
 export function removeFood(_uuid, indexInState, token) {
-  console.log('UUID: ', _uuid);
   const request = req.del(config.url + '/api/foods/' + _uuid)
   .set('Content-type', 'application/json')
   .set('Authorization', 'Bearer ' + token);
