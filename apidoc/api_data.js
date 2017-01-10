@@ -1,163 +1,5 @@
 define({ "api": [
   {
-    "type": "post",
-    "url": "/api/register",
-    "title": "Register",
-    "name": "01_Register",
-    "group": "Authorization",
-    "version": "1.0.0",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>application/json</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "username",
-            "description": "<p>Username of the Restaurant.</p>"
-          },
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "login",
-            "description": "<p>Login of the Restaurant.</p>"
-          },
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "passwordOne",
-            "description": "<p>Password of the Restaurant.</p>"
-          },
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "passwordTwo",
-            "description": "<p>Password of the Restaurant again.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Input",
-          "content": "{\n  \"username\": \"fatbob\",\n  \"login\": \"Fat Bob Burger\"\n  \"passwordOne\": \"fatbob\",\n  \"passwordTwo\": \"fatbob\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 201 Created",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Bad request",
-          "content": "HTTP/1.1 400 Bad request\n{\n  \"Login already in use\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Server problem",
-          "content": "HTTP/1.1 404 Server problem",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "routes/authorization.js",
-    "groupTitle": "Authorization"
-  },
-  {
-    "type": "post",
-    "url": "/api/login",
-    "title": "Login",
-    "name": "02_Login",
-    "group": "Authorization",
-    "version": "1.0.0",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>application/x-www-form-urlencoded</p>"
-          },
-          {
-            "group": "Header",
-            "optional": false,
-            "field": "Accept",
-            "description": "<p>application/json</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "username",
-            "description": "<p>Username of the Restaurant.</p>"
-          },
-          {
-            "group": "Parameter",
-            "optional": false,
-            "field": "password",
-            "description": "<p>Password of the Restaurant.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Input",
-          "content": "{\n  \"username\": \"fatbob\",\n  \"password\": \"fatbob\"\n}",
-          "type": "x-www-form-urlencoded"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6dHJ1ZSwiZGVzY3JpcHRpb24iOiJzdXBlciBvcGlzIGZhdCBib2JhIn0._4pN-LCt_RZqkx2Z1QLIV-t6MdEtT0Rl9sAFWza3_n0\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Server problem",
-          "content": "HTTP/1.1 404 Server problem",
-          "type": "json"
-        },
-        {
-          "title": "Bad request",
-          "content": "HTTP/1.1 400 Bad request",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "routes/authorization.js",
-    "groupTitle": "Authorization"
-  },
-  {
     "type": "get",
     "url": "/api/foods/:uuid",
     "title": "Get Food",
@@ -1064,10 +906,168 @@ define({ "api": [
     "groupTitle": "Imagestore"
   },
   {
+    "type": "post",
+    "url": "/api/restaurants",
+    "title": "Register",
+    "name": "01_Register",
+    "group": "Restaurant",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "username",
+            "description": "<p>Username of the Restaurant.</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "login",
+            "description": "<p>Login of the Restaurant.</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "passwordOne",
+            "description": "<p>Password of the Restaurant.</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "passwordTwo",
+            "description": "<p>Password of the Restaurant again.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Input",
+          "content": "{\n  \"username\": \"fatbob\",\n  \"login\": \"Fat Bob Burger\"\n  \"passwordOne\": \"fatbob\",\n  \"passwordTwo\": \"fatbob\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 201 Created",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Bad request",
+          "content": "HTTP/1.1 400 Bad request\n{\n  \"Login already in use\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Server problem",
+          "content": "HTTP/1.1 404 Server problem",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/restaurants.js",
+    "groupTitle": "Restaurant"
+  },
+  {
+    "type": "post",
+    "url": "/api/restaurants/token",
+    "title": "Login",
+    "name": "02_Login",
+    "group": "Restaurant",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/x-www-form-urlencoded</p>"
+          },
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "username",
+            "description": "<p>Username of the Restaurant.</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Password of the Restaurant.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Input",
+          "content": "{\n  \"username\": \"fatbob\",\n  \"password\": \"fatbob\"\n}",
+          "type": "x-www-form-urlencoded"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6dHJ1ZSwiZGVzY3JpcHRpb24iOiJzdXBlciBvcGlzIGZhdCBib2JhIn0._4pN-LCt_RZqkx2Z1QLIV-t6MdEtT0Rl9sAFWza3_n0\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Server problem",
+          "content": "HTTP/1.1 404 Server problem",
+          "type": "json"
+        },
+        {
+          "title": "Bad request",
+          "content": "HTTP/1.1 400 Bad request",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/restaurants.js",
+    "groupTitle": "Restaurant"
+  },
+  {
     "type": "get",
     "url": "/api/restaurants/:login",
     "title": "Get Restaurant",
-    "name": "01_GetRestaurant",
+    "name": "03_GetRestaurant",
     "group": "Restaurant",
     "version": "1.0.0",
     "header": {
@@ -1180,7 +1180,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/restaurants/update",
     "title": "Update Restaurant",
-    "name": "02_UpdateRestaurant",
+    "name": "04_UpdateRestaurant",
     "group": "Restaurant",
     "version": "1.0.0",
     "header": {
@@ -1279,7 +1279,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/restaurants/password",
     "title": "Change Password",
-    "name": "03_ChangePassword",
+    "name": "05_ChangePassword",
     "group": "Restaurant",
     "version": "1.0.0",
     "header": {
