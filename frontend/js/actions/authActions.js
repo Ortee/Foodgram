@@ -7,7 +7,7 @@ import config from '../config';
 import { serverText, userText } from '../alertsConfig';
 
 export function register(_username, _login, _password, _passwordTwo) {
-  const request = req.post(config.url + '/api/register')
+  const request = req.post(config.url + '/api/restaurants')
   .set('Content-type', 'application/json');
   return (dispatch) => {
     request.send([{
@@ -31,7 +31,7 @@ export function register(_username, _login, _password, _passwordTwo) {
 }
 
 export function login(_login, _password) {
-  const request = req.post(config.url + '/api/login')
+  const request = req.post(config.url + '/api/restaurants/token')
   .set('Accept', 'application/json');
   return (dispatch) => {
     dispatch(loginUserRequest());
