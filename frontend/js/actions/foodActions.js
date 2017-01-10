@@ -18,7 +18,7 @@ export function showFoods() {
 
 export function updateLikes() {
   const request = req
-  .get(config.url + '/api/foods/likes/update')
+  .get(config.url + '/api/foods/likes')
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
