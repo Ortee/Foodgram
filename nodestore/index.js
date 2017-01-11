@@ -81,8 +81,36 @@ app.get('/api/images/:uuid', function(req, res, next) {
   }
 });
 
+/**
+ Save Image
+ * @api {post} /api/images Save Image
+ * @apiName 02_SaveImage
+ * @apiGroup Imagestore
+ * @apiVersion 1.0.0
+ * @apiHeader  Content-Type application/json
+ *
+ * @apiParam {String} type Type of the image (avatar or food).
+ * @apiParam {String} name Name of the image.
+ * @apiParam {String} photo Photo to save (base64 format).
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "type": "food",
+ *      "name": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
+ *      "photo": "data:image/png;base64,iVBORw0K......"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Bad Request
+ *    HTTP/1.1 400 Bad Request
+ */
 app.post('/api/images', function(req, res, next) {
   req.accepts('application/json');
+  if (req.body.type == undefined || req.body.name == undefined || req.body.photo == undefined) {
+    res.status(400).send();
+  }
   switch (req.body.type) {
     case 'avatar':
       var imageBuffer = decodeBase64Image(req.body.photo);
@@ -160,9 +188,8 @@ app.post('/api/images', function(req, res, next) {
         res.status(200).send();
       });
     default:
-      res.status(404).send();
+      res.status(400).send();
   }
-
 });
 
 /**

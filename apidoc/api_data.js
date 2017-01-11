@@ -904,6 +904,80 @@ define({ "api": [
     "groupTitle": "Imagestore"
   },
   {
+    "type": "post",
+    "url": "/api/images",
+    "title": "Save Image",
+    "name": "02_SaveImage",
+    "group": "Imagestore",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Type of the image (avatar or food).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the image.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "photo",
+            "description": "<p>Photo to save (base64 format).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Input",
+          "content": "{\n  \"type\": \"food\",\n  \"name\": \"ad83hb71s3-9b83-11e6-84da-212025eb3333\",\n  \"photo\": \"data:image/png;base64,iVBORw0K......\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 OK",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Bad Request",
+          "content": "HTTP/1.1 400 Bad Request",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "../nodestore/index.js",
+    "groupTitle": "Imagestore"
+  },
+  {
     "type": "delete",
     "url": "/api/delete",
     "title": "Delete Food Image",
