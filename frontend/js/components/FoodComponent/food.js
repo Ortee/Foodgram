@@ -67,7 +67,7 @@ class Food extends Component {
             <img  className="img-thumbnail"
                   height="600px"
                   width="538px"
-                  src={config.fullsize + this.props.food.uuid + '.png'} />
+                  src={config.image + this.props.food.uuid + '?type=fullsize'} />
           </Link>
         </Col>
         <Col className="food-desciption">
