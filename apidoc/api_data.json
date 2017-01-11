@@ -712,6 +712,64 @@
     "groupTitle": "Food"
   },
   {
+    "type": "get",
+    "url": "/api/images/:uuid",
+    "title": "Get Image",
+    "name": "01_GetImage",
+    "group": "Imagestore",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p>image/png</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "uuid",
+            "description": "<p>Image unique id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Image type passed as query parameter (?type=fullsize).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 OK",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Image not found",
+          "content": "HTTP/1.1 404 Not Found",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "../nodestore/index.js",
+    "groupTitle": "Imagestore"
+  },
+  {
     "type": "post",
     "url": "/api/upload-avatar",
     "title": "Save Avatar",
