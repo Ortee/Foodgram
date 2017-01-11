@@ -81,6 +81,90 @@ app.get('/api/images/:uuid', function(req, res, next) {
   }
 });
 
+app.post('/api/images', function(req, res, next) {
+  req.accepts('application/json');
+  switch (req.body.type) {
+    case 'avatar':
+      var imageBuffer = decodeBase64Image(req.body.photo);
+      fs.writeFile('./tmp/' + req.body.name + '.png', imageBuffer.data, function(err) {
+        if (err) throw err;
+        async.waterfall([
+          (callback) => {
+            Jimp.read('./tmp/' + req.body.name + '.png', function(err, image) {
+              if (err) throw err;
+              image.contain(276, 276)
+                .write('./public/avatar/' + req.body.name + '.png');
+              winston.log('info', req.body.name, ' - AVATAR SAVED');
+              var avatar = true;
+              callback(null, avatar);
+            });
+          },
+          (avatar, callback) => {
+            if (fs.existsSync('./tmp/' + req.body.name + '.png')) {
+              fs.unlink('./tmp/' + req.body.name + '.png', (err) => {
+                if (err) throw err;
+                winston.log('info', req.body.name + ' - TMP AVATAR SUCCESFULLY DELETED');
+                var done = true;
+                callback(null, done);
+              });
+            }
+          }
+        ], (err, result) => {
+          if (err) {
+            throw err;
+          }
+        });
+        res.status(200).send();
+      });
+      break;
+    case 'food':
+      var imageBuffer = decodeBase64Image(req.body.photo);
+      fs.writeFile('./tmp/' + req.body.name + '.jpg', imageBuffer.data, function(err) {
+        if (err) throw err;
+        async.waterfall([
+          (callback) => {
+            Jimp.read('./tmp/' + req.body.name + '.jpg', function(err, image) {
+              if (err) throw err;
+              image.contain(276, 276)
+                .write('./public/thumbnail/' + req.body.name + '.png');
+              winston.log('info', req.body.name, ' - THUMBNAIL SAVED');
+              var thumbnail = true;
+              callback(null, thumbnail);
+            });
+          },
+          (thumbnail, callback) => {
+            Jimp.read('./tmp/' + req.body.name + '.jpg', function(err, image) {
+              if (err) throw err;
+              image.contain(540, Jimp.AUTO)
+                .write('./public/fullsize/' + req.body.name + '.png');
+              winston.log('info', req.body.name, ' - FULLSIZE SAVED');
+              var fullsize = true;
+              callback(null, fullsize);
+            });
+          },
+          (fullsize, callback) => {
+            if (fs.existsSync('./tmp/' + req.body.name + '.jpg')) {
+              fs.unlink('./tmp/' + req.body.name + '.jpg', (err) => {
+                if (err) throw err;
+                winston.log('info', req.body.name + 'TMP SUCCESFULLY DELETED');
+                var done = true;
+                callback(null, done);
+              });
+            }
+          }
+        ], (err, result) => {
+          if (err) {
+            throw err;
+          }
+        });
+        res.status(200).send();
+      });
+    default:
+      res.status(404).send();
+  }
+
+});
+
 /**
  Save Avatar
  * @api {post} /api/upload-avatar Save Avatar
@@ -106,25 +190,25 @@ app.get('/api/images/:uuid', function(req, res, next) {
  */
 app.post('/api/upload-avatar', function(req, res, next) {
   req.accepts('application/json');
-  var imageBuffer = decodeBase64Image(req.body[0].avatar);
-  fs.writeFile('./tmp/' + req.body[0].login + '.png', imageBuffer.data, function(err) {
+  var imageBuffer = decodeBase64Image(req.body.avatar);
+  fs.writeFile('./tmp/' + req.body.login + '.png', imageBuffer.data, function(err) {
     if (err) throw err;
     async.waterfall([
       (callback) => {
-        Jimp.read('./tmp/' + req.body[0].login + '.png', function(err, image) {
+        Jimp.read('./tmp/' + req.body.login + '.png', function(err, image) {
           if (err) throw err;
           image.contain(276, 276)
-            .write('./public/avatar/' + req.body[0].login + '.png');
-          winston.log('info', req.body[0].login, ' - AVATAR SAVED');
+            .write('./public/avatar/' + req.body.login + '.png');
+          winston.log('info', req.body.login, ' - AVATAR SAVED');
           var avatar = true;
           callback(null, avatar);
         });
       },
       (avatar, callback) => {
-        if (fs.existsSync('./tmp/' + req.body[0].login + '.png')) {
-          fs.unlink('./tmp/' + req.body[0].login + '.png', (err) => {
+        if (fs.existsSync('./tmp/' + req.body.login + '.png')) {
+          fs.unlink('./tmp/' + req.body.login + '.png', (err) => {
             if (err) throw err;
-            winston.log('info', req.body[0].login + ' - TMP AVATAR SUCCESFULLY DELETED');
+            winston.log('info', req.body.login + ' - TMP AVATAR SUCCESFULLY DELETED');
             var done = true;
             callback(null, done);
           });
@@ -164,35 +248,35 @@ app.post('/api/upload-avatar', function(req, res, next) {
  */
 app.post('/api/upload', function(req, res, next) {
   req.accepts('application/json');
-  var imageBuffer = decodeBase64Image(req.body[0].photo);
-  fs.writeFile('./tmp/' + req.body[0].uuid + '.jpg', imageBuffer.data, function(err) {
+  var imageBuffer = decodeBase64Image(req.body.photo);
+  fs.writeFile('./tmp/' + req.body.uuid + '.jpg', imageBuffer.data, function(err) {
     if (err) throw err;
     async.waterfall([
       (callback) => {
-        Jimp.read('./tmp/' + req.body[0].uuid + '.jpg', function(err, image) {
+        Jimp.read('./tmp/' + req.body.uuid + '.jpg', function(err, image) {
           if (err) throw err;
           image.contain(276, 276)
-            .write('./public/thumbnail/' + req.body[0].uuid + '.png');
-          winston.log('info', req.body[0].uuid, ' - THUMBNAIL SAVED');
+            .write('./public/thumbnail/' + req.body.uuid + '.png');
+          winston.log('info', req.body.uuid, ' - THUMBNAIL SAVED');
           var thumbnail = true;
           callback(null, thumbnail);
         });
       },
       (thumbnail, callback) => {
-        Jimp.read('./tmp/' + req.body[0].uuid + '.jpg', function(err, image) {
+        Jimp.read('./tmp/' + req.body.uuid + '.jpg', function(err, image) {
           if (err) throw err;
           image.contain(540, Jimp.AUTO)
-            .write('./public/fullsize/' + req.body[0].uuid + '.png');
-          winston.log('info', req.body[0].uuid, ' - FULLSIZE SAVED');
+            .write('./public/fullsize/' + req.body.uuid + '.png');
+          winston.log('info', req.body.uuid, ' - FULLSIZE SAVED');
           var fullsize = true;
           callback(null, fullsize);
         });
       },
       (fullsize, callback) => {
-        if (fs.existsSync('./tmp/' + req.body[0].uuid + '.jpg')) {
-          fs.unlink('./tmp/' + req.body[0].uuid + '.jpg', (err) => {
+        if (fs.existsSync('./tmp/' + req.body.uuid + '.jpg')) {
+          fs.unlink('./tmp/' + req.body.uuid + '.jpg', (err) => {
             if (err) throw err;
-            winston.log('info', req.body[0].uuid + 'TMP SUCCESFULLY DELETED');
+            winston.log('info', req.body.uuid + 'TMP SUCCESFULLY DELETED');
             var done = true;
             callback(null, done);
           });
@@ -232,20 +316,20 @@ app.delete('/api/delete', function(req, res, next) {
   req.accepts('application/json');
   async.waterfall([
     (callback) => {
-      if (fs.existsSync('./public/thumbnail/' + req.body[0].uuid + '.png')) {
-        fs.unlink('./public/thumbnail/' + req.body[0].uuid + '.png', (err) => {
+      if (fs.existsSync('./public/thumbnail/' + req.body.uuid + '.png')) {
+        fs.unlink('./public/thumbnail/' + req.body.uuid + '.png', (err) => {
           if (err) throw err;
-          winston.log('info', req.body[0].uuid + ' - THUMBNAIL SUCCESFULLY DELETED');
+          winston.log('info', req.body.uuid + ' - THUMBNAIL SUCCESFULLY DELETED');
           var thumbnail = true;
           callback(null, thumbnail);
         });
       }
     },
     (thumbnail, callback) => {
-      if (fs.existsSync('./public/fullsize/' + req.body[0].uuid + '.png')) {
-        fs.unlink('./public/fullsize/' + req.body[0].uuid + '.png', (err) => {
+      if (fs.existsSync('./public/fullsize/' + req.body.uuid + '.png')) {
+        fs.unlink('./public/fullsize/' + req.body.uuid + '.png', (err) => {
           if (err) throw err;
-          winston.log('info', req.body[0].uuid + ' - FULLSIZE SUCCESFULLY DELETED');
+          winston.log('info', req.body.uuid + ' - FULLSIZE SUCCESFULLY DELETED');
           var done = true;
           callback(null, done);
         });
