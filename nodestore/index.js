@@ -32,8 +32,54 @@ function decodeBase64Image(dataString) {
   return response;
 }
 
-// Serve static images
-app.use('/api/images', express.static(path.join(__dirname, 'public')));
+/**
+ Get Image
+ * @api {get} /api/images/:uuid Get Image
+ * @apiName 01_GetImage
+ * @apiGroup Imagestore
+ * @apiVersion 1.0.0
+ * @apiHeader  Accept image/png
+ *
+ * @apiParam uuid Image unique id.
+ * @apiParam type Image type passed as query parameter (?type=fullsize).
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *
+ * @apiErrorExample {json} Image not found
+ *    HTTP/1.1 404 Not Found
+ */
+app.get('/api/images/:uuid', function(req, res, next) {
+  switch (req.query.type) {
+    case 'fullsize':
+      if (fs.existsSync('./public/fullsize/' + req.params.uuid + '.png')) {
+         res.setHeader('Content-Type', 'image/png');
+         res.sendfile('./public/fullsize/' + req.params.uuid + '.png');
+      } else {
+        res.status(404).send();
+      }
+      break;
+    case 'thumbnail':
+      if (fs.existsSync('./public/thumbnail/' + req.params.uuid + '.png')) {
+         res.setHeader('Content-Type', 'image/png');
+         res.sendfile('./public/thumbnail/' + req.params.uuid + '.png');
+      } else {
+        res.status(404).send();
+      }
+      break;
+    case 'avatar':
+      if (fs.existsSync('./public/avatar/' + req.params.uuid + '.png')) {
+         res.setHeader('Content-Type', 'image/png');
+         res.sendfile('./public/avatar/' + req.params.uuid + '.png');
+      } else {
+        res.status(404).send();
+      }
+      break;
+    default:
+      res.status(404).send();
+  }
+});
 
 /**
  Save Avatar
