@@ -21,7 +21,7 @@ class User extends Component {
           <img  className="img-thumbnail img-logo"
                 height="150px"
                 width="150px"
-                src={this.props.user.avatar !== false ? config.avatar + this.props.user.login + '.png' : config.avatar + 'default.png' }/>
+                src={this.props.user.avatar !== false ? config.image + this.props.user.login + '?type=avatar' : config.avatar}/>
           </Col>
           <Col xs={{ size: 8}}>
             <Col>
@@ -49,7 +49,7 @@ class User extends Component {
                 key={index}
                 index={index}
                 uuid={elem.uuid}
-                link={config.thumbnail + elem.uuid + '.png'}/>
+                link={config.image + elem.uuid + '?type=thumbnail'}/>
             );
           })}
         </Col>
