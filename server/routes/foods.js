@@ -279,12 +279,13 @@ function(req, res, next) {
       .created_at(getTimestamp())
       .updated_at(getTimestamp());
     request
-      .post('http://nodestore:3500/api/upload')
+      .post('http://nodestore:3500/api/images')
       .set('Content-Type', 'application/json')
-      .send([{
-        uuid: newFood.getUuid(),
+      .send({
+        type: 'food',
+        name: newFood.getUuid(),
         photo: newFood.getPhoto()
-      }])
+      })
       .end((err) => {
         if (err) {
           res.status(404).send();
