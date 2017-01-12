@@ -10,6 +10,7 @@ const request = require('superagent');
 const winston = require('winston');
 const validator = require('validator');
 const alertConfig = require('./alertsConfig');
+const bcrypt = require('bcryptjs');
 
 //classes
 const Restaurant = require('../class/restaurant');
@@ -215,7 +216,7 @@ function(req, res, next) {
 
 /**
  Change password
- * @api {put} /api/restaurants/password Change Password
+ * @api {put} /api/restaurants/change-password Change Password
  * @apiName 05_ChangePassword
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
@@ -243,43 +244,47 @@ function(req, res, next) {
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
-router.put('/password', passport.authenticate('bearer', {session: false}),
+router.put('/change-password', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
-      login: req.body[0].login
+      login: req.body.login
     }
   }).then(function(restaurant) {
-    if (!validator.equals(restaurant.password, req.body[0].oldPassword)) {
+    if (!restaurant.validPassword(req.body.oldPassword)) {
       return res.status(400).send(alertConfig.changePassword.match);
-    } else if (!validator.equals(req.body[0].newPassword, req.body[0].newPassword2)) {
+    } else if (!validator.equals(req.body.newPassword, req.body.newPassword2)) {
       return res.status(400).send(alertConfig.changePassword.different);
-    } else if (!validator.isLength(req.body[0].newPassword, {min: 5, max: undefined})) {
+    } else if (!validator.isLength(req.body.newPassword, {min: 5, max: undefined})) {
       return res.status(400).send(alertConfig.changePassword.length);
-    } else if (validator.isEmpty(req.body[0].oldPassword) ||
-      validator.isEmpty(req.body[0].newPassword) ||
-      validator.isEmpty(req.body[0].newPassword2)) {
+    } else if (validator.isEmpty(req.body.oldPassword) ||
+      validator.isEmpty(req.body.newPassword) ||
+      validator.isEmpty(req.body.newPassword2)) {
       return res.status(400).send(alertConfig.changePassword.empty);
     }
-
-    models.Restaurant.update(
-      {
-        password: req.body[0].newPassword
-      },
-      {
-        where: {
-          'login': req.body[0].login
-        }
-      }
-      )
-      .then(function() {
-        res.status(200).send();
-      })
-      .catch(function(error) {
-        res.status(404).send();
+    var newPassword = req.body.newPassword;
+    bcrypt.genSalt(10, function (err, salt) {
+      bcrypt.hash(newPassword, salt, function (err, hash) {
+        newPassword = hash;
+        models.Restaurant.update(
+          {
+            password: newPassword
+          },
+          {
+            where: {
+              'login': req.body.login
+            }
+          }
+          )
+          .then(function() {
+            res.status(200).send();
+          })
+          .catch(function(error) {
+            res.status(404).send();
+          });
       });
-
+    });
   });
 });
 
