@@ -3,10 +3,9 @@ import store from 'store';
 import config from '../config';
 
 export function incrementLike(_uuid, index) {
-  const request = req.put(config.url + '/api/foods/likes')
-  .set('Content-type', 'application/json');
+  const request = req.put(config.url + '/api/foods/' + _uuid + '/likes');
   return (dispatch) => {
-    request.send([{ uuid: _uuid }])
+    request.send()
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch({ type: 'INCREMENT_LIKE', res: false});
@@ -19,10 +18,9 @@ export function incrementLike(_uuid, index) {
 }
 
 export function decrementLike(_uuid, index) {
-  const request = req.put(config.url + '/api/foods/likes/decrement')
-  .set('Content-type', 'application/json');
+  const request = req.delete(config.url + '/api/foods/' + _uuid + '/likes');
   return (dispatch) => {
-    request.send([{ uuid: _uuid }])
+    request.send()
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch({ type: 'DECREMENT_LIKE', res: false});
@@ -34,10 +32,9 @@ export function decrementLike(_uuid, index) {
 }
 
 export function incrementDislike(_uuid, index) {
-  const request = req.put(config.url + '/api/foods/dislikes')
-  .set('Content-type', 'application/json');
+  const request = req.put(config.url + '/api/foods/' + _uuid + '/dislikes');
   return (dispatch) => {
-    request.send([{ uuid: _uuid }])
+    request.send()
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch({ type: 'INCREMENT_DISLIKE', res: false});
@@ -50,10 +47,9 @@ export function incrementDislike(_uuid, index) {
 }
 
 export function decrementDislike(_uuid, index) {
-  const request = req.put(config.url + '/api/foods/dislikes/decrement')
-  .set('Content-type', 'application/json');
+  const request = req.put(config.url + '/api/foods/' + _uuid + '/dislikes');
   return (dispatch) => {
-    request.send([{ uuid: _uuid }])
+    request.send()
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch({ type: 'DECREMENT_DISLIKE', res: false});
