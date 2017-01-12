@@ -101,7 +101,7 @@ router.get('/:login', function(req, res, next) {
 
 /**
  Update restaurant
- * @api {put} /api/restaurants Update Restaurant
+ * @api {put} /api/restaurants/:login Update Restaurant
  * @apiName 04_UpdateRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
@@ -131,43 +131,43 @@ router.get('/:login', function(req, res, next) {
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
-router.put('/', passport.authenticate('bearer', {session: false}),
+router.put('/:login', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
   res.header('Pragma', 'no-cache');
   req.accepts('application/json');
-  var _login = req.body[0].login;
+  var _login = req.params.login;
   var update = {};
 
-  if (req.body[0].rest_name !== null) {
-    if (!validator.isAscii(req.body[0].rest_name)) {
+  if (req.body.rest_name !== undefined && req.body.rest_name !== null) {
+    if (!validator.isAscii(req.body.rest_name)) {
       return res.status(400).send(alertConfig.updateRestaurant.ascii);
-    } else if (!validator.isLength(req.body[0].rest_name, {min: 5, max: 25})) {
+    } else if (!validator.isLength(req.body.rest_name, {min: 5, max: 25})) {
       return res.status(400).send(alertConfig.updateRestaurant.rest_name.length);
     }
-    Object.assign(update, {rest_name: req.body[0].rest_name});
+    Object.assign(update, {rest_name: req.body.rest_name});
   }
-  if (req.body[0].address !== null) {
-    if (!validator.isAscii(req.body[0].address)) {
+  if (req.body.address !== undefined && req.body.address !== null) {
+    if (!validator.isAscii(req.body.address)) {
       return res.status(400).send(alertConfig.updateRestaurant.ascii);
-    } else if (!validator.isLength(req.body[0].address, {min: 5, max: 100})) {
+    } else if (!validator.isLength(req.body.address, {min: 5, max: 100})) {
       return res.status(400).send(alertConfig.updateRestaurant.address.length);
     }
-    Object.assign(update, {address: req.body[0].address});
+    Object.assign(update, {address: req.body.address});
   }
-  if (req.body[0].description !== null) {
-    if (!validator.isAscii(req.body[0].description)) {
+  if (req.body.description !== undefined && req.body.description !== null) {
+    if (!validator.isAscii(req.body.description)) {
       return res.status(400).send(alertConfig.updateRestaurant.ascii);
-    } else if (!validator.isLength(req.body[0].description, {min: 5, max: 200})) {
+    } else if (!validator.isLength(req.body.description, {min: 5, max: 200})) {
       return res.status(400).send(alertConfig.updateRestaurant.description.length);
     }
-    Object.assign(update, {description: req.body[0].description});
+    Object.assign(update, {description: req.body.description});
   }
-  if (req.body[0].avatar !== null) {
-    if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].avatar))) {
+  if (req.body.avatar !== undefined && req.body.avatar !== null) {
+    if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body.avatar))) {
       return res.status(400).send(alertConfig.updateRestaurant.avatar.extension);
-    } else if (Buffer.byteLength(req.body[0].avatar, 'utf8') > 2097152) {
+    } else if (Buffer.byteLength(req.body.avatar, 'utf8') > 2097152) {
       return res.status(400).send(alertConfig.updateRestaurant.avatar.size);
     }
     var token = jwt.encode('authorized', 'tokensecret');
@@ -177,8 +177,8 @@ function(req, res, next) {
       .set('Authorization', token)
       .send({
         type: 'avatar',
-        name: req.body[0].login,
-        photo: req.body[0].avatar
+        name: _login,
+        photo: req.body.avatar
       })
       .end((err) => {
         if (err) {

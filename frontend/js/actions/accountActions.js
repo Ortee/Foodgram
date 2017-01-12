@@ -4,17 +4,16 @@ import { serverText, userText, updateRestaurantText } from '../alertsConfig';
 import config from '../config';
 
 export function update(login, data, token) {
-  const request = req.put(config.url + '/api/restaurants')
+  const request = req.put(config.url + '/api/restaurants/' + login)
   .set('Content-type', 'application/json')
   .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
-    request.send([{
-      login: login,
+    request.send({
       rest_name: data.restName,
       address: data.address,
       description: data.description,
       avatar: data.avatar,
-    }])
+    })
     .end((err, res) => {
       if (res.status > 500) {
         dispatch(addAlert(serverText.offline, 'danger'));
