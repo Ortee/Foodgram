@@ -149,6 +149,8 @@ app.post('/api/images', function(req, res, next) {
                 var done = true;
                 callback(null, done);
               });
+            } else {
+              return res.status(404).send();
             }
           }
         ], (err, result) => {
@@ -192,6 +194,8 @@ app.post('/api/images', function(req, res, next) {
                 var done = true;
                 callback(null, done);
               });
+            } else {
+              return res.status(404).send();
             }
           }
         ], (err, result) => {
@@ -228,27 +232,32 @@ app.post('/api/images', function(req, res, next) {
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-app.delete('/api/delete', function(req, res, next) {
+app.delete('/api/images/:name', function(req, res, next) {
   req.accepts('application/json');
+  var _name = req.params.name;
   async.waterfall([
     (callback) => {
-      if (fs.existsSync('./public/thumbnail/' + req.body.uuid + '.png')) {
-        fs.unlink('./public/thumbnail/' + req.body.uuid + '.png', (err) => {
+      if (fs.existsSync('./public/thumbnail/' + _name + '.png')) {
+        fs.unlink('./public/thumbnail/' + _name + '.png', (err) => {
           if (err) throw err;
-          winston.log('info', req.body.uuid + ' - THUMBNAIL SUCCESFULLY DELETED');
+          winston.log('info', _name + ' - THUMBNAIL SUCCESFULLY DELETED');
           var thumbnail = true;
           callback(null, thumbnail);
         });
+      } else {
+        return res.status(404).send();
       }
     },
     (thumbnail, callback) => {
-      if (fs.existsSync('./public/fullsize/' + req.body.uuid + '.png')) {
-        fs.unlink('./public/fullsize/' + req.body.uuid + '.png', (err) => {
+      if (fs.existsSync('./public/fullsize/' + _name + '.png')) {
+        fs.unlink('./public/fullsize/' + _name + '.png', (err) => {
           if (err) throw err;
-          winston.log('info', req.body.uuid + ' - FULLSIZE SUCCESFULLY DELETED');
+          winston.log('info', _name + ' - FULLSIZE SUCCESFULLY DELETED');
           var done = true;
           callback(null, done);
         });
+      } else {
+        return res.status(404).send();
       }
     },
   ], (err, result) => {
