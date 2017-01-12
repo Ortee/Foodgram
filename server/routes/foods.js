@@ -6,6 +6,8 @@ const passport = require('passport');
 const winston = require('winston');
 const validator = require('validator');
 const alertConfig = require('./alertsConfig');
+const jwt = require('jwt-simple');
+
 
 //classes
 var Food = require('../class/food');
@@ -278,9 +280,11 @@ function(req, res, next) {
       .photo(req.body[0].photo)
       .created_at(getTimestamp())
       .updated_at(getTimestamp());
+    var token = jwt.encode('authorized', 'tokensecret');
     request
       .post('http://nodestore:3500/api/images')
       .set('Content-Type', 'application/json')
+      .set('Authorization', token)
       .send({
         type: 'food',
         name: newFood.getUuid(),

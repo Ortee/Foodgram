@@ -169,13 +169,16 @@ function(req, res, next) {
     } else if (Buffer.byteLength(req.body[0].avatar, 'utf8') > 2097152) {
       return res.status(400).send(alertConfig.updateRestaurant.avatar.size);
     }
+    var token = jwt.encode('authorized', 'tokensecret');
     request
-      .post('http://nodestore:3500/api/upload-avatar')
+      .post('http://nodestore:3500/api/images')
       .set('Content-Type', 'application/json')
-      .send([{
-        login: req.body[0].login,
-        avatar: req.body[0].avatar
-      }])
+      .set('Authorization', token)
+      .send({
+        type: 'avatar',
+        name: req.body[0].login,
+        photo: req.body[0].avatar
+      })
       .end((err) => {
         if (err) {
           res.status(404).send();

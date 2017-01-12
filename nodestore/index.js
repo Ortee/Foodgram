@@ -7,6 +7,7 @@ var Jimp = require('jimp');
 var async = require('async');
 const PORT = process.env.PORT || 3500;
 const winston = require('winston');
+var jwt = require('jwt-simple');
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -107,8 +108,18 @@ app.get('/api/images/:uuid', function(req, res, next) {
  *    HTTP/1.1 400 Bad Request
  */
 app.post('/api/images', function(req, res, next) {
-  if (req.body.type == undefined || req.body.name == undefined || req.body.photo == undefined) {
-    res.status(400).send();
+  if (req.body.type == undefined || req.body.name == undefined || req.body.photo == undefined || req.headers.authorization == undefined) {
+    return res.status(400).send();
+  }
+
+  try {
+    var decoded = jwt.decode(req.headers.authorization, 'tokensecret');
+  } catch (e) {
+    return res.status(401).send();
+  }
+
+  if (decoded !== 'authorized') {
+    return res.status(401).send();
   }
   switch (req.body.type) {
     case 'avatar':
