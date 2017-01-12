@@ -213,24 +213,20 @@ app.post('/api/images', function(req, res, next) {
 
 /**
  Delete Food Image
- * @api {delete} /api/delete Delete Food Image
- * @apiName 03_DeleteFoodImage
+ * @api {delete} /api/images/:uuid Delete Image
+ * @apiName 03_DeleteImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
+ * @apiParam uuid Image unique id.
  *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 204 No Content
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
 app.delete('/api/images/:uuid', function(req, res, next) {
   try {
@@ -252,7 +248,7 @@ app.delete('/api/images/:uuid', function(req, res, next) {
           callback(null, thumbnail);
         });
       } else {
-        return res.status(404).send();
+        res.status(404).send();
       }
     },
     (thumbnail, callback) => {
@@ -264,7 +260,7 @@ app.delete('/api/images/:uuid', function(req, res, next) {
           callback(null, done);
         });
       } else {
-        return res.status(404).send();
+        res.status(404).send();
       }
     },
   ], (err, result) => {

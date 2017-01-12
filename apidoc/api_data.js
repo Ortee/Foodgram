@@ -856,9 +856,9 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/api/delete",
-    "title": "Delete Food Image",
-    "name": "03_DeleteFoodImage",
+    "url": "/api/images/:uuid",
+    "title": "Delete Image",
+    "name": "03_DeleteImage",
     "group": "Imagestore",
     "version": "1.0.0",
     "header": {
@@ -878,26 +878,18 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
             "optional": false,
             "field": "uuid",
-            "description": "<p>UUID of the Food.</p>"
+            "description": "<p>Image unique id.</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Input",
-          "content": "{\n  \"uuid\": \"ad83hb71s3-9b83-11e6-84da-212025eb3333\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK",
+          "content": "HTTP/1.1 204 No Content",
           "type": "json"
         }
       ]
@@ -905,8 +897,8 @@ define({ "api": [
     "error": {
       "examples": [
         {
-          "title": "Server problem",
-          "content": "HTTP/1.1 404 Server problem",
+          "title": "Not Found",
+          "content": "HTTP/1.1 404 Not Found",
           "type": "json"
         }
       ]
