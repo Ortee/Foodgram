@@ -918,6 +918,12 @@
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>token</p>"
           }
         ]
       }
@@ -970,6 +976,11 @@
         {
           "title": "Bad Request",
           "content": "HTTP/1.1 400 Bad Request",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized",
+          "content": "HTTP/1.1 401 Unauthorized",
           "type": "json"
         }
       ]

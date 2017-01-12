@@ -89,6 +89,7 @@ app.get('/api/images/:uuid', function(req, res, next) {
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json
+ * @apiHeader  Authorization token
  *
  * @apiParam {String} type Type of the image (avatar or food).
  * @apiParam {String} name Name of the image.
@@ -106,6 +107,9 @@ app.get('/api/images/:uuid', function(req, res, next) {
  *
  * @apiErrorExample {json} Bad Request
  *    HTTP/1.1 400 Bad Request
+ *
+ * @apiErrorExample {json} Unauthorized
+ *    HTTP/1.1 401 Unauthorized
  */
 app.post('/api/images', function(req, res, next) {
   if (req.body.type == undefined || req.body.name == undefined || req.body.photo == undefined || req.headers.authorization == undefined) {
