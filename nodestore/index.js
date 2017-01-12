@@ -112,6 +112,7 @@ app.get('/api/images/:uuid', function(req, res, next) {
  *    HTTP/1.1 401 Unauthorized
  */
 app.post('/api/images', function(req, res, next) {
+  req.accepts('application/json');
   if (req.body.type == undefined || req.body.name == undefined || req.body.photo == undefined || req.headers.authorization == undefined) {
     return res.status(400).send();
   }

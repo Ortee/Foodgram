@@ -344,10 +344,10 @@ router.post('/token', function(req, res, next) {
  *
  * @apiParamExample {json} Input
  *    {
- *      "username": "fatbob",
- *      "login": "Fat Bob Burger"
- *      "passwordOne": "fatbob",
- *      "passwordTwo": "fatbob"
+ *      "username": "Test 1",
+ *      "login": "test1",
+ *      "passwordOne": "test1",
+ *      "passwordTwo": "test1"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -364,40 +364,40 @@ router.post('/token', function(req, res, next) {
 router.post('/', function(req, res, next) {
   req.accepts('application/json');
 
-  if (!validator.isLength(req.body[0].username, {min: 5, max: undefined})) {
+  if (!validator.isLength(req.body.username, {min: 5, max: undefined})) {
     return res.status(400).send(alertConfig.register.username.length);
-  } else if (!validator.isLength(req.body[0].login, {min: 5, max: undefined})) {
+  } else if (!validator.isLength(req.body.login, {min: 5, max: undefined})) {
     return res.status(400).send(alertConfig.register.login.length);
-  } else if (!validator.isLength(req.body[0].passwordOne, {min: 5, max: undefined})) {
+  } else if (!validator.isLength(req.body.passwordOne, {min: 5, max: undefined})) {
     return res.status(400).send(alertConfig.register.password.length);
-  } else if (!validator.isAscii(req.body[0].username)) {
+  } else if (!validator.isAscii(req.body.username)) {
     return res.status(400).send(alertConfig.register.username.ascii);
-  } else if (!validator.isAlphanumeric(req.body[0].login)) {
+  } else if (!validator.isAlphanumeric(req.body.login)) {
     return res.status(400).send(alertConfig.register.login.ascii);
-  } else if (!validator.isAlphanumeric(req.body[0].passwordOne)) {
+  } else if (!validator.isAlphanumeric(req.body.passwordOne)) {
     return res.status(400).send(alertConfig.register.password.ascii);
-  } else if (!validator.equals(req.body[0].passwordOne, req.body[0].passwordTwo)) {
+  } else if (!validator.equals(req.body.passwordOne, req.body.passwordTwo)) {
     return res.status(400).send(alertConfig.register.match);
-  } else if (validator.isEmpty(req.body[0].username) ||
-    validator.isEmpty(req.body[0].login) ||
-    validator.isEmpty(req.body[0].passwordOne) ||
-    validator.isEmpty(req.body[0].passwordTwo)) {
+  } else if (validator.isEmpty(req.body.username) ||
+    validator.isEmpty(req.body.login) ||
+    validator.isEmpty(req.body.passwordOne) ||
+    validator.isEmpty(req.body.passwordTwo)) {
     return res.status(400).send(alertConfig.register.empty);
   }
 
   forbiddenWords.map((elem) => {
-    if (validator.contains(req.body[0].login, elem)) {
+    if (validator.contains(req.body.login, elem)) {
       return res.status(400).send(alertConfig.register.login.forbidden);
-    } else if (validator.contains(req.body[0].username, elem)) {
+    } else if (validator.contains(req.body.username, elem)) {
       return res.status(400).send(alertConfig.register.username.forbidden);
     }
   });
 
   models.Restaurant.create({
-    rest_name: req.body[0].username,
+    rest_name: req.body.username,
     address: 'No address.',
-    login: req.body[0].login,
-    password: req.body[0].passwordOne,
+    login: req.body.login,
+    password: req.body.passwordOne,
     avatar: false,
     description: 'No description.'
   }, {})
