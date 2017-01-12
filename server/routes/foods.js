@@ -403,18 +403,12 @@ router.delete('/:uuid/likes', function(req, res, next) {
 
 /**
  Add Dislikes
- * @api {put} /api/dislikes Add Dislikes
+ * @api {put} /api/foods/:uuid/dislikes Add Dislikes
  * @apiName 08_AddDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid UUID of the Food.
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
@@ -422,11 +416,11 @@ router.delete('/:uuid/likes', function(req, res, next) {
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-router.put('/dislikes', function(req, res, next) {
-  req.accepts('application/json');
+router.put('/:uuid/dislikes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['dislikes']
   }).then(function(food) {
@@ -436,7 +430,7 @@ router.put('/dislikes', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
   )
@@ -451,31 +445,25 @@ router.put('/dislikes', function(req, res, next) {
 });
 
 /**
- Decrease Dislikes
- * @api {put} /api/dislikes/decrement Decrease Dislikes
- * @apiName 09_DecreaseDislikes
+ Delete Dislikes
+ * @api {delete} /api/foods/:uuid/dislikes Delete Dislikes
+ * @apiName 09_DeleteDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid UUID of the Food.
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 204 OK
  *
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-router.put('/dislikes/decrement', function(req, res, next) {
-  req.accepts('application/json');
+router.delete('/:uuid/dislikes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['dislikes']
   }).then(function(food) {
@@ -485,12 +473,12 @@ router.put('/dislikes/decrement', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
     )
       .then(function() {
-        res.status(200).send();
+        res.status(204).send();
       })
       .catch(function(error) {
         res.send(error);
