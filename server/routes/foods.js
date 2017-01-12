@@ -318,30 +318,24 @@ function(req, res, next) {
 
 /**
  Add Likes
- * @api {put} /api/likes Add Likes
+ * @api {put} /api/foods/:uuid/likes Add Likes
  * @apiName 06_AddLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid UUID of the Food.
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
-router.put('/likes', function(req, res, next) {
-  req.accepts('application/json');
+router.put('/:uuid/likes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['likes']
   }).then(function(food) {
@@ -351,7 +345,7 @@ router.put('/likes', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
     )
@@ -365,31 +359,26 @@ router.put('/likes', function(req, res, next) {
 });
 
 /**
- Decrease Likes
- * @api {put} /api/likes/decrement Decrease Likes
- * @apiName 07_DecreaseLikes
+ Delete Likes
+ * @api {delete} /api/foods/:uuid/likes Delete Likes
+ * @apiName 07_DeleteLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
+ * @apiParam uuid UUID of the Food.
  *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 204 No Content
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
-router.put('/likes/decrement', function(req, res, next) {
-  req.accepts('application/json');
+router.delete('/:uuid/likes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['likes']
   }).then(function(food) {
@@ -399,12 +388,12 @@ router.put('/likes/decrement', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
     )
       .then(function() {
-        res.status(200).send();
+        res.status(204).send();
       })
       .catch(function(error) {
         res.status(404).send();
@@ -527,8 +516,8 @@ router.put('/dislikes/decrement', function(req, res, next) {
  * @apiErrorExample {json} Unauthorized
  *    HTTP/1.1 401 Unauthorized
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
 router.delete('/:uuid', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
