@@ -363,6 +363,12 @@ router.post('/token', function(req, res, next) {
  */
 router.post('/', function(req, res, next) {
   req.accepts('application/json');
+  if (req.body.username == undefined ||
+    req.body.login == undefined ||
+    req.body.passwordOne == undefined ||
+    req.headers.passwordTwo == undefined) {
+    return res.status(400).send();
+  }
 
   if (!validator.isLength(req.body.username, {min: 5, max: undefined})) {
     return res.status(400).send(alertConfig.register.username.length);
