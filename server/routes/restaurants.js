@@ -1,19 +1,25 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
-const models = require('../models');
+const env = process.env.NODE_ENV || 'development';
+const config = require(path.join(__dirname, '/../config/config.json'))[env];
 const passport = require('passport');
+const jwt = require('jwt-simple');
+const models = require('../models');
 const request = require('superagent');
 const winston = require('winston');
 const validator = require('validator');
 const alertConfig = require('./alertsConfig');
+const bcrypt = require('bcryptjs');
 
 //classes
 const Restaurant = require('../class/restaurant');
+const forbiddenWords = require('./forbiddenWords');
 
 /**
  Get single restaurant
  * @api {get} /api/restaurants/:login Get Restaurant
- * @apiName 01_GetRestaurant
+ * @apiName 03_GetRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
  * @apiHeader  Accept application/json
@@ -95,8 +101,8 @@ router.get('/:login', function(req, res, next) {
 
 /**
  Update restaurant
- * @api {put} /api/restaurants/update Update Restaurant
- * @apiName 02_UpdateRestaurant
+ * @api {put} /api/restaurants/:login Update Restaurant
+ * @apiName 04_UpdateRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json
@@ -125,52 +131,55 @@ router.get('/:login', function(req, res, next) {
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
-router.put('/update', passport.authenticate('bearer', {session: false}),
+router.put('/:login', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
   res.header('Pragma', 'no-cache');
   req.accepts('application/json');
-  var _login = req.body[0].login;
+  var _login = req.params.login;
   var update = {};
 
-  if (req.body[0].rest_name !== null) {
-    if (!validator.isAscii(req.body[0].rest_name)) {
+  if (req.body.rest_name !== undefined && req.body.rest_name !== null) {
+    if (!validator.isAscii(req.body.rest_name)) {
       return res.status(400).send(alertConfig.updateRestaurant.ascii);
-    } else if (!validator.isLength(req.body[0].rest_name, {min: 5, max: 25})) {
+    } else if (!validator.isLength(req.body.rest_name, {min: 5, max: 25})) {
       return res.status(400).send(alertConfig.updateRestaurant.rest_name.length);
     }
-    Object.assign(update, {rest_name: req.body[0].rest_name});
+    Object.assign(update, {rest_name: req.body.rest_name});
   }
-  if (req.body[0].address !== null) {
-    if (!validator.isAscii(req.body[0].address)) {
+  if (req.body.address !== undefined && req.body.address !== null) {
+    if (!validator.isAscii(req.body.address)) {
       return res.status(400).send(alertConfig.updateRestaurant.ascii);
-    } else if (!validator.isLength(req.body[0].address, {min: 5, max: 100})) {
+    } else if (!validator.isLength(req.body.address, {min: 5, max: 100})) {
       return res.status(400).send(alertConfig.updateRestaurant.address.length);
     }
-    Object.assign(update, {address: req.body[0].address});
+    Object.assign(update, {address: req.body.address});
   }
-  if (req.body[0].description !== null) {
-    if (!validator.isAscii(req.body[0].description)) {
+  if (req.body.description !== undefined && req.body.description !== null) {
+    if (!validator.isAscii(req.body.description)) {
       return res.status(400).send(alertConfig.updateRestaurant.ascii);
-    } else if (!validator.isLength(req.body[0].description, {min: 5, max: 200})) {
+    } else if (!validator.isLength(req.body.description, {min: 5, max: 200})) {
       return res.status(400).send(alertConfig.updateRestaurant.description.length);
     }
-    Object.assign(update, {description: req.body[0].description});
+    Object.assign(update, {description: req.body.description});
   }
-  if (req.body[0].avatar !== null) {
-    if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].avatar))) {
+  if (req.body.avatar !== undefined && req.body.avatar !== null) {
+    if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body.avatar))) {
       return res.status(400).send(alertConfig.updateRestaurant.avatar.extension);
-    } else if (Buffer.byteLength(req.body[0].avatar, 'utf8') > 2097152) {
+    } else if (Buffer.byteLength(req.body.avatar, 'utf8') > 2097152) {
       return res.status(400).send(alertConfig.updateRestaurant.avatar.size);
     }
+    var token = jwt.encode('authorized', 'tokensecret');
     request
-      .post('http://nodestore:3500/api/upload-avatar')
+      .post('http://nodestore:3500/api/images')
       .set('Content-Type', 'application/json')
-      .send([{
-        login: req.body[0].login,
-        avatar: req.body[0].avatar
-      }])
+      .set('Authorization', token)
+      .send({
+        type: 'avatar',
+        name: _login,
+        photo: req.body.avatar
+      })
       .end((err) => {
         if (err) {
           res.status(404).send();
@@ -207,8 +216,8 @@ function(req, res, next) {
 
 /**
  Change password
- * @api {put} /api/restaurants/password Change Password
- * @apiName 03_ChangePassword
+ * @api {put} /api/restaurants/change-password Change Password
+ * @apiName 05_ChangePassword
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json
@@ -235,44 +244,183 @@ function(req, res, next) {
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
-router.put('/password', passport.authenticate('bearer', {session: false}),
+router.put('/change-password', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
-      login: req.body[0].login
+      login: req.body.login
     }
   }).then(function(restaurant) {
-    if (!validator.equals(restaurant.password, req.body[0].oldPassword)) {
+    if (!restaurant.validPassword(req.body.oldPassword)) {
       return res.status(400).send(alertConfig.changePassword.match);
-    } else if (!validator.equals(req.body[0].newPassword, req.body[0].newPassword2)) {
+    } else if (!validator.equals(req.body.newPassword, req.body.newPassword2)) {
       return res.status(400).send(alertConfig.changePassword.different);
-    } else if (!validator.isLength(req.body[0].newPassword, {min: 5, max: undefined})) {
+    } else if (!validator.isLength(req.body.newPassword, {min: 5, max: undefined})) {
       return res.status(400).send(alertConfig.changePassword.length);
-    } else if (validator.isEmpty(req.body[0].oldPassword) ||
-      validator.isEmpty(req.body[0].newPassword) ||
-      validator.isEmpty(req.body[0].newPassword2)) {
+    } else if (validator.isEmpty(req.body.oldPassword) ||
+      validator.isEmpty(req.body.newPassword) ||
+      validator.isEmpty(req.body.newPassword2)) {
       return res.status(400).send(alertConfig.changePassword.empty);
     }
-
-    models.Restaurant.update(
-      {
-        password: req.body[0].newPassword
-      },
-      {
-        where: {
-          'login': req.body[0].login
-        }
-      }
-      )
-      .then(function() {
-        res.status(200).send();
-      })
-      .catch(function(error) {
-        res.status(404).send();
+    var newPassword = req.body.newPassword;
+    bcrypt.genSalt(10, function (err, salt) {
+      bcrypt.hash(newPassword, salt, function (err, hash) {
+        newPassword = hash;
+        models.Restaurant.update(
+          {
+            password: newPassword
+          },
+          {
+            where: {
+              'login': req.body.login
+            }
+          }
+          )
+          .then(function() {
+            res.status(200).send();
+          })
+          .catch(function(error) {
+            res.status(404).send();
+          });
       });
-
+    });
   });
+});
+
+/**
+ Login
+ * @api {post} /api/restaurants/token Login
+ * @apiName 02_Login
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ * @apiHeader Content-Type application/x-www-form-urlencoded
+ * @apiHeader  Accept application/json
+ *
+ * @apiParam username Username of the Restaurant.
+ * @apiParam password Password of the Restaurant.
+ *
+ * @apiParamExample {x-www-form-urlencoded} Input
+ *    {
+ *      "username": "fatbob",
+ *      "password": "fatbob"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6dHJ1ZSwiZGVzY3JpcHRpb24iOiJzdXBlciBvcGlzIGZhdCBib2JhIn0._4pN-LCt_RZqkx2Z1QLIV-t6MdEtT0Rl9sAFWza3_n0"
+ *    }
+ *
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ */
+router.post('/token', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { res.status(404).send(); }
+    if (!user) {
+      res.status(400).send();
+    }
+    var tmpUser = new Restaurant(user.rest_name)
+    .id(user.id)
+    .address(user.address)
+    .login(user.login)
+    .avatar(user.avatar)
+    .description(user.description);
+    var token = jwt.encode(tmpUser, config.tokenSecret);
+    res.json({ token: token });
+  })(req, res, next);
+});
+
+/**
+ Register
+ * @api {post} /api/restaurants Register
+ * @apiName 01_Register
+ * @apiGroup Restaurant
+ * @apiVersion 1.0.0
+ * @apiHeader Content-Type application/json
+ *
+ * @apiParam username Username of the Restaurant.
+ * @apiParam login Login of the Restaurant.
+ * @apiParam passwordOne Password of the Restaurant.
+ * @apiParam passwordTwo Password of the Restaurant again.
+ *
+ * @apiParamExample {json} Input
+ *    {
+ *      "username": "Test 1",
+ *      "login": "test1",
+ *      "passwordOne": "test1",
+ *      "passwordTwo": "test1"
+ *    }
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 201 Created
+ *
+ * @apiErrorExample Bad request
+ *    HTTP/1.1 400 Bad request
+ *    {
+ *      "Login already in use"
+ *    }
+ * @apiErrorExample {json} Server problem
+ *    HTTP/1.1 404 Server problem
+ */
+router.post('/', function(req, res, next) {
+  req.accepts('application/json');
+  if (req.body.username == undefined ||
+    req.body.login == undefined ||
+    req.body.passwordOne == undefined ||
+    req.headers.passwordTwo == undefined) {
+    return res.status(400).send();
+  }
+
+  if (!validator.isLength(req.body.username, {min: 5, max: undefined})) {
+    return res.status(400).send(alertConfig.register.username.length);
+  } else if (!validator.isLength(req.body.login, {min: 5, max: undefined})) {
+    return res.status(400).send(alertConfig.register.login.length);
+  } else if (!validator.isLength(req.body.passwordOne, {min: 5, max: undefined})) {
+    return res.status(400).send(alertConfig.register.password.length);
+  } else if (!validator.isAscii(req.body.username)) {
+    return res.status(400).send(alertConfig.register.username.ascii);
+  } else if (!validator.isAlphanumeric(req.body.login)) {
+    return res.status(400).send(alertConfig.register.login.ascii);
+  } else if (!validator.isAlphanumeric(req.body.passwordOne)) {
+    return res.status(400).send(alertConfig.register.password.ascii);
+  } else if (!validator.equals(req.body.passwordOne, req.body.passwordTwo)) {
+    return res.status(400).send(alertConfig.register.match);
+  } else if (validator.isEmpty(req.body.username) ||
+    validator.isEmpty(req.body.login) ||
+    validator.isEmpty(req.body.passwordOne) ||
+    validator.isEmpty(req.body.passwordTwo)) {
+    return res.status(400).send(alertConfig.register.empty);
+  }
+
+  forbiddenWords.map((elem) => {
+    if (validator.contains(req.body.login, elem)) {
+      return res.status(400).send(alertConfig.register.login.forbidden);
+    } else if (validator.contains(req.body.username, elem)) {
+      return res.status(400).send(alertConfig.register.username.forbidden);
+    }
+  });
+
+  models.Restaurant.create({
+    rest_name: req.body.username,
+    address: 'No address.',
+    login: req.body.login,
+    password: req.body.passwordOne,
+    avatar: false,
+    description: 'No description.'
+  }, {})
+    .then(function() {
+      res.status(201).send();
+    })
+    .catch(function(error) {
+      if (validator.equals(error.message, alertConfig.register.use)) {
+        return res.status(400).send(error.message);
+      }
+      res.status(404).send();
+    });
 });
 
 module.exports = router;

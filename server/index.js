@@ -17,12 +17,10 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 var foods = require('./routes/foods');
 var restaurants = require('./routes/restaurants');
-var authorization = require('./routes/authorization');
 
 require('./config/passport')(passport);
 app.use(passport.initialize());
 
-app.use('/api', authorization);
 app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
 

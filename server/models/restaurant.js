@@ -27,9 +27,7 @@ module.exports = function (sequelize, DataTypes) {
     hooks: {
       beforeCreate: function (user, options, next) {
         bcrypt.genSalt(10, function (err, salt) {
-          console.log('SALT 1: ', salt);
           bcrypt.hash(user.password, salt, function (err, hash) {
-            console.log('SALT 2: ', salt);
             user.password = hash;
             next(null, user);
           });

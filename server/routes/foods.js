@@ -6,6 +6,8 @@ const passport = require('passport');
 const winston = require('winston');
 const validator = require('validator');
 const alertConfig = require('./alertsConfig');
+const jwt = require('jwt-simple');
+
 
 //classes
 var Food = require('../class/food');
@@ -94,7 +96,7 @@ router.get('/', function(req, res, next) {
 
 /**
  Get foods likes/dislikes
- * @api {get} /api/foods/likes/update Get Likes/Dislikes
+ * @api {get} /api/foods/likes Get Likes/Dislikes
  * @apiName 05_GetLikesDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
@@ -122,7 +124,7 @@ router.get('/', function(req, res, next) {
  * @apiErrorExample {json} Foods not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/likes/update', function(req, res, next) {
+router.get('/likes', function(req, res, next) {
   models.Food.findAll({
     attributes: ['id', 'likes', 'dislikes'],
   }).then(function(data) {
@@ -228,8 +230,8 @@ router.get('/:uuid', function(req, res, next) {
  *      "login": "fatbob",
  *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
  *      "description": "Very good burger",
- *      "hashatags": "#tasty #awesome",
- *      "avatar": "data:image/png;base64,iVBORw0K......"
+ *      "hashtags": "#tasty #awesome",
+ *      "photo": "data:image/png;base64,iVBORw0K......"
  *    }
  *
  * @apiSuccessExample {json} Success
@@ -252,38 +254,42 @@ function(req, res, next) {
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
-      login: req.body[0].login
+      login: req.body.login
     },
     attributes: ['id']
   }).then(function(user) {
-    if (!validator.isLength(req.body[0].description, {min: 2, max: 250})) {
+
+    if (!validator.isLength(req.body.description, {min: 2, max: 250})) {
       return res.status(400).send(alertConfig.addFood.description.length);
-    } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
+    } else if (!validator.isLength(req.body.hashtags, {min: 2, max: 250})) {
       return res.status(400).send(alertConfig.addFood.hashtags.length);
-    } else if (!(new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(req.body[0].hashtags))) {
+    } else if (!(new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(req.body.hashtags))) {
       return res.status(400).send(alertConfig.addFood.hashtags.valid);
-    } else if (!validator.isAscii(req.body[0].description)) {
+    } else if (!validator.isAscii(req.body.description)) {
       return res.status(400).send(alertConfig.addFood.description.ascii);
-    } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].photo))) {
+    } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body.photo))) {
       return res.status(400).send(alertConfig.addFood.photo.extension);
-    } else if (Buffer.byteLength(req.body[0].photo, 'utf8') > 2097152) {
+    } else if (Buffer.byteLength(req.body.photo, 'utf8') > 2097152) {
       return res.status(400).send(alertConfig.addFood.photo.size);
     }
     var newFood = new Food(user.login)
-      .uuid(req.body[0].uuid)
+      .uuid(req.body.uuid)
       .username(user.rest_name)
-      .description(req.body[0].description)
-      .hashtags(req.body[0].hashtags)
-      .photo(req.body[0].photo)
+      .description(req.body.description)
+      .hashtags(req.body.hashtags)
+      .photo(req.body.photo)
       .created_at(getTimestamp())
       .updated_at(getTimestamp());
+    var token = jwt.encode('authorized', 'tokensecret');
     request
-      .post('http://nodestore:3500/api/upload')
+      .post('http://nodestore:3500/api/images')
       .set('Content-Type', 'application/json')
-      .send([{
-        uuid: newFood.getUuid(),
+      .set('Authorization', token)
+      .send({
+        type: 'food',
+        name: newFood.getUuid(),
         photo: newFood.getPhoto()
-      }])
+      })
       .end((err) => {
         if (err) {
           res.status(404).send();
@@ -312,30 +318,24 @@ function(req, res, next) {
 
 /**
  Add Likes
- * @api {put} /api/likes Add Likes
+ * @api {put} /api/foods/:uuid/likes Add Likes
  * @apiName 06_AddLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid UUID of the Food.
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
-router.put('/likes', function(req, res, next) {
-  req.accepts('application/json');
+router.put('/:uuid/likes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['likes']
   }).then(function(food) {
@@ -345,7 +345,7 @@ router.put('/likes', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
     )
@@ -359,31 +359,26 @@ router.put('/likes', function(req, res, next) {
 });
 
 /**
- Decrease Likes
- * @api {put} /api/likes/decrement Decrease Likes
- * @apiName 07_DecreaseLikes
+ Delete Likes
+ * @api {delete} /api/foods/:uuid/likes Delete Likes
+ * @apiName 07_DeleteLikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
+ * @apiParam uuid UUID of the Food.
  *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 204 No Content
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
-router.put('/likes/decrement', function(req, res, next) {
-  req.accepts('application/json');
+router.delete('/:uuid/likes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['likes']
   }).then(function(food) {
@@ -393,12 +388,12 @@ router.put('/likes/decrement', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
     )
       .then(function() {
-        res.status(200).send();
+        res.status(204).send();
       })
       .catch(function(error) {
         res.status(404).send();
@@ -408,18 +403,12 @@ router.put('/likes/decrement', function(req, res, next) {
 
 /**
  Add Dislikes
- * @api {put} /api/dislikes Add Dislikes
+ * @api {put} /api/foods/:uuid/dislikes Add Dislikes
  * @apiName 08_AddDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid UUID of the Food.
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
@@ -427,11 +416,11 @@ router.put('/likes/decrement', function(req, res, next) {
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-router.put('/dislikes', function(req, res, next) {
-  req.accepts('application/json');
+router.put('/:uuid/dislikes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['dislikes']
   }).then(function(food) {
@@ -441,7 +430,7 @@ router.put('/dislikes', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
   )
@@ -456,31 +445,25 @@ router.put('/dislikes', function(req, res, next) {
 });
 
 /**
- Decrease Dislikes
- * @api {put} /api/dislikes/decrement Decrease Dislikes
- * @apiName 09_DecreaseDislikes
+ Delete Dislikes
+ * @api {delete} /api/foods/:uuid/dislikes Delete Dislikes
+ * @apiName 09_DeleteDislikes
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid UUID of the Food.
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 204 OK
  *
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-router.put('/dislikes/decrement', function(req, res, next) {
-  req.accepts('application/json');
+router.delete('/:uuid/dislikes', function(req, res, next) {
+  var _uuid = req.params.uuid;
   models.Food.findOne({
     where: {
-      uuid: req.body[0].uuid
+      uuid: _uuid
     },
     attributes: ['dislikes']
   }).then(function(food) {
@@ -490,12 +473,12 @@ router.put('/dislikes/decrement', function(req, res, next) {
       },
       {
         where: {
-          'uuid': req.body[0].uuid
+          'uuid': _uuid
         }
       }
     )
       .then(function() {
-        res.status(200).send();
+        res.status(204).send();
       })
       .catch(function(error) {
         res.send(error);
@@ -506,19 +489,14 @@ router.put('/dislikes/decrement', function(req, res, next) {
 
 /**
  Delete Food
- * @api {delete} /api/foods Delete Food
+ * @api {delete} /api/foods/:uuid Delete Food
  * @apiName 04_DeleteFood
  * @apiGroup Food
  * @apiVersion 1.0.0
  * @apiHeader  Content-Type application/json
  * @apiHeader Authorization Bearer token
  *
- * @apiParam {String} uuid UUID of the Food.
- *
- * @apiParamExample {json} Input
- *    {
- *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333"
- *    }
+ * @apiParam uuid Food unique id.
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 204 No Content
@@ -526,26 +504,26 @@ router.put('/dislikes/decrement', function(req, res, next) {
  * @apiErrorExample {json} Unauthorized
  *    HTTP/1.1 401 Unauthorized
  *
- * @apiErrorExample {json} Server problem
- *    HTTP/1.1 404 Server problem
+ * @apiErrorExample {json} Not Found
+ *    HTTP/1.1 404 Not Found
  */
-router.delete('/', passport.authenticate('bearer', {session: false}),
+router.delete('/:uuid', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
+  var _uuid = req.params.uuid;
   req.accepts('application/json');
+  var token = jwt.encode('authorized', 'tokensecret');
   request
-    .delete('http://nodestore:3500/api/delete')
-    .set('Content-Type', 'application/json')
-    .send([{
-      uuid: req.body[0].uuid,
-    }])
+    .delete('http://nodestore:3500/api/images/' + _uuid)
+    .set('Authorization', token)
+    .send()
     .end((err) => {
       if (err) {
         res.status(404).send();
       } else {
-        winston.log('info', 'Image sent to nodestore.');
+        winston.log('info', 'Image removed.');
         models.Food.destroy({
           where: {
-            uuid: req.body[0].uuid
+            uuid: _uuid
           }
         })
           .then(function() {

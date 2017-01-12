@@ -18,7 +18,7 @@ export function showFoods() {
 
 export function updateLikes() {
   const request = req
-  .get(config.url + '/api/foods/likes/update')
+  .get(config.url + '/api/foods/likes')
   .accept('application/json');
   return (dispatch) => {
     request.then((response) => {
@@ -44,13 +44,13 @@ export function addFood(_login, _username, food, token) {
   .set('Authorization', 'Bearer ' + token);
   const _uuid = uuid.v1();
   return (dispatch) => {
-    request.send([{
+    request.send({
       login: _login,
       description: food.description,
       hashtags: food.hashTags,
       photo: food.image,
       uuid: _uuid,
-    }])
+    })
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch(addAlert(res.text, 'danger'));
@@ -72,11 +72,11 @@ export function addFood(_login, _username, food, token) {
 }
 
 export function removeFood(_uuid, indexInState, token) {
-  const request = req.del(config.url + '/api/foods')
+  const request = req.del(config.url + '/api/foods/' + _uuid)
   .set('Content-type', 'application/json')
   .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
-    request.send([{ uuid: _uuid }])
+    request.send()
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch({ type: 'REMOVE_FOODS', res: false });
