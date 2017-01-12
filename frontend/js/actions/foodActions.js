@@ -44,13 +44,13 @@ export function addFood(_login, _username, food, token) {
   .set('Authorization', 'Bearer ' + token);
   const _uuid = uuid.v1();
   return (dispatch) => {
-    request.send([{
+    request.send({
       login: _login,
       description: food.description,
       hashtags: food.hashTags,
       photo: food.image,
       uuid: _uuid,
-    }])
+    })
     .end((err, res) => {
       if (err || !res.ok) {
         dispatch(addAlert(res.text, 'danger'));

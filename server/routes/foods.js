@@ -254,30 +254,30 @@ function(req, res, next) {
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
-      login: req.body[0].login
+      login: req.body.login
     },
     attributes: ['id']
   }).then(function(user) {
 
-    if (!validator.isLength(req.body[0].description, {min: 2, max: 250})) {
+    if (!validator.isLength(req.body.description, {min: 2, max: 250})) {
       return res.status(400).send(alertConfig.addFood.description.length);
-    } else if (!validator.isLength(req.body[0].hashtags, {min: 2, max: 250})) {
+    } else if (!validator.isLength(req.body.hashtags, {min: 2, max: 250})) {
       return res.status(400).send(alertConfig.addFood.hashtags.length);
-    } else if (!(new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(req.body[0].hashtags))) {
+    } else if (!(new RegExp(/^(#[a-zA-Z0-9]+)(\s#[a-zA-Z0-9]+)*$/).test(req.body.hashtags))) {
       return res.status(400).send(alertConfig.addFood.hashtags.valid);
-    } else if (!validator.isAscii(req.body[0].description)) {
+    } else if (!validator.isAscii(req.body.description)) {
       return res.status(400).send(alertConfig.addFood.description.ascii);
-    } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body[0].photo))) {
+    } else if (!(new RegExp(/^data:image.(jpeg|jpg|png);base64/).test(req.body.photo))) {
       return res.status(400).send(alertConfig.addFood.photo.extension);
-    } else if (Buffer.byteLength(req.body[0].photo, 'utf8') > 2097152) {
+    } else if (Buffer.byteLength(req.body.photo, 'utf8') > 2097152) {
       return res.status(400).send(alertConfig.addFood.photo.size);
     }
     var newFood = new Food(user.login)
-      .uuid(req.body[0].uuid)
+      .uuid(req.body.uuid)
       .username(user.rest_name)
-      .description(req.body[0].description)
-      .hashtags(req.body[0].hashtags)
-      .photo(req.body[0].photo)
+      .description(req.body.description)
+      .hashtags(req.body.hashtags)
+      .photo(req.body.photo)
       .created_at(getTimestamp())
       .updated_at(getTimestamp());
     var token = jwt.encode('authorized', 'tokensecret');
