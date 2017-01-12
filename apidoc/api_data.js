@@ -957,7 +957,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Input",
-          "content": "{\n  \"username\": \"fatbob\",\n  \"login\": \"Fat Bob Burger\"\n  \"passwordOne\": \"fatbob\",\n  \"passwordTwo\": \"fatbob\"\n}",
+          "content": "{\n  \"username\": \"Test 1\",\n  \"login\": \"test1\",\n  \"passwordOne\": \"test1\",\n  \"passwordTwo\": \"test1\"\n}",
           "type": "json"
         }
       ]
@@ -1278,7 +1278,7 @@ define({ "api": [
   },
   {
     "type": "put",
-    "url": "/api/restaurants/password",
+    "url": "/api/restaurants/change-password",
     "title": "Change Password",
     "name": "05_ChangePassword",
     "group": "Restaurant",
