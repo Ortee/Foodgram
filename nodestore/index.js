@@ -232,15 +232,22 @@ app.post('/api/images', function(req, res, next) {
  * @apiErrorExample {json} Server problem
  *    HTTP/1.1 404 Server problem
  */
-app.delete('/api/images/:name', function(req, res, next) {
-  req.accepts('application/json');
-  var _name = req.params.name;
+app.delete('/api/images/:uuid', function(req, res, next) {
+  try {
+    var decoded = jwt.decode(req.headers.authorization, 'tokensecret');
+  } catch (e) {
+    return res.status(401).send();
+  }
+
+  if (decoded !== 'authorized') {
+    return res.status(401).send();
+  }
   async.waterfall([
     (callback) => {
-      if (fs.existsSync('./public/thumbnail/' + _name + '.png')) {
-        fs.unlink('./public/thumbnail/' + _name + '.png', (err) => {
+      if (fs.existsSync('./public/thumbnail/' + req.params.uuid + '.png')) {
+        fs.unlink('./public/thumbnail/' + req.params.uuid + '.png', (err) => {
           if (err) throw err;
-          winston.log('info', _name + ' - THUMBNAIL SUCCESFULLY DELETED');
+          winston.log('info', req.params.uuid + ' - THUMBNAIL SUCCESFULLY DELETED');
           var thumbnail = true;
           callback(null, thumbnail);
         });
@@ -249,10 +256,10 @@ app.delete('/api/images/:name', function(req, res, next) {
       }
     },
     (thumbnail, callback) => {
-      if (fs.existsSync('./public/fullsize/' + _name + '.png')) {
-        fs.unlink('./public/fullsize/' + _name + '.png', (err) => {
+      if (fs.existsSync('./public/fullsize/' + req.params.uuid + '.png')) {
+        fs.unlink('./public/fullsize/' + req.params.uuid + '.png', (err) => {
           if (err) throw err;
-          winston.log('info', _name + ' - FULLSIZE SUCCESFULLY DELETED');
+          winston.log('info', req.params.uuid + ' - FULLSIZE SUCCESFULLY DELETED');
           var done = true;
           callback(null, done);
         });

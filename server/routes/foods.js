@@ -534,17 +534,16 @@ router.delete('/:uuid', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   var _uuid = req.params.uuid;
   req.accepts('application/json');
+  var token = jwt.encode('authorized', 'tokensecret');
   request
-    .delete('http://nodestore:3500/api/delete')
-    .set('Content-Type', 'application/json')
-    .send([{
-      uuid: _uuid,
-    }])
+    .delete('http://nodestore:3500/api/images/' + _uuid)
+    .set('Authorization', token)
+    .send()
     .end((err) => {
       if (err) {
         res.status(404).send();
       } else {
-        winston.log('info', 'Image sent to nodestore.');
+        winston.log('info', 'Image removed.');
         models.Food.destroy({
           where: {
             uuid: _uuid
