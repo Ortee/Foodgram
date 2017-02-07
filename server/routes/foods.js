@@ -203,7 +203,7 @@ router.get('/:uuid', function(req, res, next) {
       .created_at(elem.created_at)
       .updated_at(elem.updated_at)
     );
-    res.json(newFood);
+    res.json(newFood[0]);
   }).catch(function(error) {
     res.status(404).send();
   });

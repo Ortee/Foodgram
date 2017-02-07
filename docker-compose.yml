@@ -100,15 +100,16 @@ frontend:
     ports:
       - "4000:4000"
 
-# tests:
-#     image: node:7
-#     command: npm run backend
-#     working_dir: /app/tests/
-#     environment:
-#       CONNECTION_STRING_DEV: postgres://user:password@db/db
-#     volumes:
-#       - ./tests:/app/tests/
-#       - ./server:/app/server/
-#       - ./frontend:/app/frontend/
-#     links:
-#       - db
+tests:
+    image: node:7
+    command: npm run backend
+    working_dir: /app/tests/
+    environment:
+      CONNECTION_STRING_DEV: postgres://user:password@db/db
+    volumes:
+      - ./tests:/app/tests/
+      - ./server:/app/server/
+      - ./frontend:/app/frontend/
+    links:
+      - db
+      - nodestore
