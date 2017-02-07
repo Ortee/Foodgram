@@ -8,8 +8,7 @@ var images = require('./assets/images');
 
 describe('REQUESTS TO SERVER', function() {
   var _uuid = uuid.v1();
-  console.log('UUID TYPE: ', typeof(_uuid));
-  console.log('foodImage: ', typeof(images.foodImage));
+
   var FoodSeeder =
     {
       login: 'fatbob',
@@ -35,7 +34,7 @@ describe('REQUESTS TO SERVER', function() {
   it('GET /api/foods', function(done) {
     chai.request(server)
       .get('/api/foods')
-      .set('accept', 'application/json')
+      .set('Accept', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -57,7 +56,7 @@ describe('REQUESTS TO SERVER', function() {
   it('GET /api/foods/:uuid', function(done) {
     chai.request(server)
       .get('/api/foods/'+_uuid)
-      .set('accept', 'application/json')
+      .set('Accept', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -75,101 +74,16 @@ describe('REQUESTS TO SERVER', function() {
       });
   });
 
-  it('PUT /api/foods', function(done) {
+  it('GET /api/foods/likes', function(done) {
     chai.request(server)
-      .put('/api/foods')
-      .set('Content-Type', 'application/json')
-      .send([{
-        id: 999,
-        uuid:_uuid,
-        description: 'Test description',
-        hashtags: 'Test hashtags',
-        photo:'photo.jpg',
-        likes:999,
-        dislikes:999
-      }])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/description', function(done) {
-    chai.request(server)
-      .put('/api/foods/description')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid, description: 'Test description'}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/hashtags', function(done) {
-    chai.request(server)
-      .put('/api/foods/hashtags')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid, hashtags: 'Test hashtags'}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/photo', function(done) {
-    chai.request(server)
-      .put('/api/foods/photo')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid, photo: 'test.jpg'}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/likes', function(done) {
-    chai.request(server)
-      .put('/api/foods/likes')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/likes/decrement', function(done) {
-    chai.request(server)
-      .put('/api/foods/likes/decrement')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/dislikes', function(done) {
-    chai.request(server)
-      .put('/api/foods/dislikes')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('PUT /api/foods/dislikes/decrement', function(done) {
-    chai.request(server)
-      .put('/api/foods/dislikes/decrement')
-      .set('Content-Type', 'application/json')
-      .send([{uuid:_uuid}])
-      .end(function(err, res){
-        res.should.have.status(201);
-        done();
-      });
-  });
-  it('DELETE /api/foods', function(done) {
-    chai.request(server)
-      .delete('/api/foods')
-      .send([{uuid:_uuid}])
-      .set('Content-Type', 'application/json')
-      .end(function(err, res){
-        res.should.have.status(204);
+      .get('/api/foods/likes')
+      .set('Accept', 'application/json')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body[0].should.have.property('id');
+        res.body[0].should.have.property('likes');
+        res.body[0].should.have.property('dislikes');
         done();
       });
   });

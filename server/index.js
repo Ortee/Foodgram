@@ -24,8 +24,10 @@ app.use(passport.initialize());
 app.use('/api/foods', foods);
 app.use('/api/restaurants', restaurants);
 
-app.listen(PORT, function() {
-  winston.log('info', `SERVER Listening on ${PORT}`);
-});
+if ((!module.parent)) {
+  app.listen(PORT, function() {
+    winston.log('info', `SERVER Listening on ${PORT}`);
+  });
+}
 
 module.exports = app;
