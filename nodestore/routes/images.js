@@ -214,6 +214,7 @@ router.post('/', function(req, res, next) {
  *    HTTP/1.1 404 Not Found
  */
 router.delete('/:uuid', function(req, res, next) {
+  var publicPath = (__dirname != '/storeapp/routes') ? '../nodestore/public' : './public';
   try {
     var decoded = jwt.decode(req.headers.authorization, 'tokensecret');
   } catch (e) {
@@ -223,29 +224,30 @@ router.delete('/:uuid', function(req, res, next) {
   if (decoded !== 'authorized') {
     return res.status(401).send();
   }
+
   async.waterfall([
     (callback) => {
-      if (fs.existsSync('./public/thumbnail/' + req.params.uuid + '.png')) {
-        fs.unlink('./public/thumbnail/' + req.params.uuid + '.png', (err) => {
+      if (fs.existsSync(publicPath + '/thumbnail/' + req.params.uuid + '.png')) {
+        fs.unlink(publicPath + '/thumbnail/' + req.params.uuid + '.png', (err) => {
           if (err) throw err;
           winston.log('info', req.params.uuid + ' - THUMBNAIL SUCCESFULLY DELETED');
           var thumbnail = true;
           callback(null, thumbnail);
         });
       } else {
-        res.status(404).send();
+        return res.status(404).send();
       }
     },
     (thumbnail, callback) => {
-      if (fs.existsSync('./public/fullsize/' + req.params.uuid + '.png')) {
-        fs.unlink('./public/fullsize/' + req.params.uuid + '.png', (err) => {
+      if (fs.existsSync(publicPath + '/fullsize/' + req.params.uuid + '.png')) {
+        fs.unlink(publicPath + '/fullsize/' + req.params.uuid + '.png', (err) => {
           if (err) throw err;
           winston.log('info', req.params.uuid + ' - FULLSIZE SUCCESFULLY DELETED');
           var done = true;
           callback(null, done);
         });
       } else {
-        res.status(404).send();
+        return res.status(404).send();
       }
     },
   ], (err, result) => {
@@ -253,7 +255,7 @@ router.delete('/:uuid', function(req, res, next) {
       throw err;
     }
   });
-  res.status(204).send();
+  return res.status(204).send();
 });
 
 module.exports = router;
