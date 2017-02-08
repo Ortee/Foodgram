@@ -264,8 +264,8 @@ function(req, res, next) {
       return res.status(400).send(alertConfig.changePassword.empty);
     }
     var newPassword = req.body.newPassword;
-    bcrypt.genSalt(10, function (err, salt) {
-      bcrypt.hash(newPassword, salt, function (err, hash) {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(newPassword, salt, function(err, hash) {
         newPassword = hash;
         models.Restaurant.update(
           {
@@ -371,7 +371,7 @@ router.post('/', function(req, res, next) {
   if (req.body.username == undefined ||
     req.body.login == undefined ||
     req.body.passwordOne == undefined ||
-    req.headers.passwordTwo == undefined) {
+    req.body.passwordTwo == undefined) {
     return res.status(400).send();
   }
 
@@ -423,4 +423,22 @@ router.post('/', function(req, res, next) {
     });
 });
 
+// Endpoint created just for testing purpose. There is no DELETE functionality in the project
+// Not included in documentation for the same reason
+router.delete('/', passport.authenticate('bearer', {session: false}),
+function(req, res, next) {
+  models.Restaurant.destroy({
+    where: {
+      login: req.user.dataValues.login
+    }
+  }).then(function(rowDeleted) {
+    if (rowDeleted === 1) {
+      res.status(204).send();
+    } else {
+      res.status(404).send();
+    }
+  }, function(err) {
+    res.status(404).send();
+  });
+});
 module.exports = router;

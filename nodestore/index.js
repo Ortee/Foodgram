@@ -21,3 +21,5 @@ app.use('/api/images', images);
 app.listen(PORT, function() {
   winston.log('info', `STORE SERVER Listening on ${PORT}`);
 });
+
+module.exports = app;
