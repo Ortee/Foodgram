@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../server/index');
 const should = chai.should();
-const uuid = require('node-uuid');
 chai.use(chaiHttp);
 const images = require('./assets/images');
 const seeders = require('./assets/seeders');
