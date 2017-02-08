@@ -52,9 +52,9 @@ describe('RESTAURANT Requests', function() {
       });
   });
 
-  it('PUT /api/restaurants/:login', function(done) {
+  it('PUT /api/restaurants', function(done) {
     chai.request(server)
-      .put('/api/restaurants/' + seeders.restaurantSeeder.login)
+      .put('/api/restaurants')
       .set('Content-Type', 'application/json')
       .set('Authorization', 'Bearer ' + seeders.restaurantToken)
       .send(seeders.updateRestaurantSeeder)

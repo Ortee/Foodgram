@@ -101,7 +101,7 @@ router.get('/:login', function(req, res, next) {
 
 /**
  Update restaurant
- * @api {put} /api/restaurants/:login Update Restaurant
+ * @api {put} /api/restaurants Update Restaurant
  * @apiName 04_UpdateRestaurant
  * @apiGroup Restaurant
  * @apiVersion 1.0.0
@@ -131,13 +131,13 @@ router.get('/:login', function(req, res, next) {
  * @apiErrorExample {json} Restaurant not found
  *    HTTP/1.1 404 Not Found
  */
-router.put('/:login', passport.authenticate('bearer', {session: false}),
+router.put('/', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
   res.header('Pragma', 'no-cache');
   req.accepts('application/json');
-  var _login = req.params.login;
+  var _login = req.user.dataValues.login;
   var update = {};
 
   if (req.body.rest_name !== undefined && req.body.rest_name !== null) {
@@ -229,7 +229,6 @@ function(req, res, next) {
  * @apiParam {String} newPassword2  Again new password of the Restaurant.
  * @apiParamExample {json} Input
  *    {
- *      "login": "fatbob",
  *      "oldPassword": "fatbob",
  *      "newPassword": "newpass",
  *      "newPassword2": "newpass"
@@ -246,10 +245,11 @@ function(req, res, next) {
  */
 router.put('/change-password', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
+  const _login = req.user.dataValues.login;
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
-      login: req.body.login
+      login: _login
     }
   }).then(function(restaurant) {
     if (!restaurant.validPassword(req.body.oldPassword)) {
@@ -273,7 +273,7 @@ function(req, res, next) {
           },
           {
             where: {
-              'login': req.body.login
+              'login': _login
             }
           }
           )
