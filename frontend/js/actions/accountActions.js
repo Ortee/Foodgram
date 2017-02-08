@@ -42,7 +42,6 @@ export function updatePassword(login, data, token) {
   .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
     request.send({
-      login: login,
       newPassword: data.newPassword,
       newPassword2: data.newPassword2,
       oldPassword: data.oldPassword,
