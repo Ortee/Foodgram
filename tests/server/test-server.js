@@ -13,7 +13,7 @@ describe('REQUESTS TO SERVER', function() {
     {
       login: 'fatbob',
       uuid: _uuid,
-      description: 'Chai testing burger (tmp)',
+      description: 'Chai testing burger (tmp333333)',
       hashtags: '#chai #test #tmp',
       photo: images.foodImage
     }
@@ -84,6 +84,52 @@ describe('REQUESTS TO SERVER', function() {
         res.body[0].should.have.property('id');
         res.body[0].should.have.property('likes');
         res.body[0].should.have.property('dislikes');
+        done();
+      });
+  });
+
+  it('PUT /api/foods/:uuid/likes', function(done) {
+    chai.request(server)
+      .put('/api/foods/'+_uuid+'/likes')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        done();
+      });
+  });
+
+  it('DELETE /api/foods/:uuid/likes', function(done) {
+    chai.request(server)
+      .delete('/api/foods/'+_uuid+'/likes')
+      .end(function(err, res) {
+        res.should.have.status(204);
+        done();
+      });
+  });
+
+  it('PUT /api/foods/:uuid/dislikes', function(done) {
+    chai.request(server)
+      .put('/api/foods/'+_uuid+'/dislikes')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        done();
+      });
+  });
+
+  it('DELETE /api/foods/:uuid/dislikes', function(done) {
+    chai.request(server)
+      .delete('/api/foods/'+_uuid+'/dislikes')
+      .end(function(err, res) {
+        res.should.have.status(204);
+        done();
+      });
+  });
+
+  it('DELETE /api/foods/:uuid', function(done){
+    chai.request(server)
+      .delete('/api/foods/'+_uuid)
+      .set('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6ZmFsc2UsImRlc2NyaXB0aW9uIjoic3VwZXIgb3BpcyBmYXQgYm9iYSJ9.0O_K_4wATtJ1E_em9HCLqtrSAgznfIlycOOc5CcSbPU')
+      .end(function(err, res) {
+        res.should.have.status(204);
         done();
       });
   });

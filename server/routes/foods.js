@@ -438,7 +438,6 @@ router.put('/:uuid/dislikes', function(req, res, next) {
         res.status(200).send();
       })
       .catch(function(error) {
-        res.send(error);
         res.status(404).send();
       });
   });
@@ -481,7 +480,6 @@ router.delete('/:uuid/dislikes', function(req, res, next) {
         res.status(204).send();
       })
       .catch(function(error) {
-        res.send(error);
         res.status(404).send();
       });
   });
@@ -510,7 +508,6 @@ router.delete('/:uuid/dislikes', function(req, res, next) {
 router.delete('/:uuid', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   var _uuid = req.params.uuid;
-  req.accepts('application/json');
   var token = jwt.encode('authorized', 'tokensecret');
   request
     .delete('http://nodestore:3500/api/images/' + _uuid)
