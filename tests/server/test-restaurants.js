@@ -16,7 +16,26 @@ describe('RESTAURANT Requests', function() {
       passwordTwo: 'test1'
     }
   ;
+  let updateRestaurantSeeder =
+    {
+      login: 'test1',
+      rest_name: 'Test One',
+      address: 'Test address',
+      description: 'Test description',
+      avatar: images.avatarImage
+    }
+  ;
+  let changePasswordSeeder =
+    {
+      login: 'test1',
+      oldPassword: 'test1',
+      newPassword: 'test2',
+      newPassword2: 'test2'
+    }
+  ;
   let restaurantToken;
+
+
 
   it('POST /api/restaurants', function(done) {
     chai.request(server)
@@ -42,6 +61,49 @@ describe('RESTAURANT Requests', function() {
         restaurantToken = res.body.token;
         done();
       });
+  });
+
+  it('GET /api/restaurants/:login', function(done) {
+    chai.request(server)
+      .get('/api/restaurants/' + restaurantSeeder.login)
+      .set('Accept', 'application/json')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.body.should.have.property('rest_name');
+        res.body.should.have.property('login');
+        res.body.should.have.property('address');
+        res.body.should.have.property('avatar');
+        res.body.should.have.property('description');
+        res.body.should.have.property('foods');
+        res.body.should.have.property('likes');
+        res.body.should.have.property('dislikes');
+        res.body.foods.should.be.a('array');
+        done();
+      });
+  });
+
+  it('PUT /api/restaurants/:login', function(done) {
+    chai.request(server)
+      .put('/api/restaurants/' + restaurantSeeder.login)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer ' + restaurantToken)
+      .send(updateRestaurantSeeder)
+      .end(function(err, res) {
+        res.should.have.status(200);
+        done();
+      });
+  });
+
+  it('PUT /api/restaurants/change-password', function(done) {
+    chai.request(server)
+      .put('/api/restaurants/change-password')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer ' + restaurantToken)
+      .send(changePasswordSeeder)
+      .end(function(err, res) {
+        res.should.have.status(200);
+        done();
+      })
   });
 
   it('DELETE /api/restaurants', function(done) {
