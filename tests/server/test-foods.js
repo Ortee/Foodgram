@@ -6,7 +6,7 @@ var uuid = require('node-uuid');
 chai.use(chaiHttp);
 var images = require('./assets/images');
 
-describe('REQUESTS TO SERVER', function() {
+describe('FOOD Requests', function() {
   var _uuid = uuid.v1();
 
   var FoodSeeder =
