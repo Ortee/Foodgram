@@ -110,6 +110,7 @@ tests:
       - ./tests:/app/tests/
       - ./server:/app/server/
       - ./frontend:/app/frontend/
+      - ./nodestore:/app/nodestore/
     links:
       - db
       - nodestore

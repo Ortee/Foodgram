@@ -13,7 +13,7 @@ describe('REQUESTS TO SERVER', function() {
     {
       login: 'fatbob',
       uuid: _uuid,
-      description: 'Chai testing burger (tmp333333)',
+      description: 'Chai testing burger (tmp)',
       hashtags: '#chai #test #tmp',
       photo: images.foodImage
     }

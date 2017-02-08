@@ -6,6 +6,7 @@ var Jimp = require('jimp');
 var async = require('async');
 var jwt = require('jwt-simple');
 var base64Decoder = require('../libs/base64Decoder');
+var path = require('path');
 
 /**
  Get Image
@@ -26,27 +27,29 @@ var base64Decoder = require('../libs/base64Decoder');
  *    HTTP/1.1 404 Not Found
  */
 router.get('/:uuid', function(req, res, next) {
+  var imagePath = (__dirname != '/storeapp/routes') ? '../nodestore/public' : './public';
+
   switch (req.query.type) {
     case 'fullsize':
-      if (fs.existsSync('./public/fullsize/' + req.params.uuid + '.png')) {
+      if (fs.existsSync(imagePath + '/fullsize/' + req.params.uuid + '.png')) {
         res.setHeader('Content-Type', 'image/png');
-        res.sendfile('./public/fullsize/' + req.params.uuid + '.png');
+        res.sendfile(path.resolve(imagePath + '/fullsize/' + req.params.uuid + '.png'));
       } else {
         res.status(404).send();
       }
       break;
     case 'thumbnail':
-      if (fs.existsSync('./public/thumbnail/' + req.params.uuid + '.png')) {
+      if (fs.existsSync(imagePath + '/thumbnail/' + req.params.uuid + '.png')) {
         res.setHeader('Content-Type', 'image/png');
-        res.sendfile('./public/thumbnail/' + req.params.uuid + '.png');
+        res.sendfile(path.resolve(imagePath + '/thumbnail/' + req.params.uuid + '.png'));
       } else {
         res.status(404).send();
       }
       break;
     case 'avatar':
-      if (fs.existsSync('./public/avatar/' + req.params.uuid + '.png')) {
+      if (fs.existsSync(imagePath + '/avatar/' + req.params.uuid + '.png')) {
         res.setHeader('Content-Type', 'image/png');
-        res.sendfile('./public/avatar/' + req.params.uuid + '.png');
+        res.sendfile(path.resolve(imagePath + '/avatar/' + req.params.uuid + '.png'));
       } else {
         res.status(404).send();
       }
@@ -87,6 +90,10 @@ router.get('/:uuid', function(req, res, next) {
  */
 router.post('/', function(req, res, next) {
   req.accepts('routerlication/json');
+
+  var publicPath = (__dirname != '/storeapp/routes') ? '../nodestore/public' : './public';
+  var tmpPath = (__dirname != '/storeapp/routes') ? '../nodestore/tmp' : './tmp';
+
   if (req.body.type == undefined ||
     req.body.name == undefined ||
     req.body.photo == undefined ||
@@ -103,25 +110,26 @@ router.post('/', function(req, res, next) {
   if (decoded !== 'authorized') {
     return res.status(401).send();
   }
+
   var imageBuffer = base64Decoder(req.body.photo);
   switch (req.body.type) {
     case 'avatar':
-      fs.writeFile('./tmp/' + req.body.name + '.png', imageBuffer.data, function(err) {
+      fs.writeFile(tmpPath + req.body.name + '.png', imageBuffer.data, function(err) {
         if (err) throw err;
         async.waterfall([
           (callback) => {
-            Jimp.read('./tmp/' + req.body.name + '.png', function(err, image) {
+            Jimp.read(tmpPath + req.body.name + '.png', function(err, image) {
               if (err) throw err;
               image.contain(276, 276)
-                .write('./public/avatar/' + req.body.name + '.png');
+                .write(publicPath + '/avatar/' + req.body.name + '.png');
               winston.log('info', req.body.name, ' - AVATAR SAVED');
               var avatar = true;
               callback(null, avatar);
             });
           },
           (avatar, callback) => {
-            if (fs.existsSync('./tmp/' + req.body.name + '.png')) {
-              fs.unlink('./tmp/' + req.body.name + '.png', (err) => {
+            if (fs.existsSync(tmpPath + req.body.name + '.png')) {
+              fs.unlink(tmpPath + req.body.name + '.png', (err) => {
                 if (err) throw err;
                 winston.log('info', req.body.name + ' - TMP AVATAR SUCCESFULLY DELETED');
                 var done = true;
@@ -140,32 +148,32 @@ router.post('/', function(req, res, next) {
       });
       break;
     case 'food':
-      fs.writeFile('./tmp/' + req.body.name + '.jpg', imageBuffer.data, function(err) {
+      fs.writeFile(tmpPath + req.body.name + '.jpg', imageBuffer.data, function(err) {
         if (err) throw err;
         async.waterfall([
           (callback) => {
-            Jimp.read('./tmp/' + req.body.name + '.jpg', function(err, image) {
+            Jimp.read(tmpPath + req.body.name + '.jpg', function(err, image) {
               if (err) throw err;
               image.contain(276, 276)
-                .write('./public/thumbnail/' + req.body.name + '.png');
+                .write(publicPath + '/thumbnail/' + req.body.name + '.png');
               winston.log('info', req.body.name, ' - THUMBNAIL SAVED');
               var thumbnail = true;
               callback(null, thumbnail);
             });
           },
           (thumbnail, callback) => {
-            Jimp.read('./tmp/' + req.body.name + '.jpg', function(err, image) {
+            Jimp.read(tmpPath + req.body.name + '.jpg', function(err, image) {
               if (err) throw err;
               image.contain(540, Jimp.AUTO)
-                .write('./public/fullsize/' + req.body.name + '.png');
+                .write(publicPath + '/fullsize/' + req.body.name + '.png');
               winston.log('info', req.body.name, ' - FULLSIZE SAVED');
               var fullsize = true;
               callback(null, fullsize);
             });
           },
           (fullsize, callback) => {
-            if (fs.existsSync('./tmp/' + req.body.name + '.jpg')) {
-              fs.unlink('./tmp/' + req.body.name + '.jpg', (err) => {
+            if (fs.existsSync(tmpPath + req.body.name + '.jpg')) {
+              fs.unlink(tmpPath + req.body.name + '.jpg', (err) => {
                 if (err) throw err;
                 winston.log('info', req.body.name + 'TMP SUCCESFULLY DELETED');
                 var done = true;
