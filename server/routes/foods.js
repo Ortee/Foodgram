@@ -159,7 +159,6 @@ router.get('/likes', function(req, res, next) {
  *
  * @apiSuccessExample Success
  *     HTTP/1.1 200 OK
- *    [
  *      {
  *        "login": "pastwisko",
  *        "id": 3,
@@ -172,7 +171,6 @@ router.get('/likes', function(req, res, next) {
  *        "created_at": "2016-10-17T20:31:40.000Z",
  *        "updated_at": "2016-10-17T20:31:40.000Z"
  *      }
- *    ]
  *
  * @apiErrorExample {json} Food not found
  *    HTTP/1.1 404 Not Found
@@ -490,7 +488,6 @@ router.delete('/:uuid/dislikes', function(req, res, next) {
  * @apiName 04_DeleteFood
  * @apiGroup Food
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type application/json
  * @apiHeader Authorization Bearer token
  *
  * @apiParam uuid Food unique id.
