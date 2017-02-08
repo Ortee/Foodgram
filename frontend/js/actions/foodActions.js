@@ -45,7 +45,6 @@ export function addFood(_login, _username, food, token) {
   const _uuid = uuid.v1();
   return (dispatch) => {
     request.send({
-      login: _login,
       description: food.description,
       hashtags: food.hashTags,
       photo: food.image,

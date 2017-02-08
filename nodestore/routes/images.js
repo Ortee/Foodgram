@@ -202,7 +202,7 @@ router.post('/', function(req, res, next) {
  * @apiName 03_DeleteImage
  * @apiGroup Imagestore
  * @apiVersion 1.0.0
- * @apiHeader  Content-Type routerlication/json
+ * @apiHeader  Authorization token
  *
  * @apiParam uuid Image unique id.
  *

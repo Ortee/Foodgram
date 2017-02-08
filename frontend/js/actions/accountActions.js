@@ -4,7 +4,7 @@ import { serverText, userText, updateRestaurantText } from '../alertsConfig';
 import config from '../config';
 
 export function update(login, data, token) {
-  const request = req.put(config.url + '/api/restaurants/' + login)
+  const request = req.put(config.url + '/api/restaurants')
   .set('Content-type', 'application/json')
   .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
@@ -42,7 +42,6 @@ export function updatePassword(login, data, token) {
   .set('Authorization', 'Bearer ' + token);
   return (dispatch) => {
     request.send({
-      login: login,
       newPassword: data.newPassword,
       newPassword2: data.newPassword2,
       oldPassword: data.oldPassword,
