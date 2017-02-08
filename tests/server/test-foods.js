@@ -1,30 +1,19 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var server = require('../../server/index');
-var should = chai.should();
-var uuid = require('node-uuid');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../../server/index');
+const should = chai.should();
+const uuid = require('node-uuid');
 chai.use(chaiHttp);
-var images = require('./assets/images');
+const images = require('./assets/images');
+const seeders = require('./assets/seeders');
 
 describe('FOOD Requests', function() {
-  var _uuid = uuid.v1();
-
-  var FoodSeeder =
-    {
-      login: 'fatbob',
-      uuid: _uuid,
-      description: 'Chai testing burger (tmp)',
-      hashtags: '#chai #test #tmp',
-      photo: images.foodImage
-    }
-  ;
-
   it('POST /api/foods', function(done) {
     chai.request(server)
       .post('/api/foods')
       .set('Content-Type', 'application/json')
       .set('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6ZmFsc2UsImRlc2NyaXB0aW9uIjoic3VwZXIgb3BpcyBmYXQgYm9iYSJ9.0O_K_4wATtJ1E_em9HCLqtrSAgznfIlycOOc5CcSbPU')
-      .send(FoodSeeder)
+      .send(seeders.foodSeeder)
       .end(function(err, res){
         res.should.have.status(201);
         done();
@@ -55,7 +44,7 @@ describe('FOOD Requests', function() {
 
   it('GET /api/foods/:uuid', function(done) {
     chai.request(server)
-      .get('/api/foods/'+_uuid)
+      .get('/api/foods/'+seeders.foodSeeder.uuid)
       .set('Accept', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
@@ -90,7 +79,7 @@ describe('FOOD Requests', function() {
 
   it('PUT /api/foods/:uuid/likes', function(done) {
     chai.request(server)
-      .put('/api/foods/'+_uuid+'/likes')
+      .put('/api/foods/'+seeders.foodSeeder.uuid+'/likes')
       .end(function(err, res) {
         res.should.have.status(200);
         done();
@@ -99,7 +88,7 @@ describe('FOOD Requests', function() {
 
   it('DELETE /api/foods/:uuid/likes', function(done) {
     chai.request(server)
-      .delete('/api/foods/'+_uuid+'/likes')
+      .delete('/api/foods/'+seeders.foodSeeder.uuid+'/likes')
       .end(function(err, res) {
         res.should.have.status(204);
         done();
@@ -108,7 +97,7 @@ describe('FOOD Requests', function() {
 
   it('PUT /api/foods/:uuid/dislikes', function(done) {
     chai.request(server)
-      .put('/api/foods/'+_uuid+'/dislikes')
+      .put('/api/foods/'+seeders.foodSeeder.uuid+'/dislikes')
       .end(function(err, res) {
         res.should.have.status(200);
         done();
@@ -117,7 +106,7 @@ describe('FOOD Requests', function() {
 
   it('DELETE /api/foods/:uuid/dislikes', function(done) {
     chai.request(server)
-      .delete('/api/foods/'+_uuid+'/dislikes')
+      .delete('/api/foods/'+seeders.foodSeeder.uuid+'/dislikes')
       .end(function(err, res) {
         res.should.have.status(204);
         done();
@@ -126,7 +115,7 @@ describe('FOOD Requests', function() {
 
   it('DELETE /api/foods/:uuid', function(done){
     chai.request(server)
-      .delete('/api/foods/'+_uuid)
+      .delete('/api/foods/'+seeders.foodSeeder.uuid)
       .set('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXN0X25hbWUiOiJGYXQgQm9iIEJ1cmdlciIsImlkIjoyLCJhZGRyZXNzIjoiS3JhbWFyc2thIDIxLCBQb3puYW4iLCJsb2dpbiI6ImZhdGJvYiIsImF2YXRhciI6ZmFsc2UsImRlc2NyaXB0aW9uIjoic3VwZXIgb3BpcyBmYXQgYm9iYSJ9.0O_K_4wATtJ1E_em9HCLqtrSAgznfIlycOOc5CcSbPU')
       .end(function(err, res) {
         res.should.have.status(204);

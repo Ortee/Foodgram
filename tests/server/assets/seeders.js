@@ -1,6 +1,17 @@
 const images = require('./images');
+const uuid = require('node-uuid');
+let _uuid = uuid.v1();
 
 module.exports = {
+  // Food Seeders
+  foodSeeder :
+    {
+      login: 'fatbob',
+      uuid: _uuid,
+      description: 'Chai testing burger (tmp)',
+      hashtags: '#chai #test #tmp',
+      photo: images.foodImage
+    },
   // Restaurant Seeders
   restaurantSeeder :
     {
