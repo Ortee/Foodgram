@@ -5,43 +5,14 @@ const should = chai.should();
 const uuid = require('node-uuid');
 chai.use(chaiHttp);
 const images = require('./assets/images');
+const seeders = require('./assets/seeders');
 
 describe('RESTAURANT Requests', function() {
-
-  let restaurantSeeder =
-    {
-      username: 'Test 1',
-      login: 'test1',
-      passwordOne: 'test1',
-      passwordTwo: 'test1'
-    }
-  ;
-  let updateRestaurantSeeder =
-    {
-      login: 'test1',
-      rest_name: 'Test One',
-      address: 'Test address',
-      description: 'Test description',
-      avatar: images.avatarImage
-    }
-  ;
-  let changePasswordSeeder =
-    {
-      login: 'test1',
-      oldPassword: 'test1',
-      newPassword: 'test2',
-      newPassword2: 'test2'
-    }
-  ;
-  let restaurantToken;
-
-
-
   it('POST /api/restaurants', function(done) {
     chai.request(server)
       .post('/api/restaurants')
       .set('Content-Type', 'application/json')
-      .send(restaurantSeeder)
+      .send(seeders.restaurantSeeder)
       .end(function(err, res) {
         res.should.have.status(201);
         done();
@@ -58,14 +29,14 @@ describe('RESTAURANT Requests', function() {
       .send('password=test1')
       .end(function(err, res) {
         res.should.have.status(200);
-        restaurantToken = res.body.token;
+        seeders.restaurantToken = res.body.token;
         done();
       });
   });
 
   it('GET /api/restaurants/:login', function(done) {
     chai.request(server)
-      .get('/api/restaurants/' + restaurantSeeder.login)
+      .get('/api/restaurants/' + seeders.restaurantSeeder.login)
       .set('Accept', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
@@ -84,10 +55,10 @@ describe('RESTAURANT Requests', function() {
 
   it('PUT /api/restaurants/:login', function(done) {
     chai.request(server)
-      .put('/api/restaurants/' + restaurantSeeder.login)
+      .put('/api/restaurants/' + seeders.restaurantSeeder.login)
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'Bearer ' + restaurantToken)
-      .send(updateRestaurantSeeder)
+      .set('Authorization', 'Bearer ' + seeders.restaurantToken)
+      .send(seeders.updateRestaurantSeeder)
       .end(function(err, res) {
         res.should.have.status(200);
         done();
@@ -98,8 +69,8 @@ describe('RESTAURANT Requests', function() {
     chai.request(server)
       .put('/api/restaurants/change-password')
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'Bearer ' + restaurantToken)
-      .send(changePasswordSeeder)
+      .set('Authorization', 'Bearer ' + seeders.restaurantToken)
+      .send(seeders.changePasswordSeeder)
       .end(function(err, res) {
         res.should.have.status(200);
         done();
@@ -109,11 +80,10 @@ describe('RESTAURANT Requests', function() {
   it('DELETE /api/restaurants', function(done) {
     chai.request(server)
       .delete('/api/restaurants')
-      .set('Authorization', 'Bearer ' + restaurantToken)
+      .set('Authorization', 'Bearer ' + seeders.restaurantToken)
       .end(function(err, res) {
         res.should.have.status(204);
         done();
       });
   });
-
 });
