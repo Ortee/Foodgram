@@ -227,7 +227,6 @@ router.get('/:uuid', function(req, res, next) {
  *
  * @apiParamExample {json} Input
  *    {
- *      "login": "fatbob",
  *      "uuid": "ad83hb71s3-9b83-11e6-84da-212025eb3333",
  *      "description": "Very good burger",
  *      "hashtags": "#tasty #awesome",
@@ -254,7 +253,7 @@ function(req, res, next) {
   req.accepts('application/json');
   models.Restaurant.findOne({
     where: {
-      login: req.body.login
+      login: req.user.dataValues.login
     },
     attributes: ['id']
   }).then(function(user) {
@@ -499,9 +498,6 @@ router.delete('/:uuid/dislikes', function(req, res, next) {
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 204 No Content
  *
- * @apiErrorExample {json} Unauthorized
- *    HTTP/1.1 401 Unauthorized
- *
  * @apiErrorExample {json} Not Found
  *    HTTP/1.1 404 Not Found
  */
@@ -509,27 +505,33 @@ router.delete('/:uuid', passport.authenticate('bearer', {session: false}),
 function(req, res, next) {
   var _uuid = req.params.uuid;
   var token = jwt.encode('authorized', 'tokensecret');
-  request
-    .delete('http://nodestore:3500/api/images/' + _uuid)
-    .set('Authorization', token)
-    .send()
-    .end((err) => {
-      if (err) {
-        res.status(404).send();
-      } else {
-        winston.log('info', 'Image removed.');
-        models.Food.destroy({
-          where: {
-            uuid: _uuid
-          }
-        })
-          .then(function() {
-            res.status(204).send();
-          })
-          .catch(function(error) {
-            res.status(404).send();
+
+  models.Food.destroy({
+    where: {
+      uuid: _uuid,
+      restaurant_id: req.user.dataValues.id
+    }
+  })
+    .then(function(data) {
+      if (data === 1) {
+        request
+          .delete('http://nodestore:3500/api/images/' + _uuid)
+          .set('Authorization', token)
+          .send()
+          .end((err) => {
+            if (err) {
+              res.status(404).send();
+            } else {
+              winston.log('info', 'Image removed.');
+            }
           });
+        res.status(204).send();
+      } else {
+        res.status(404).send();
       }
+    })
+    .catch(function(error) {
+      res.status(404).send();
     });
 });
 

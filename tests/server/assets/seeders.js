@@ -7,7 +7,6 @@ module.exports = {
   // Food Seeders
   foodSeeder :
     {
-      login: 'fatbob',
       uuid: foodUuid,
       description: 'Chai testing burger (tmp)',
       hashtags: '#chai #test #tmp',
