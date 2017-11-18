@@ -1,6 +1,6 @@
 # Foodgram
 
-##API-DOC:
+## API-DOC:
 http://foodgram.tk:8500/
 
 Technology Stack
